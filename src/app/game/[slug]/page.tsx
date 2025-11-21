@@ -148,8 +148,12 @@ const GameSetupPage = () => {
           <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
             <CardContent className="p-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="space-y-2">
-                <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
-                <h1 className="text-4xl font-bold text-foreground uppercase tracking-wide">{game.title}</h1>
+                <Badge className="bg-accent/20 text-accent border border-accent/30">
+                  {getLocalizedText(game.genreLabel, language)}
+                </Badge>
+                <h1 className="text-4xl font-bold text-foreground uppercase tracking-wide">
+                  {getLocalizedText(game.title, language)}
+                </h1>
                 <p className="text-secondary font-semibold">{getLocalizedText(game.tagline, language)}</p>
                 <p className="text-muted-foreground max-w-3xl leading-relaxed">
                   {getLocalizedText(game.description, language)}
@@ -189,7 +193,9 @@ const GameSetupPage = () => {
           {step === "race" && (
             <div className="space-y-8">
               <div className="text-center space-y-3">
-                <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
+                <Badge className="bg-accent/20 text-accent border border-accent/30">
+                  {getLocalizedText(game.genreLabel, language)}
+                </Badge>
                 <h2 className="text-5xl font-bold text-foreground">{text.chooseRaceTitle}</h2>
                 <p className="text-muted-foreground text-lg">{text.chooseRaceSubtitle}</p>
               </div>
@@ -226,7 +232,9 @@ const GameSetupPage = () => {
             <div className="space-y-8">
               <div className="text-center space-y-3">
                 <div className="flex gap-2 justify-center">
-                  <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
+                  <Badge className="bg-accent/20 text-accent border border-accent/30">
+                    {getLocalizedText(game.genreLabel, language)}
+                  </Badge>
                   <Badge className="bg-accent/20 text-accent border border-accent/30">{character.race}</Badge>
                 </div>
                 <h2 className="text-5xl font-bold text-foreground">{text.chooseClassTitle}</h2>

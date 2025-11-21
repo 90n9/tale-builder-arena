@@ -19,6 +19,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
   - `/achievements`, `/about`, `/contact`, `/privacy-policy`, `/terms-of-use`, and `not-found`
 - UI: shared components in `src/components` (navbar/footer plus shadcn-styled primitives under `src/components/ui`); reusable hooks in `src/hooks`; utilities in `src/lib`; data in `src/data`.
 - Styling: Tailwind tokens/config in `tailwind.config.ts`; global styles in `src/app/globals.css`. See `docs/design-system.md` for design tokens and patterns.
+- Game content schema and authoring steps: `docs/create-new-game.md`
 - Assets: theme images in `src/assets`; public files that should be served verbatim belong in `public/`.
 
 ## API Contract

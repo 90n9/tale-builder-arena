@@ -58,7 +58,9 @@ const GameListPage = () => {
                 >
                   <CardContent className="p-8 space-y-6">
                     <div className="flex items-center justify-between gap-3">
-                      <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
+                      <Badge className="bg-accent/20 text-accent border border-accent/30">
+                        {getLocalizedText(game.genreLabel, language)}
+                      </Badge>
                       <span className="text-sm text-muted-foreground flex items-center gap-2">
                         <Map className="h-4 w-4 text-secondary" />
                         {getLocalizedText(game.length, language)}
@@ -66,7 +68,9 @@ const GameListPage = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">{game.title}</h3>
+                      <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">
+                        {getLocalizedText(game.title, language)}
+                      </h3>
                       <p className="text-secondary font-semibold">{getLocalizedText(game.tagline, language)}</p>
                     </div>
 

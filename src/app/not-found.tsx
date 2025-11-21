@@ -1,3 +1,6 @@
+// This page reads client-side language context, so keep it as a client component.
+"use client";
+
 import Link from "next/link";
 import { Compass, Home, Play } from "lucide-react";
 import Navbar from "@/components/Navbar";

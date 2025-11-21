@@ -128,7 +128,9 @@ const EndGamePage = () => {
             <div className="mb-8">
               <Sparkles className="h-20 w-20 text-accent mx-auto mb-4 animate-pulse" />
             </div>
-            <h1 className="text-6xl font-bold text-foreground mb-4">{text.completed(game.title)}</h1>
+            <h1 className="text-6xl font-bold text-foreground mb-4">
+              {text.completed(getLocalizedText(game.title, language))}
+            </h1>
             <p className="text-muted-foreground text-xl">{getLocalizedText(game.tagline, language)}</p>
             <div className="flex items-center justify-center gap-2 mt-4">
               <Badge className="bg-accent/20 text-accent border border-accent/30">{character.race}</Badge>
@@ -146,7 +148,8 @@ const EndGamePage = () => {
                     <h3 className="text-lg font-semibold text-accent">{text.characterInfo}</h3>
                     <div className="space-y-2 text-foreground">
                       <p>
-                        <span className="text-muted-foreground">{text.genre}</span> {character.genre}
+                        <span className="text-muted-foreground">{text.genre}</span>{" "}
+                        {getLocalizedText(game.genreLabel, language)}
                       </p>
                       <p>
                         <span className="text-muted-foreground">{text.race}</span> {character.race}
@@ -184,7 +187,9 @@ const EndGamePage = () => {
                         <div className="flex items-start gap-3">
                           <Trophy className="h-8 w-8 text-secondary flex-shrink-0 mt-1" />
                           <div>
-                            <h4 className="text-xl font-bold text-secondary mb-2">{achievement.name}</h4>
+                            <h4 className="text-xl font-bold text-secondary mb-2">
+                              {getLocalizedText(achievement.name, language)}
+                            </h4>
                             <p className="text-foreground mb-2">
                               {getLocalizedText(achievement.description, language)}
                             </p>
@@ -201,7 +206,7 @@ const EndGamePage = () => {
                 <div className="pt-6 border-t border-border">
                   <h3 className="text-lg font-semibold text-foreground mb-3 text-center">{text.yourStory}</h3>
                   <p className="text-muted-foreground text-center leading-relaxed">
-                    {text.closing(game.title)}
+                    {text.closing(getLocalizedText(game.title, language))}
                   </p>
                 </div>
               </div>

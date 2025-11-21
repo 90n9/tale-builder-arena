@@ -2,6 +2,7 @@
 
 ## Where to Look
 - Follow this file for repo-wide expectations and check `docs/` (notably `docs/design-system.md`) for design-specific instructions before updating UI.
+- For adding or editing game content, read `docs/create-new-game.md` for the full JSON schema and wiring steps.
 
 ## Project Structure & Module Organization
 - Next.js (App Router) lives in `src/app`; shared UI in `src/components`, hooks in `src/hooks`, utilities in `src/lib`, and supporting data in `src/data`.

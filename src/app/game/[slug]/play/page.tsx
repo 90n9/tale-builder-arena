@@ -262,10 +262,12 @@ const GamePlayPage = () => {
                     {character.class}
                   </Badge>
                   <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
-                    {game.genre}
+                    {getLocalizedText(game.genreLabel, language)}
                   </Badge>
                 </div>
-                <h1 className="text-3xl font-bold text-foreground mb-1">{game.title}</h1>
+                <h1 className="text-3xl font-bold text-foreground mb-1">
+                  {getLocalizedText(game.title, language)}
+                </h1>
                 <p className="text-muted-foreground">
                   {text.turn} {turn} • {getLocalizedText(game.tagline, language)}
                 </p>

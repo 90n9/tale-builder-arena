@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -50,15 +50,16 @@ const AchievementsPage = () => {
     }
   }, []);
 
-  const genres = [
-    { value: "all", label: text.filterAll },
-    { value: "High Fantasy", label: "High Fantasy" },
-    { value: "Dark Fantasy", label: "Dark Fantasy" },
-    { value: "Sci-Fi", label: "Sci-Fi" },
-    { value: "Cyberpunk", label: "Cyberpunk" },
-    { value: "Horror", label: "Horror" },
-    { value: "Post-Apocalyptic", label: "Post-Apocalyptic" },
-  ];
+  const genres = useMemo(() => {
+    const options = new Map<string, string>();
+    ALL_ACHIEVEMENTS.forEach((achievement) => {
+      options.set(achievement.genre, getLocalizedText(achievement.genreLabel, language));
+    });
+    return [
+      { value: "all", label: text.filterAll },
+      ...Array.from(options.entries()).map(([value, label]) => ({ value, label })),
+    ];
+  }, [language, text.filterAll]);
 
   const filteredAchievements = selectedGenre === "all" 
     ? ALL_ACHIEVEMENTS 
@@ -154,7 +155,7 @@ const AchievementsPage = () => {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-2 mb-2">
                              <h3 className={`font-bold text-lg ${isEarned ? "text-foreground" : "text-muted-foreground"}`}>
-                                {isEarned ? achievement.name : text.lockedName}
+                                {isEarned ? getLocalizedText(achievement.name, language) : text.lockedName}
                               </h3>
                               <Star className={`h-4 w-4 flex-shrink-0 ${getRarityColor(achievement.rarity).split(' ')[0]}`} />
                             </div>
@@ -171,7 +172,7 @@ const AchievementsPage = () => {
                             
                             <div className="mt-3 pt-3 border-t border-border/30">
                               <p className="text-xs text-muted-foreground">
-                                {achievement.genre}
+                                {getLocalizedText(achievement.genreLabel, language)}
                               </p>
                             </div>
                           </div>
