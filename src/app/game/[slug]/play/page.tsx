@@ -2,21 +2,25 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { RefreshCw, Loader2, Heart, Sparkles, Coins, Package, Trophy } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import Navbar from "@/components/Navbar";
-import { RefreshCw, Loader2, Heart, Sparkles, Coins, Package, Trophy } from "lucide-react";
 import gamePlaceholder from "@/assets/game-scene-placeholder.jpg";
-import { randomAchievementForGenre, findAchievementById, type Achievement } from "@/data/achievements";
+import { randomAchievementForGenre, findAchievementById } from "@/data/achievements";
+import { findGameBySlug } from "@/data/games";
 import {
-  CHARACTER_STORAGE_KEY,
   INITIAL_CHOICES,
   INITIAL_NARRATION,
   createDefaultAttributes,
+  getCharacterStorageKey,
+  getEndSummaryStorageKey,
+  type AdventureStats,
+  type AdventureSummary,
   type CharacterSelection,
 } from "@/lib/game-config";
 
@@ -28,66 +32,73 @@ type StoryResponse = {
   achievementId?: string | null;
 };
 
-type GameStep = "game" | "endgame";
+const DEFAULT_STATS: AdventureStats = {
+  hp: 85,
+  maxHp: 100,
+  mana: 60,
+  maxMana: 80,
+  gold: 150,
+};
+
+const DEFAULT_INVENTORY = ["ดาบเหล็ก", "ยาฟื้นพลัง", "คบเพลิง", "แผนที่โบราณ"];
+const DEFAULT_QUESTS = ["สำรวจดันเจี้ยนโบราณ", "ค้นหาโบราณวัตถุที่หายสาบสูญ", "กำจัดอสูรรัตติกาล"];
 
 const GamePlayPage = () => {
+  const params = useParams<{ slug: string }>();
+  const slug = (params?.slug ?? "").toString();
   const router = useRouter();
-  const [step, setStep] = useState<GameStep>("game");
+  const game = useMemo(() => findGameBySlug(slug), [slug]);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [turn, setTurn] = useState(1);
-  const [earnedAchievement, setEarnedAchievement] = useState<Achievement | null>(null);
   const [character, setCharacter] = useState<CharacterSelection | null>(null);
-
-  const [stats] = useState({
-    hp: 85,
-    maxHp: 100,
-    mana: 60,
-    maxMana: 80,
-    gold: 150,
-  });
-
-  const [inventory] = useState(["ดาบเหล็ก", "ยาฟื้นพลัง", "คบเพลิง", "แผนที่โบราณ"]);
-
-  const [quests] = useState([
-    "สำรวจดันเจี้ยนโบราณ",
-    "ค้นหาโบราณวัตถุที่หายสาบสูญ",
-    "กำจัดอสูรรัตติกาล",
-  ]);
-
+  const [stats] = useState<AdventureStats>(DEFAULT_STATS);
+  const [inventory] = useState(DEFAULT_INVENTORY);
+  const [quests] = useState(DEFAULT_QUESTS);
   const [narration, setNarration] = useState<string>(INITIAL_NARRATION);
   const [choices, setChoices] = useState<string[]>(INITIAL_CHOICES);
 
   useEffect(() => {
-    const saved = sessionStorage.getItem(CHARACTER_STORAGE_KEY);
-    if (!saved) {
+    if (!slug) return;
+    sessionStorage.removeItem(getEndSummaryStorageKey(slug));
+  }, [slug]);
+
+  useEffect(() => {
+    if (!game) {
       router.replace("/game");
+      return;
+    }
+
+    const saved = sessionStorage.getItem(getCharacterStorageKey(slug));
+    if (!saved) {
+      router.replace(`/game/${slug}`);
+      setIsInitializing(false);
       return;
     }
 
     try {
       const parsed = JSON.parse(saved) as Partial<CharacterSelection>;
-      if (!parsed.genre || !parsed.race || !parsed.class) {
-        router.replace("/game");
+      if (!parsed.race || !parsed.class) {
+        router.replace(`/game/${slug}`);
         return;
       }
 
       setCharacter({
-        genre: parsed.genre,
+        genre: game.genre,
         race: parsed.race,
         class: parsed.class,
         attributes: { ...createDefaultAttributes(), ...(parsed.attributes ?? {}) },
       });
     } catch (error) {
       console.error("ไม่สามารถโหลดตัวละครได้", error);
-      router.replace("/game");
+      router.replace(`/game/${slug}`);
     } finally {
       setIsInitializing(false);
     }
-  }, [router]);
+  }, [game, router, slug]);
 
   const handleChoice = async (choice: string) => {
-    if (!character) return;
+    if (!character || !game) return;
 
     setIsLoading(true);
     try {
@@ -127,14 +138,17 @@ const GamePlayPage = () => {
             earnedIds.push(achievement.id);
             localStorage.setItem("questWeaverAchievements", JSON.stringify(earnedIds));
           }
-          setEarnedAchievement(achievement);
-        } else {
-          setEarnedAchievement(null);
         }
 
-        setStep("endgame");
-      } else {
-        setEarnedAchievement(null);
+        const summary: AdventureSummary = {
+          turn: data.turn,
+          stats,
+          character,
+          achievementId: achievement?.id ?? null,
+        };
+
+        sessionStorage.setItem(getEndSummaryStorageKey(slug), JSON.stringify(summary));
+        router.push(`/game/${slug}/end`);
       }
     } catch (error) {
       console.error(error);
@@ -149,17 +163,16 @@ const GamePlayPage = () => {
   };
 
   const handleRestartStory = () => {
-    setStep("game");
     setTurn(1);
     setNarration(INITIAL_NARRATION);
     setChoices(INITIAL_CHOICES);
     setIsLoading(false);
-    setEarnedAchievement(null);
+    sessionStorage.removeItem(getEndSummaryStorageKey(slug));
   };
 
   const handleChangeCharacter = () => {
     handleRestartStory();
-    router.push("/game");
+    router.push(`/game/${slug}`);
   };
 
   const renderLoadingState = () => (
@@ -176,7 +189,7 @@ const GamePlayPage = () => {
   );
 
   const renderGame = () => {
-    if (!character) return null;
+    if (!character || !game) return null;
 
     return (
       <div className="min-h-screen bg-background">
@@ -191,9 +204,12 @@ const GamePlayPage = () => {
                   <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
                     {character.class}
                   </Badge>
+                  <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
+                    {game.genre}
+                  </Badge>
                 </div>
-                <h1 className="text-3xl font-bold text-foreground mb-1">การผจญภัยปัจจุบัน</h1>
-                <p className="text-muted-foreground">เทิร์นที่ {turn} • บทที่ 1: ดันเจี้ยนโบราณ</p>
+                <h1 className="text-3xl font-bold text-foreground mb-1">{game.title}</h1>
+                <p className="text-muted-foreground">เทิร์นที่ {turn} • {game.tagline}</p>
               </div>
               <div className="flex gap-2">
                 <Button
@@ -356,118 +372,6 @@ const GamePlayPage = () => {
     );
   };
 
-  const renderEndGame = () => {
-    if (!character) return null;
-
-    return (
-      <div className="min-h-screen bg-background pt-20 pb-8 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <div className="mb-8">
-              <Sparkles className="h-20 w-20 text-accent mx-auto mb-4 animate-pulse" />
-            </div>
-            <h1 className="text-6xl font-bold text-foreground mb-4">การผจญภัยเสร็จสมบูรณ์!</h1>
-            <p className="text-muted-foreground text-xl">การเดินทางในดันเจี้ยนโบราณมาถึงบทสรุปแล้ว</p>
-          </div>
-
-          <Card className="ornate-corners border-2 border-accent/50 bg-gradient-card shadow-glow-cyan mb-8">
-            <CardContent className="p-8">
-              <h2 className="text-3xl font-bold text-foreground mb-6 text-center">สรุปเส้นทาง</h2>
-
-              <div className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-accent">ข้อมูลตัวละคร</h3>
-                    <div className="space-y-2 text-foreground">
-                      <p>
-                        <span className="text-muted-foreground">แนวเรื่อง:</span> {character.genre}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">เผ่าพันธุ์:</span> {character.race}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">สายอาชีพ:</span> {character.class}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-accent">สถิติการผจญภัย</h3>
-                    <div className="space-y-2 text-foreground">
-                      <p>
-                        <span className="text-muted-foreground">จำนวนเทิร์น:</span> {turn}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">HP สุดท้าย:</span> {stats.hp}/{stats.maxHp}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">ทองที่เก็บได้:</span> {stats.gold}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {earnedAchievement && (
-                  <div className="pt-6 border-t border-border">
-                    <h3 className="text-lg font-semibold text-accent mb-4 flex items-center gap-2">
-                      <Trophy className="h-5 w-5" />
-                      ปลดล็อกความสำเร็จ!
-                    </h3>
-                    <Card className="ornate-corners border-2 border-secondary/50 bg-secondary/10">
-                      <CardContent className="p-4">
-                        <div className="flex items-start gap-3">
-                          <Trophy className="h-8 w-8 text-secondary flex-shrink-0 mt-1" />
-                          <div>
-                            <h4 className="text-xl font-bold text-secondary mb-2">{earnedAchievement.name}</h4>
-                            <p className="text-foreground mb-2">{earnedAchievement.description}</p>
-                            <Badge className="bg-secondary/20 text-secondary border border-secondary/30 capitalize">
-                              {earnedAchievement.rarity}
-                            </Badge>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
-
-                <div className="pt-6 border-t border-border">
-                  <h3 className="text-lg font-semibold text-foreground mb-3 text-center">เรื่องเล่าของคุณ</h3>
-                  <p className="text-muted-foreground text-center leading-relaxed">
-                    คุณกล้าก้าวสู่ความไม่รู้ เผชิญอันตรายมากมาย และกลับออกมาพร้อมชัยชนะ เรื่องราวความกล้าหาญจะถูกเล่าขานในโรงเตี๊ยมทั่วทุกแคว้น พร้อมจะออกผจญภัยอีกครั้งหรือไม่?
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="flex gap-4 justify-center">
-            <Button
-              asChild
-              variant="outline"
-              className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan text-lg px-8 py-6"
-            >
-              <Link href="/achievements">
-                <Trophy className="h-5 w-5 mr-2" />
-                ดูความสำเร็จทั้งหมด
-              </Link>
-            </Button>
-            <Button onClick={handleRestartStory} className="bg-gradient-primary hover:shadow-glow-orange text-lg px-8 py-6">
-              <RefreshCw className="h-5 w-5 mr-2" />
-              เล่นอีกครั้ง
-            </Button>
-            <Button
-              variant="secondary"
-              className="text-lg px-8 py-6"
-              onClick={handleChangeCharacter}
-            >
-              เปลี่ยนตัวละคร
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   if (isInitializing) {
     return (
       <>
@@ -477,7 +381,7 @@ const GamePlayPage = () => {
     );
   }
 
-  if (!character) {
+  if (!character || !game) {
     return (
       <>
         <Navbar />
@@ -489,8 +393,8 @@ const GamePlayPage = () => {
                 <p className="text-lg text-muted-foreground">
                   โปรดตั้งค่าตัวละครก่อนเริ่มเล่น
                 </p>
-                <Button onClick={() => router.push("/game")} className="bg-gradient-primary hover:shadow-glow-orange">
-                  ไปที่หน้าเลือกเกม
+                <Button onClick={() => router.push(`/game/${slug}`)} className="bg-gradient-primary hover:shadow-glow-orange">
+                  ไปตั้งค่าการผจญภัย
                 </Button>
               </CardContent>
             </Card>
@@ -503,8 +407,7 @@ const GamePlayPage = () => {
   return (
     <>
       <Navbar />
-      {step === "game" && renderGame()}
-      {step === "endgame" && renderEndGame()}
+      {renderGame()}
     </>
   );
 };

@@ -15,7 +15,11 @@ export type CharacterSelection = {
 };
 
 export const CHARACTER_STORAGE_KEY = "taleBuilderCharacter";
+export const END_SUMMARY_STORAGE_KEY = "taleBuilderEndSummary";
 export const ATTRIBUTE_MAX_POINTS = 75;
+
+export const getCharacterStorageKey = (slug: string) => `${CHARACTER_STORAGE_KEY}:${slug}`;
+export const getEndSummaryStorageKey = (slug: string) => `${END_SUMMARY_STORAGE_KEY}:${slug}`;
 
 export const createDefaultAttributes = (): CharacterAttributes => ({
   strength: 10,
@@ -32,6 +36,21 @@ export const createEmptyCharacter = (): CharacterSelection => ({
   class: "",
   attributes: createDefaultAttributes(),
 });
+
+export type AdventureStats = {
+  hp: number;
+  maxHp: number;
+  mana: number;
+  maxMana: number;
+  gold: number;
+};
+
+export type AdventureSummary = {
+  turn: number;
+  stats: AdventureStats;
+  character: CharacterSelection;
+  achievementId?: string | null;
+};
 
 export const genres = [
   { name: "High Fantasy", description: "ผจญภัยยิ่งใหญ่ในดินแดนเวทมนตร์" },

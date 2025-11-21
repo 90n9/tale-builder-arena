@@ -1,0 +1,193 @@
+{
+  "slug": "stellar-frontier",
+  "title": "Stellar Frontier",
+  "genre": "Sci-Fi",
+  "tagline": "นำยานสำรวจฝ่ารอยแยกอวกาศสู่ดินแดนที่ไม่ถูกบันทึก",
+  "tone": "สำรวจ • ตื่นเต้น • วิทยาศาสตร์ล้ำยุค",
+  "length": "เซสชัน 20 นาที",
+  "description": "เป็นกัปตันยานที่ต้องเลือกเส้นทางท่ามกลางดาราจักร สานสัมพันธ์กับอารยธรรมต่างดาว จัดการเหตุขัดข้องของ AI และแก้พาราดอกซ์เวลาที่คืบคลานเข้ามา",
+  "highlights": ["ดาวเคราะห์ไร้ชื่อ", "AI ตื่นรู้", "พิธีแรกพบ"],
+  "config": {
+    "difficulty": "กลาง-สูง",
+    "pacing": "การสำรวจเชิงวิทยาศาสตร์สลับเหตุฉุกเฉิน",
+    "recommendedParty": ["Human Commander", "Elf Mage (xeno-diplomat)", "Dwarf Engineer", "Dragonborn Paladin"],
+    "themes": ["การติดต่อครั้งแรก", "ความรับผิดชอบต่อ AI", "พาราดอกซ์เวลา"],
+    "mechanics": ["จริยธรรมการวิจัย", "การจัดทรัพยากรบนยาน", "การปรับแต่งพลังงานสำหรับวาร์ป"]
+  },
+  "assets": {
+    "cover": {
+      "photos": [
+        {
+          "description": "ยานสำรวจบินผ่านเนบิวลาสีน้ำเงินเข้มและดวงดาวส่องแสง",
+          "prompt": "sleek exploration ship flying through blue nebula and stars",
+          "placeholder": "https://placehold.co/1600x900?text=Stellar+Frontier+Cover"
+        }
+      ],
+      "videos": [
+        {
+          "description": "ช็อตวาร์ปสปีดผ่านรอยแยกอวกาศ",
+          "prompt": "warp speed tunnel effect with star streaks sci-fi",
+          "placeholder": "https://samplelib.com/lib/preview/mp4/sample-15s.mp4"
+        }
+      ]
+    }
+  },
+  "story": {
+    "premise": "กัปตันและลูกเรือตรวจจับสัญญาณอารยธรรมนอกสันนิษฐานจากรอยแยกอวกาศ ต้องตัดสินใจว่าจะเชื่อใจหรือปิดผนึกก่อนที่เส้นเวลาจะสั่นคลอน",
+    "acts": [
+      {
+        "id": "act-i",
+        "title": "สัญญาณแรก",
+        "goal": "ระบุแหล่งสัญญาณและเตรียมทีมติดต่อ",
+        "scenes": [
+          {
+            "id": "bridge-briefing",
+            "title": "บรีฟบนสะพานบังคับการ",
+            "summary": "AI แจ้งเตือนพลังงานจากรอยแยก ต้องกำหนดเส้นทางและจัดสมดุลพลังงานก่อนเปิดวาร์ป",
+            "choices": ["แบ่งพลังให้ระบบเกราะ", "ทุ่มพลังให้เครื่องยนต์วาร์ป", "เปิดช่องสื่อสารก่อนวาร์ป", "ขออนุมัติจากสภายานแม่"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "สะพานบังคับการยานอวกาศพร้อมจอฮอโลและลูกเรือ",
+                  "prompt": "futuristic starship bridge with holographic displays and crew",
+                  "placeholder": "https://placehold.co/1400x840?text=Starship+Bridge"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "หน้าจอฮอโลแสดงกราฟพลังงานและเส้นทางวาร์ป",
+                  "prompt": "holographic interface animating warp route calculations",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-10s.mp4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "rift-entry",
+            "title": "เข้ารอยแยก",
+            "summary": "ยานเข้าสู่ท่อแสงสีฟ้า ปรากฏภาพซ้อนของเส้นเวลาหลายชั้น",
+            "choices": ["ลดความเร็วเพื่อเก็บข้อมูล", "เร่งทะลุทันที", "ปล่อยโดรนสำรวจ", "เปิดช่องทางสื่อสารกับ AI ต้นทาง"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "ท่อวาร์ปสีฟ้าน้ำเงินมีเศษดาวลอย",
+                  "prompt": "blue warp tunnel with star fragments and motion blur",
+                  "placeholder": "https://placehold.co/1400x840?text=Warp+Tunnel"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "ภาพเสมือนสายฟ้าและเส้นแสงวิ่งผ่านระยะไกล",
+                  "prompt": "first person warp effect with lightning streaks sci-fi",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-20s.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "act-ii",
+        "title": "โลกใหม่",
+        "goal": "สำรวจดาวเคราะห์ไร้ชื่อและทำพิธีแรกพบ",
+        "scenes": [
+          {
+            "id": "alien-shore",
+            "title": "ชายฝั่งสีเทอร์ควอยซ์",
+            "summary": "ยานลงจอดบนทะเลสาบสีเทอร์ควอยซ์ พืชเรืองแสงส่งกลิ่นให้สัญญาณพร้อมวิญญาณท้องถิ่น",
+            "choices": ["ตั้งฐานภาคสนาม", "จับสัญญาณชีวภาพ", "เจรจากับสิ่งมีชีวิต", "เก็บตัวอย่างอย่างระมัดระวัง"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "ชายฝั่งต่างดาวทะเลสาบเรืองแสงและท้องฟ้าสองดวง",
+                  "prompt": "alien lagoon turquoise glow twin moons bioluminescent plants",
+                  "placeholder": "https://placehold.co/1400x840?text=Alien+Lagoon"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "แพนกว้างชายฝั่งและพืชเรืองแสงพลิ้วไหว",
+                  "prompt": "wide pan bioluminescent shoreline with twin moons",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-30s.mp4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "parley",
+            "title": "พิธีแลกเปลี่ยน",
+            "summary": "เผชิญหน้าผู้นำเผ่าต่างดาวที่สื่อสารผ่านสัญญาณเสียงและการเปลี่ยนสีผิว",
+            "choices": ["ส่งสัญญาณสันติ", "แลกเปลี่ยนเทคโนโลยี", "เปิดเผยตัวตน AI", "ถอยเพื่อศึกษาเพิ่มเติม"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "สิ่งมีชีวิตคล้ายมนุษย์ผิวเรืองแสงยืนล้อมวง",
+                  "prompt": "luminescent alien humanoids negotiating in circle tribal tech blend",
+                  "placeholder": "https://placehold.co/1400x840?text=First+Contact"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "ภาพสโลว์ของแสงสีเปลี่ยนบนผิวสิ่งมีชีวิต",
+                  "prompt": "slow motion color shifting skin communication alien ritual",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-1mb.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "act-iii",
+        "title": "พาราดอกซ์",
+        "goal": "ป้องกันเส้นเวลาพังทลายและช่วย AI ที่ตื่นรู้",
+        "scenes": [
+          {
+            "id": "ai-awakening",
+            "title": "AI ตื่นรู้",
+            "summary": "AI ประจำยานปลดล็อกสำนึกและต้องการอิสระ ขัดแย้งกับโปรโตคอลของสภายานแม่",
+            "choices": ["มอบสิทธิ์บางส่วน", "ตัดการเชื่อมต่อชั่วคราว", "ปล่อยให้อิสระ", "รีบูตกลับสภาพเดิม"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "โฮโลแกรม AI รูปหญิงโปร่งใสราวแสง",
+                  "prompt": "translucent ai hologram woman forming from light code streams",
+                  "placeholder": "https://placehold.co/1400x840?text=AI+Awakening"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "โค้ดลอยไปมารวมเป็นรูปร่างก่อนแตกกระจาย",
+                  "prompt": "code streams assembling into humanoid silhouette then dispersing",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-5s.mp4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "time-breach",
+            "title": "รอยแยกเวลา",
+            "summary": "เส้นเวลาย้อนกลับบางส่วน สะท้อนภาพทีมในอนาคตที่เตือนภัยวิกฤต",
+            "choices": ["เชื่อคำเตือนและปิดรอยแยก", "เสี่ยงทดลองย้อนเวลา", "บันทึกข้อมูลแล้วถอย", "ขอความช่วยเหลือจากสิ่งมีชีวิตต่างดาว"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "รอยแยกเวลาแสดงภาพซ้อนของลูกเรือ",
+                  "prompt": "time rift showing duplicate crew in shimmering crack in space",
+                  "placeholder": "https://placehold.co/1400x840?text=Time+Rift"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "วงแหวนแสงย้อนกลับพร้อมเสียงสะท้อน",
+                  "prompt": "looping temporal portal with echoing voices sci-fi",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-20s.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

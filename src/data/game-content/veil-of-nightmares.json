@@ -1,0 +1,193 @@
+{
+  "slug": "veil-of-nightmares",
+  "title": "Veil of Nightmares",
+  "genre": "Horror",
+  "tagline": "ไขปริศนาหมู่บ้านต้องคำสาปที่ไม่มีใครออกมาได้ทั้งเป็น",
+  "tone": "สยอง • จิตวิทยา • ลึกลับซ่อนเงื่อน",
+  "length": "เซสชัน 10-20 นาที",
+  "description": "ทุกมุมมีเงาและทุกเสียงกระซิบอาจเป็นสิ่งสุดท้ายที่คุณได้ยิน เลือกเชื่อในพิธีกรรมหรือวิทยาศาสตร์ สืบเบาะแสความจริงที่บิดเบี้ยวและเอาชีวิตรอดจากสิ่งที่แฝงตัว",
+  "highlights": ["คำสาปเลือด", "วิญญาณเฝ้าบ้าน", "พิธีผนึก"],
+  "config": {
+    "difficulty": "กลาง",
+    "pacing": "สืบสวนกดดันพร้อมจังหวะไล่ล่า",
+    "recommendedParty": ["Human Cleric", "Elf Rogue", "Orc Warrior", "Halfling Mage (occult)"],
+    "themes": ["คำสาปตระกูล", "ความกลัวภายใน", "เลือกระหว่างศรัทธาและวิทยาศาสตร์"],
+    "mechanics": ["ทรัพยากรจำกัด (ไฟฉาย/กำลังใจ)", "ความสติลดจากเหตุการณ์หลอน", "ตัวเลือกพิธีกรรมส่งผลต่อฉากจบ"]
+  },
+  "assets": {
+    "cover": {
+      "photos": [
+        {
+          "description": "บ้านไม้เก่ามืดมนในหมอกและเงาเถาวัลย์",
+          "prompt": "old wooden house in fog with overgrown vines horror vibe",
+          "placeholder": "https://placehold.co/1600x900?text=Veil+of+Nightmares+Cover"
+        }
+      ],
+      "videos": [
+        {
+          "description": "หมอกคืบคลานผ่านป่าพร้อมเสียงกระซิบเบาๆ",
+          "prompt": "creeping fog through forest with faint whispers horror loop",
+          "placeholder": "https://samplelib.com/lib/preview/mp4/sample-10s.mp4"
+        }
+      ]
+    }
+  },
+  "story": {
+    "premise": "หมู่บ้านทางเหนือถูกปกคลุมด้วยคลื่นฝันร้ายที่ทำให้ผู้คนหลงลืมตัวเอง ทีมต้องค้นหาต้นตอคำสาปเลือดและพิธีผนึกก่อนค่ำคืนจันทรุปราคา",
+    "acts": [
+      {
+        "id": "act-i",
+        "title": "หมอกแรก",
+        "goal": "รวบรวมเงื่อนงำและตัดสินใจว่าจะเชื่อใคร",
+        "scenes": [
+          {
+            "id": "abandoned-inn",
+            "title": "โรงเตี๊ยมร้าง",
+            "summary": "พบสมุดบันทึกของเจ้าของโรงเตี๊ยมและเสียงฝีเท้าบนชั้นสองทั้งที่ไม่มีใคร",
+            "choices": ["ขึ้นไปตรวจสอบ", "เผาหนังสือ", "อ่านบทสวด", "ขังตัวเองในห้องครัว"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "โรงเตี๊ยมไม้เงียบมีเก้าอี้ล้มและแสงเทียนริบหรี่",
+                  "prompt": "abandoned inn with toppled chairs dim candle horror",
+                  "placeholder": "https://placehold.co/1400x840?text=Abandoned+Inn"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "ไฟฉายส่ายไปรอบห้องโชว์ฝุ่นลอย",
+                  "prompt": "flashlight beam panning dusty room handheld horror",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-20s.mp4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "well-of-echoes",
+            "title": "บ่อน้ำสะท้อนเสียง",
+            "summary": "เสียงกระซิบดังขึ้นจากบ่อน้ำเก่าบอกชื่อหนึ่งในทีม วิญญาณบางอย่างต้องการสื่อสาร",
+            "choices": ["ตอบเสียงกระซิบ", "โยนเหรียญทำพิธี", "ปิดบ่อด้วยไม้กระดาน", "ปล่อยเลือดหยดลงไป"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "บ่อน้ำหินปกคลุมเถาวัลย์น้ำขุ่น",
+                  "prompt": "old stone well with vines and murky water horror fog",
+                  "placeholder": "https://placehold.co/1400x840?text=Haunted+Well"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "กล้องมองลงบ่อเห็นเงาสะท้อนสั่น",
+                  "prompt": "looking down a well water ripples reveal faint face",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-5mb.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "act-ii",
+        "title": "รอยแผลคำสาป",
+        "goal": "เผชิญกับวิญญาณเฝ้าบ้านและค้นหาหลักฐานต้นสาย",
+        "scenes": [
+          {
+            "id": "ashen-chapel",
+            "title": "โบสถ์เขม่า",
+            "summary": "พื้นโบสถ์เต็มไปด้วยคราบเขม่าจากพิธีผิดพลาด ต้องตัดสินใจว่าจะทำพิธีต่อหรือรื้อถอน",
+            "choices": ["สวดพิธีต่อ", "ทำลายแท่นบูชา", "วิเคราะห์เขม่าทางวิทยาศาสตร์", "ใช้โลหะทำสัญลักษณ์ผนึก"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "แท่นบูชาถูกไฟไหม้มีเขม่าและเคียวไม้กางเขนหัก",
+                  "prompt": "burned altar with soot and broken cross inside dark chapel",
+                  "placeholder": "https://placehold.co/1400x840?text=Burned+Chapel"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "เทียนดับพร้อมควันหมุนวนในโบสถ์มืด",
+                  "prompt": "candle extinguished smoke swirling in dark church",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-1mb.mp4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "guardian-tree",
+            "title": "ต้นไม้เฝ้าบ้าน",
+            "summary": "ต้นไม้ใหญ่กลางหมู่บ้านมีผ้าผูกจำนวนมาก เลือดหยดลงจากกิ่งราวกำลังร้องไห้",
+            "choices": ["ตัดกิ่งหลัก", "ผูกผ้าสีเพื่อปลอบ", "โรยเกลือทำวงป้องกัน", "วิเคราะห์เลือดด้วยอุปกรณ์พกพา"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "ต้นไม้ใหญ่ในหมอกมีผ้าผูกและหยดเลือด",
+                  "prompt": "large cursed tree with tied cloth strips and blood drops in fog",
+                  "placeholder": "https://placehold.co/1400x840?text=Guardian+Tree"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "ลมพัดใบไม้และผ้าผูกเกิดเสียงกระซิบ",
+                  "prompt": "wind rustling cursed tree cloth strips whispery sound",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-30s.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "act-iii",
+        "title": "คืนจันทรุปราคา",
+        "goal": "ประกอบพิธีปิดม่านฝันร้ายหรือบิดกลับเพื่อปลดปล่อยสิ่งที่อยู่ภายใน",
+        "scenes": [
+          {
+            "id": "blood-ritual",
+            "title": "พิธีเลือด",
+            "summary": "เลือดของผู้สืบเชื้อสายต้องหยดลงบนสัญลักษณ์กลางลานและสวดก่อนเงาจันทร์กลืนแสง",
+            "choices": ["ทำพิธีตามคัมภีร์", "แทนที่เลือดด้วยของปลอม", "เรียกสิ่งแปลกปลอมออกมาเจรจา", "ทำลายวงสัญลักษณ์"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "วงสัญลักษณ์เลือดบนลานหญ้ามืดมีเทียนล้อม",
+                  "prompt": "blood sigil circle on grass with candles under eclipse sky",
+                  "placeholder": "https://placehold.co/1400x840?text=Blood+Ritual"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "เงาจันทร์บังแสงพร้อมเสียงสวดและเลือดหยด",
+                  "prompt": "lunar eclipse timelapse over ritual circle with chanting audio",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-5s.mp4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "veil-break",
+            "title": "ทะลุม่าน",
+            "summary": "วิญญาณถูกปล่อยหรือผนึก ม่านฝันร้ายฉีกขาดเผยท้องฟ้าใหม่หรือความว่างเปล่า",
+            "choices": ["ปล่อยวิญญาณทั้งหมด", "ผนึกให้แน่นกว่าเดิม", "แลกเปลี่ยนตนเองแทนชาวบ้าน", "เปิดทางไปมิติอื่น"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "ม่านเงามืดถูกฉีกออกเผยแสงสีม่วง",
+                  "prompt": "shadow veil tearing open revealing violet light horror surreal",
+                  "placeholder": "https://placehold.co/1400x840?text=Veil+Break"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "เอฟเฟกต์ผ้าม่านมืดขาดและละอองแสงทะลุออกมา",
+                  "prompt": "ripping dark veil effect with particles of purple light",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-20s.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

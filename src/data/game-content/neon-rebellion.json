@@ -1,0 +1,193 @@
+{
+  "slug": "neon-rebellion",
+  "title": "Neon Rebellion",
+  "genre": "Cyberpunk",
+  "tagline": "ก่อกบฏกลางมหานครนีออนที่ AI เฝ้าระวังทุกลมหายใจ",
+  "tone": "ดิสโทเปีย • กดดัน • เทคโนโลยีจัดเต็ม",
+  "length": "เซสชัน 15-25 นาที",
+  "description": "เดินเกมใต้แสงไฟนีออน ร้อยแผนการแฮ็กและต่อสู้บนดาดฟ้า เมืองนี้เต็มไปด้วยสายลับ ซอมบี้ไซเบอร์ และข้อตกลงสีเทาที่ต้องตัดสินใจด้วยตัวเอง",
+  "highlights": ["เมนเฟรมลับ", "แก๊งสตรีทซามูไร", "ดีลเงามืด"],
+  "config": {
+    "difficulty": "สูง",
+    "pacing": "แอ็กชันรวดเร็วสลับการเจรจาและแฮ็ก",
+    "recommendedParty": ["Human Rogue", "Elf Mage (netrunner)", "Orc Warrior", "Halfling Ranger (scout)"],
+    "themes": ["การต่อต้านบริษัทเทค", "ชนชั้นในเมืองใหญ่", "เสรีภาพข้อมูล"],
+    "mechanics": ["ฮาร์ดแฮ็กแบบเวลาจำกัด", "สู้บนหลังคา", "ทางเลือกเชิงศีลธรรมต่อชุมชน"]
+  },
+  "assets": {
+    "cover": {
+      "photos": [
+        {
+          "description": "เส้นขอบฟ้ามหานครนีออนฝนตกพรำและป้ายโฮโลแกรม",
+          "prompt": "rainy neon skyline holographic billboards cyberpunk city",
+          "placeholder": "https://placehold.co/1600x900?text=Neon+Rebellion+Cover"
+        }
+      ],
+      "videos": [
+        {
+          "description": "ภาพโดรนบินผ่านตรอกไฟนีออนและไอน้ำจากท่อ",
+          "prompt": "drone flythrough neon alley with steam vents and signage",
+          "placeholder": "https://samplelib.com/lib/preview/mp4/sample-15s.mp4"
+        }
+      ]
+    }
+  },
+  "story": {
+    "premise": "กลุ่มก่อกบฏได้รับข้อมูลว่าบริษัท OmegaDyne กำลังปล่อย AI เฝ้าระวังระดับโลก ต้องตัดการเชื่อมต่อเมนเฟรมก่อนคอนทราสต์อัปเดตจะปล่อยสู่เครือข่าย",
+    "acts": [
+      {
+        "id": "act-i",
+        "title": "สัญญาณจากเงามืด",
+        "goal": "รวบรวมข้อมูลและทางเข้าพื้นที่รักษาความปลอดภัย",
+        "scenes": [
+          {
+            "id": "alley-briefing",
+            "title": "ประชุมใต้ป้ายโฮโล",
+            "summary": "แก๊งรวมตัวในตรอกเปียกฝน ได้รับชิปข้อมูลจากพ่อค้าข่าวลือพร้อมข้อแลกเปลี่ยน",
+            "choices": ["จ่ายเครดิตเต็ม", "เจรจาหักราคา", "ข่มขู่เอาของ", "ติดตั้งบั๊กในชิปก่อนใช้"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "ตรอกมืดไฟนีออนสะท้อนบนพื้นเปียก",
+                  "prompt": "wet neon alleyway with hologram signs cyberpunk rain",
+                  "placeholder": "https://placehold.co/1400x840?text=Neon+Alley"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "ช็อตสั้นของฝนตกกระทบป้ายโฮโลพร้อมเสียงบี๊ปดิจิทัล",
+                  "prompt": "looped rain on hologram signs with digital beeps atmosphere",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-10s.mp4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "backdoor-scan",
+            "title": "สแกนทางลัด",
+            "summary": "Netrunner สแกนสัญญาณไฟเบอร์ใต้ดินพบช่องทางเข้าสู่ศูนย์ข้อมูล แต่ต้องปลอมแปลงตราสัญญาณ",
+            "choices": ["ปลอมแปลงบัตร ID", "จี้ยามเพื่อขโมยสแกน", "ขอความช่วยเหลือจากชุมชนฮัคเกอร์", "ต่อรองกับบอทรักษาความปลอดภัย"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "แท็บเล็ตแสดงโครงข่ายไฟเบอร์เรืองแสง",
+                  "prompt": "tablet showing glowing fiber network map cyberpunk ui",
+                  "placeholder": "https://placehold.co/1400x840?text=Network+Scan"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "อินเทอร์เฟซแฮ็กเกอร์แสดงสแกนสัญญาณวิ่งผ่านเส้นสาย",
+                  "prompt": "animated cyber grid scan lines moving on black ui",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-1mb.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "act-ii",
+        "title": "บุกเมนเฟรม",
+        "goal": "แทรกซึมศูนย์ข้อมูลและดึงคีย์ควบคุม",
+        "scenes": [
+          {
+            "id": "server-spires",
+            "title": "ป้อมเซิร์ฟเวอร์",
+            "summary": "ภายในตึกสูงชั้นกลางมีเสาหล่อเย็นเรืองแสงสีฟ้า บอทลาดตระเวนพร้อมปืน EMP",
+            "choices": ["ปีนท่อระบายความร้อน", "จี้บอทเพื่อใช้เป็นโล่", "ปล่อยไวรัสเบี่ยงเบน", "เจรจากับวิศวกรที่เห็นใจ"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "ห้องเซิร์ฟเวอร์สูงมีไฟฟ้าเย็นและละอองหมอก",
+                  "prompt": "tall data center columns blue light mist cyberpunk",
+                  "placeholder": "https://placehold.co/1400x840?text=Server+Spires"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "ช็อตวิดีโอเดินผ่านแถวเซิร์ฟเวอร์ไฟกระพริบ",
+                  "prompt": "gimbal walk through server racks blinking leds",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-5s.mp4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "roof-blade",
+            "title": "ดาดฟ้าซามูไร",
+            "summary": "แก๊งสตรีทซามูไรรับงานคุ้มกันต้องตัดสินใจว่าจะสู้หรือผูกมิตรก่อนดาวเทียมสอดแนมจะล็อกเป้าหมาย",
+            "choices": ["ดวลดาบ", "ซื้อเวลาผ่านเครดิต", "ชวนเข้าร่วมกบฏ", "ใช้สไนเปอร์ปิดภารกิจเงียบๆ"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "ดาดฟ้าเปียกฝนมีนักสู้ถือคาตานะกับเมืองนีออนเบื้องหลัง",
+                  "prompt": "rainy rooftop with katana wielding street samurai neon skyline",
+                  "placeholder": "https://placehold.co/1400x840?text=Rooftop+Duel"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "สโลว์โมชั่นประกายดาบและหยดน้ำบนดาดฟ้า",
+                  "prompt": "slow motion katana clash rain spray rooftop night",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-20s.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "act-iii",
+        "title": "สัญญาณปลดแอก",
+        "goal": "แพร่โค้ดปลดล็อกหรือทำลายคอนทราสต์อัปเดต ก่อนบริษัทจะกวาดล้าง",
+        "scenes": [
+          {
+            "id": "broadcast-heist",
+            "title": "ชิงช่องสัญญาณ",
+            "summary": "ทีมต้องแย่งชิงเสาส่งสัญญาณกลางเมืองเพื่อออกประกาศอิสระให้พลเมือง",
+            "choices": ["ออกอากาศความจริง", "แพร่ไวรัสลวง", "ส่งคำสั่งปิด AI", "ส่งข้อความปริศนาท้าทายอำนาจ"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "เสาสื่อสารสูงกับสายฟ้าและแสงนีออน",
+                  "prompt": "broadcast tower with neon glow and lightning in cyberpunk city",
+                  "placeholder": "https://placehold.co/1400x840?text=Broadcast+Tower"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "เครือข่ายเสาสัญญาณเปล่งประกายพร้อมข้อมูลไหลผ่าน",
+                  "prompt": "animation data streams linking broadcast towers at night",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-30s.mp4"
+                }
+              ]
+            }
+          },
+          {
+            "id": "exit-chase",
+            "title": "หลบหนีผ่านซอย",
+            "summary": "โดรนไล่ล่าและกองกำลัง OmegaDyne ปิดล้อม ทีมต้องหนีผ่านตรอกและทางรถไฟใต้ดิน",
+            "choices": ["กระโดดรถไฟ", "ตัดสัญญาณโดรน", "ใช้พลซุ่มยิงสกัด", "แยกทีมล่อเป้า"],
+            "assets": {
+              "photos": [
+                {
+                  "description": "รถไฟใต้ดินไฟนีออนและรางเปียก",
+                  "prompt": "neon lit subway tunnel with sparks and steam cyberpunk chase",
+                  "placeholder": "https://placehold.co/1400x840?text=Subway+Escape"
+                }
+              ],
+              "videos": [
+                {
+                  "description": "ฟุตเทจแอ็กชันมุมกล้องบนไหล่หนีโดรนในอุโมงค์",
+                  "prompt": "shoulder cam running through subway tunnel pursued by drones",
+                  "placeholder": "https://samplelib.com/lib/preview/mp4/sample-5mb.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
