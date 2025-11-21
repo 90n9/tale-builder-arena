@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Scroll } from "lucide-react";
 
 const Footer = () => {
@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <Link to="/" className="flex items-center gap-2 mb-4">
+            <Link href="/" className="flex items-center gap-2 mb-4">
               <Scroll className="h-5 w-5 text-primary" />
               <span className="font-bold text-foreground">TaleBuilder Arena</span>
             </Link>
@@ -20,22 +20,22 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-4">ลิงก์ด่วน</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   หน้าหลัก
                 </Link>
               </li>
               <li>
-                <Link to="/game" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/game" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   เล่นเกม
                 </Link>
               </li>
               <li>
-                <Link to="/achievements" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/achievements" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   ความสำเร็จ
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   ติดต่อ
                 </Link>
               </li>
@@ -46,12 +46,12 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-4">ข้อมูลทางกฎหมาย</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   นโยบายความเป็นส่วนตัว
                 </Link>
               </li>
               <li>
-                <Link to="/terms-of-use" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/terms-of-use" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   เงื่อนไขการให้บริการ
                 </Link>
               </li>
