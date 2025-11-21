@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
 import { ShieldCheck, Lock, FileText, Database, Globe2 } from "lucide-react";
 
 const PrivacyPolicyPage = () => {
@@ -47,15 +48,14 @@ const PrivacyPolicyPage = () => {
 
       <div className="pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-5xl space-y-12">
-          <header className="text-center space-y-4">
-            <p className="text-sm uppercase tracking-widest text-accent">นโยบายความเป็นส่วนตัว</p>
-            <h1 className="text-5xl font-bold">
-              <span className="bg-gradient-primary bg-clip-text text-transparent">ปกป้องข้อมูลผู้เล่นของคุณ</span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              นโยบายฉบับนี้อธิบายว่า TaleBuilder Arena เก็บ ใช้ และปกป้องข้อมูลอย่างไรเมื่อคุณเล่นหรือมีปฏิสัมพันธ์กับบริการของเรา
-            </p>
-          </header>
+          <div className="mb-6">
+            <PageHeader
+              eyebrow="นโยบายความเป็นส่วนตัว"
+              title="ปกป้องข้อมูลผู้เล่นของคุณ"
+              description="นโยบายฉบับนี้อธิบายว่า TaleBuilder Arena เก็บ ใช้ และปกป้องข้อมูลอย่างไรเมื่อคุณเล่นหรือมีปฏิสัมพันธ์กับบริการของเรา"
+              icon={<ShieldCheck className="h-11 w-11" />}
+            />
+          </div>
 
           <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
             <CardContent className="p-8 space-y-10">

@@ -4,6 +4,17 @@ import { FormEvent } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { PageHeader } from "@/components/PageHeader";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Mail } from "lucide-react";
@@ -19,13 +30,11 @@ const ContactPage = () => {
 
       <div className="pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold mb-4">
-              <span className="bg-gradient-primary bg-clip-text text-transparent">ติดต่อทีมงาน</span>
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              คำถาม ข้อเสนอแนะ หรือรายงานปัญหา — ยินดีรับฟังทุกเรื่องราวจากคุณ
-            </p>
+          <div className="mb-16">
+            <PageHeader
+              title="ติดต่อทีมงาน"
+              description="มีบั๊ก ปัญหาในการเล่น หรืออยากให้ฟีเจอร์ใหม่ ส่งมาหาเราได้ทุกเรื่อง — ยินดีรับฟังเสมอ"
+            />
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -34,57 +43,58 @@ const ContactPage = () => {
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-foreground uppercase tracking-wide">ชื่อของคุณ</label>
-                      <input
+                      <Label className="text-sm font-semibold text-foreground uppercase tracking-wide">ชื่อของคุณ</Label>
+                      <Input
                         type="text"
                         name="name"
                         placeholder="เช่น ผู้กล้าแห่งอาณาจักร"
-                        className="w-full rounded-md border-2 border-border bg-background/60 px-4 py-3 text-foreground focus:border-accent focus:outline-none"
+                        className="h-12 border-2 border-border/70 bg-background/70 backdrop-blur-sm text-base text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-foreground uppercase tracking-wide">อีเมล</label>
-                      <input
+                      <Label className="text-sm font-semibold text-foreground uppercase tracking-wide">อีเมล</Label>
+                      <Input
                         type="email"
                         name="email"
                         placeholder="you@example.com"
-                        className="w-full rounded-md border-2 border-border bg-background/60 px-4 py-3 text-foreground focus:border-accent focus:outline-none"
+                        className="h-12 border-2 border-border/70 bg-background/70 backdrop-blur-sm text-base text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
                         required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground uppercase tracking-wide">ประเภทคำร้อง</label>
-                    <select
-                      name="topic"
-                      className="w-full rounded-md border-2 border-border bg-background/60 px-4 py-3 text-foreground focus:border-accent focus:outline-none"
-                      defaultValue="feedback"
-                    >
-                      <option value="feedback">ข้อเสนอแนะ / ฟีดแบ็ก</option>
-                      <option value="issue">รายงานปัญหา / บั๊ก</option>
-                      <option value="other">อื่นๆ</option>
-                    </select>
+                    <Label className="text-sm font-semibold text-foreground uppercase tracking-wide">ประเภทคำร้อง</Label>
+                    <Select defaultValue="feedback">
+                      <SelectTrigger className="h-12 border-2 border-border/70 bg-background/70 backdrop-blur-sm text-base text-foreground">
+                        <SelectValue placeholder="เลือกประเภทคำร้อง" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="feedback">ข้อเสนอแนะ / ฟีดแบ็ก</SelectItem>
+                        <SelectItem value="issue">รายงานปัญหา / บั๊ก</SelectItem>
+                        <SelectItem value="other">อื่นๆ</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground uppercase tracking-wide">เรื่อง</label>
-                    <input
+                    <Label className="text-sm font-semibold text-foreground uppercase tracking-wide">เรื่อง</Label>
+                    <Input
                       type="text"
                       name="subject"
                       placeholder="เรื่องที่อยากให้เราช่วยเหลือ"
-                      className="w-full rounded-md border-2 border-border bg-background/60 px-4 py-3 text-foreground focus:border-accent focus:outline-none"
+                      className="h-12 border-2 border-border/70 bg-background/70 backdrop-blur-sm text-base text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground uppercase tracking-wide">รายละเอียด</label>
-                    <textarea
+                    <Label className="text-sm font-semibold text-foreground uppercase tracking-wide">รายละเอียด</Label>
+                    <Textarea
                       name="message"
                       placeholder="เล่าให้เราฟังว่าคุณต้องการอะไรหรือพบปัญหาใด"
-                      className="w-full rounded-md border-2 border-border bg-background/60 px-4 py-3 text-foreground focus:border-accent focus:outline-none min-h-[150px]"
+                      className="min-h-[150px] border-2 border-border/70 bg-background/70 backdrop-blur-sm text-base text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
                       required
                     />
                   </div>
@@ -127,6 +137,9 @@ const ContactPage = () => {
                 <Button asChild variant="outline" className="border-2 border-accent/50 hover:bg-accent/10">
                   <Link href="/game">ไปที่เกม</Link>
                 </Button>
+                <p className="text-xs text-muted-foreground mt-3">
+                  อีเมลนี้รองรับทั้งการแจ้งปัญหาและฟีดแบ็ก ช่วยบอกบริบทให้ละเอียดที่สุด
+                </p>
               </div>
             </div>
           </div>

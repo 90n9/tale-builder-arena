@@ -13,7 +13,7 @@ Thai-language AI-driven text RPG rebuilt on Next.js for better SEO, routing, and
 ## What’s Inside
 - Next.js app router pages in `src/app/`:
   - `/` hero/feature landing
-  - `/game` multi-step character setup + mock turn-based scene that calls `/api/story`
+- `/game` multi-step character setup; `/game/play` uses the saved selection in a mock turn-based scene that calls `/api/story`
   - `/achievements`, `/about`, `/contact`, `/privacy-policy`, `/terms-of-use`, and a custom `not-found` view
 - API: `POST /api/story` returns a mock narration update, follow-up choices, and an optional achievement seed for the current genre.
 - Achievements data lives in `src/data/achievements.ts` and is shared between the UI and API.

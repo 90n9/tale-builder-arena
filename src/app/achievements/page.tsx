@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Trophy, Lock, Star } from "lucide-react";
+import { PageHeader } from "@/components/PageHeader";
 import { ALL_ACHIEVEMENTS, type Achievement } from "@/data/achievements";
 
 const AchievementsPage = () => {
@@ -62,19 +63,14 @@ const AchievementsPage = () => {
       <div className="pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-7xl">
           {/* Header */}
-          <div className="text-center mb-12">
-            <div className="flex justify-center mb-6">
-              <Trophy className="h-16 w-16 text-accent" />
-            </div>
-            <h1 className="text-5xl font-bold text-foreground mb-4 uppercase tracking-wide">
-              ความสำเร็จ
-            </h1>
-            <p className="text-muted-foreground text-xl mb-6">
-              ปลดล็อกถ้วยรางวัลจากการพิชิตเส้นทางการผจญภัยที่แตกต่างกัน
-            </p>
-            
-            {/* Progress Summary */}
-            <Card className="max-w-xl mx-auto ornate-corners border-2 border-accent/50 bg-gradient-card shadow-glow-cyan">
+          <div className="mb-12">
+            <PageHeader
+              title="ความสำเร็จ"
+              description="ปลดล็อกถ้วยรางวัลจากการพิชิตเส้นทางการผจญภัยที่แตกต่างกัน"
+              icon={<Trophy className="h-11 w-11" />}
+            />
+
+            <Card className="max-w-xl mx-auto ornate-corners border-2 border-accent/50 bg-gradient-card shadow-glow-cyan mt-10">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-lg font-semibold text-foreground">ความคืบหน้าโดยรวม</span>

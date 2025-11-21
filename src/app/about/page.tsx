@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { PageHeader } from "@/components/PageHeader";
 import { Cpu, Sparkles, Book, Heart } from "lucide-react";
 
 const AboutPage = () => {
@@ -19,16 +20,11 @@ const AboutPage = () => {
       
       <div className="pt-32 pb-20 px-4">
         <div className="container mx-auto max-w-4xl">
-          {/* Hero Section */}
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold mb-6">
-              <span className="bg-gradient-primary bg-clip-text text-transparent">
-                เกี่ยวกับ TaleBuilder Arena
-              </span>
-            </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              เกมเล่าเรื่องเชิงทดลองที่ผสานเวทมนตร์ของเกมกระดาน RPG เข้ากับพลังของปัญญาประดิษฐ์
-            </p>
+          <div className="mb-16">
+            <PageHeader
+              title="เกี่ยวกับ TaleBuilder Arena"
+              description="เกมเล่าเรื่องเชิงทดลองที่ผสานเวทมนตร์ของเกมกระดาน RPG เข้ากับพลังของปัญญาประดิษฐ์"
+            />
           </div>
 
           {/* Main Content */}

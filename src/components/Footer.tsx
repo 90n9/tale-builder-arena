@@ -35,8 +35,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  เกี่ยวกับเรา
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  ติดต่อ
+                  ติดต่อเรา
                 </Link>
               </li>
             </ul>

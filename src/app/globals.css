@@ -67,10 +67,16 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background-image: 
       radial-gradient(circle at 20% 20%, hsl(185 60% 30% / 0.15) 0%, transparent 40%),
       radial-gradient(circle at 80% 60%, hsl(25 70% 40% / 0.1) 0%, transparent 40%),
       radial-gradient(circle at 50% 100%, hsl(220 40% 20% / 0.2) 0%, transparent 50%);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), var(--font-body), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 600;
   }
   
   /* Ornate corner decorations */

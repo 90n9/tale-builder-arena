@@ -1,20 +1,56 @@
 import Link from "next/link";
-import { Compass } from "lucide-react";
+import { Compass, Home, Play } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center p-8 rounded-lg bg-card border border-border shadow-card space-y-4">
-        <div className="flex justify-center">
-          <Compass className="h-12 w-12 text-accent" />
+    <div className="min-h-screen bg-background relative">
+      <Navbar />
+      <div className="absolute inset-0 bg-gradient-hero opacity-40 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-overlay pointer-events-none" />
+
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 pt-20 pb-16">
+        <div className="w-full max-w-3xl">
+          <Card className="ornate-corners border-2 border-border/60 bg-gradient-card backdrop-blur-sm shadow-epic">
+            <CardContent className="p-10 text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="p-4 rounded-full bg-accent/15 border border-accent/30">
+                  <Compass className="h-12 w-12 text-accent" />
+                </div>
+              </div>
+              <h1 className="text-5xl font-bold text-foreground uppercase tracking-wide">ไม่พบหน้านี้</h1>
+              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                ดูเหมือนว่าคุณเดินออกนอกเส้นทาง กลับสู่ด่านหลักหรือเริ่มการผจญภัยใหม่เพื่อเดินหน้าต่อ
+              </p>
+
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
+                >
+                  <Link href="/">
+                    <Home className="h-5 w-5 mr-2" />
+                    กลับหน้าหลัก
+                  </Link>
+                </Button>
+                <Button className="bg-gradient-primary hover:shadow-glow-orange">
+                  <Link href="/game" className="flex items-center">
+                    <Play className="h-5 w-5 mr-2" />
+                    เริ่มการผจญภัย
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-        <h1 className="text-4xl font-bold text-foreground">ไม่พบหน้านี้</h1>
-        <p className="text-muted-foreground">
-          ดูเหมือนว่าคุณเดินออกนอกเส้นทาง ลองกลับไปยังด่านหลักของ TaleBuilder Arena
-        </p>
-        <Link href="/" className="text-accent underline underline-offset-4 hover:text-accent/80">
-          กลับหน้าหลัก
-        </Link>
+      </div>
+
+      <div className="relative z-10">
+        <Footer />
       </div>
     </div>
   );
