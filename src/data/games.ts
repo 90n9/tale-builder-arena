@@ -2,7 +2,7 @@ import { type LocalizedText } from "@/lib/i18n";
 
 export type GameStory = {
   slug: string;
-  title: string;
+  title: LocalizedText;
   genre: string;
   tagline: LocalizedText;
   description: LocalizedText;
@@ -13,8 +13,11 @@ export type GameStory = {
 
 export const GAME_STORIES: GameStory[] = [
   {
-    slug: "ancient-dungeon",
-    title: "Echoes of the Ancient Dungeon",
+    slug: "crypt_of_the_shattered_star",
+    title: {
+      en: "Crypt of the Shattered Star",
+      th: "สุสานแห่งดวงดาวแตกสลาย"
+    },
     genre: "High Fantasy",
     tagline: {
       th: "สำรวจดันเจี้ยนเรืองรูนที่จารึกคำทำนายจากอดีตกาล",

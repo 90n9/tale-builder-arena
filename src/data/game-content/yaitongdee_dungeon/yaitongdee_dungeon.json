@@ -1,0 +1,1016 @@
+{
+  "game_id": "yaitongdee_dungeon",
+  "version": "1.1.0",
+  "metadata": {
+    "title": {
+      "en": "Yai Thongdee's Dungeon Shop",
+      "th": "ดันเจี้ยนร้านชำยายทองดี"
+    },
+    "subtitle": {
+      "en": "A chaotic change-chasing quest under a tiny Thai grocery",
+      "th": "ภารกิจเก็บเหรียญทอนสุดปั่นใต้ร้านโชห่วย"
+    },
+    "genre": "comedy_fantasy",
+    "description": {
+      "en": "Your mom just sent you to buy some food at the corner shop, but you end up diving into a secret dungeon under Yai Thongdee’s grocery to chase a fallen coin. Choose wisely, or you might get hired as a permanent dungeon shop staff instead!",
+      "th": "คุณแค่โดนแม่ใช้ให้ไปซื้อของที่ร้านชำ แต่ดันต้องลงดันเจี้ยนใต้ร้านยายทองดีเพื่อตามหาเหรียญที่หล่นลงรูปริศนา เลือกทางให้ดี ไม่งั้นอาจได้เป็นพนักงานร้านประจำดันเจี้ยนแทน!"
+    },
+    "cover_image": "/assets/yaitongdee_dungeon/cover.jpg",
+    "estimated_play_time": "10-20 minutes",
+    "author": "AI Generated",
+    "supported_languages": ["en", "th"]
+  },
+  "config": {
+    "starting_attributes": {
+      "points_to_distribute": 5,
+      "base_values": {
+        "str": 1,
+        "int": 1,
+        "agi": 1,
+        "cha": 1,
+        "luk": 0
+      }
+    },
+    "asset_paths": {
+      "images": "/assets/yaitongdee_dungeon/images/",
+      "videos": "/assets/yaitongdee_dungeon/videos/"
+    },
+    "ui": {
+      "theme_color": "#f97316",
+      "text_speed": "instant"
+    }
+  },
+  "races": [
+    {
+      "id": "kid",
+      "name": {
+        "en": "Neighborhood Kid",
+        "th": "เด็กบ้าน ๆ"
+      },
+      "attribute_bonus": { "agi": 1 },
+      "description": {
+        "en": "A village kid who runs fast and is great at dodging mom’s slipper.",
+        "th": "เด็กแถวหมู่บ้าน วิ่งเร็ว หนีแม่ตีเก่ง"
+      }
+    },
+    {
+      "id": "otaku",
+      "name": {
+        "en": "Gamer Kid",
+        "th": "เด็กติดเกม"
+      },
+      "attribute_bonus": { "int": 1, "luk": 1 },
+      "description": {
+        "en": "Spends half the day on games, but solves problems surprisingly fast.",
+        "th": "ใช้เวลาเกินครึ่งวันไปกับเกม แต่คิดแก้ปัญหาไว"
+      }
+    },
+    {
+      "id": "sporty",
+      "name": {
+        "en": "Sporty Kid",
+        "th": "สายกีฬา"
+      },
+      "attribute_bonus": { "str": 1, "agi": 1 },
+      "description": {
+        "en": "Strong and agile, but doesn’t always think things through.",
+        "th": "แข็งแรง คล่องตัว แต่บางทีไม่คิดเยอะ"
+      }
+    }
+  ],
+  "classes": [
+    {
+      "id": "warrior",
+      "name": {
+        "en": "Brawler",
+        "th": "สายบู๊"
+      },
+      "description": {
+        "en": "Charges in first and thinks later.",
+        "th": "เน้นเข้าไปลุยก่อนคิดทีหลัง"
+      },
+      "starting_bonus": { "str": 2 }
+    },
+    {
+      "id": "mage",
+      "name": {
+        "en": "Nerd",
+        "th": "สายเนิร์ด"
+      },
+      "description": {
+        "en": "Loves reading, thinking, and analyzing everything.",
+        "th": "ชอบอ่าน ชอบคิด วิเคราะห์เก่ง"
+      },
+      "starting_bonus": { "int": 2 }
+    },
+    {
+      "id": "joker",
+      "name": {
+        "en": "Joker",
+        "th": "สายฮา"
+      },
+      "description": {
+        "en": "Cracks jokes, talks smoothly, and people tend to like them.",
+        "th": "ยิงมุกเก่ง คุยเก่ง คนชอบ"
+      },
+      "starting_bonus": { "cha": 2 }
+    }
+  ],
+  "attributes": [
+    {
+      "id": "str",
+      "name": {
+        "en": "Strength",
+        "th": "พละกำลัง"
+      }
+    },
+    {
+      "id": "int",
+      "name": {
+        "en": "Intelligence",
+        "th": "สติปัญญา"
+      }
+    },
+    {
+      "id": "agi",
+      "name": {
+        "en": "Agility",
+        "th": "ความว่องไว"
+      }
+    },
+    {
+      "id": "cha",
+      "name": {
+        "en": "Charisma",
+        "th": "เสน่ห์"
+      }
+    },
+    {
+      "id": "luk",
+      "name": {
+        "en": "Luck",
+        "th": "โชค"
+      }
+    }
+  ],
+  "backgrounds": [
+    {
+      "id": "grandchild",
+      "name": {
+        "en": "Regular Grandchild",
+        "th": "หลานขาประจำ"
+      },
+      "description": {
+        "en": "Basically grew up on snacks from Yai Thongdee’s front shelf.",
+        "th": "โตมากับขนมหน้าร้านยายทองดี"
+      },
+      "bonus_attributes": { "cha": 1 }
+    },
+    {
+      "id": "neighbour",
+      "name": {
+        "en": "Next-door Kid",
+        "th": "เด็กข้างบ้าน"
+      },
+      "description": {
+        "en": "Comes to buy stuff almost every day and knows all the shop’s hidden corners.",
+        "th": "เดินมาซื้อของแทบทุกวัน รู้มุมลับของร้านดี"
+      },
+      "bonus_attributes": { "agi": 1 }
+    },
+    {
+      "id": "delivery",
+      "name": {
+        "en": "Delivery Kid",
+        "th": "เด็กส่งของ"
+      },
+      "description": {
+        "en": "Runs deliveries all over the village and knows every rumor in every alley.",
+        "th": "วิ่งส่งของทั่วหมู่บ้าน รู้ข่าวลือทุกซอกซอย"
+      },
+      "bonus_attributes": { "luk": 1 }
+    }
+  ],
+  "global_flags": {
+    "enable_attribute_rewards": true,
+    "enable_fail_scenes": true
+  },
+  "scenes": {
+    "start": {
+      "scene_id": "start",
+      "type": "normal",
+      "title": {
+        "en": "Corner Grocery Shop",
+        "th": "ร้านชำหน้าปากซอย"
+      },
+      "description": {
+        "en": "Your mom hands you a banknote and snaps, “Go buy salted fish and fish sauce for me. Don’t forget the change!” You walk to Yai Thongdee’s shop, greeted by the smell of instant noodles and canned fish. As you hand over the money, your change suddenly rolls into a strange little hole in the floor.",
+        "th": "แม่ยื่นธนบัตรให้แล้วสั่งเสียงดุว่า “ไปซื้อปลาเค็มกับน้ำปลาให้แม่หน่อย อย่าลืมเหรียญทอนนะ!” คุณเดินมาที่ร้านชำยายทองดี กลิ่นบะหมี่กึ่งสำเร็จรูปกับปลากระป๋องลอยฟุ้งไปทั่วร้าน ระหว่างส่งเงินให้ยาย เหรียญทอนดันกลิ้งตกลงรูเล็ก ๆ ที่พื้นหน้าตาไม่ธรรมดา"
+      },
+      "image": "scene_start.jpg",
+      "image_prompt": "small Thai convenience shop interior, shelves with snacks and canned food, coin falling into a mysterious hole in the wooden floor",
+      "choices": [
+        {
+          "text": {
+            "en": "Be brave for the coin and jump in after it.",
+            "th": "ทำใจดีสู้เหรียญ กระโดดลงรูไปตามหา"
+          },
+          "next": "scene_1"
+        },
+        {
+          "text": {
+            "en": "Go home and tell mom the coin was lost to fate.",
+            "th": "บอกแม่ว่าเหรียญหายไปกับโชคชะตา กลับบ้านเลย"
+          },
+          "next": "ending_1"
+        }
+      ]
+    },
+    "scene_1": {
+      "scene_id": "scene_1",
+      "type": "normal",
+      "title": {
+        "en": "Stairs to the Shop Dungeon",
+        "th": "บันไดลงดันเจี้ยนใต้ร้าน"
+      },
+      "description": {
+        "en": "You slide down some old wooden chute and land with a thud on the basement floor. Flickering neon lights buzz overhead. A handwritten sign reads, “Private dungeon. Don’t climb back up by yourself – Yai Thongdee.” In front of you is an open hall with three paths, and a jingling sound coming from the fish sauce crate area.",
+        "th": "คุณไถลลงไปตามรางไม้เก่า ๆ แล้วลงจอดโป๊กบนพื้นห้องใต้ดิน ไฟนีออนกระพริบแว่บ ๆ มีป้ายเขียนด้วยลายมือว่า “ดันเจี้ยนส่วนตัว ห้ามปีนกลับขึ้นไปเอง – ยายทองดี” ด้านหน้าเป็นโถงโล่ง มีทางแยกสามทาง กับเสียงอะไรสั่นกรุ๊งกริ๊งจากด้านลังน้ำปลา"
+      },
+      "image": "scene_1.jpg",
+      "image_prompt": "underground room under a small shop, flickering neon lights, handwritten sign in Thai, three corridors leading into a dungeon",
+      "choices": [
+        {
+          "text": {
+            "en": "Sneak toward the fish sauce crates.",
+            "th": "แอบไปทางกองลังน้ำปลา"
+          },
+          "next": "scene_2"
+        },
+        {
+          "text": {
+            "en": "Walk toward the old fridge that looks like it’s moving.",
+            "th": "เดินไปทางตู้เย็นเก่าที่เหมือนจะขยับเองได้"
+          },
+          "next": "scene_3"
+        },
+        {
+          "text": {
+            "en": "Talk to the weird lamp post that seems to have a face.",
+            "th": "ลองคุยกับเสาไฟที่เหมือนมีหน้าแปลก ๆ โผล่ออกมา"
+          },
+          "next": "scene_4"
+        }
+      ]
+    },
+    "scene_2": {
+      "scene_id": "scene_2",
+      "type": "normal",
+      "title": {
+        "en": "Canned Fish Crate Trap",
+        "th": "กับดักลังปลากระป๋อง"
+      },
+      "description": {
+        "en": "You squeeze into a narrow path between canned fish crates. Suddenly, the floor sinks and you hear clanking mechanisms above. Crates of canned fish start sliding down from overhead like a waterfall of canned doom!",
+        "th": "คุณเดินแทรกเข้าไปในทางแคบ ๆ ระหว่างลังปลากระป๋อง อยู่ ๆ พื้นก็ยวบลง เสียงกลไกดังแกร๊ก ๆ เหนือหัว ลังปลากระป๋องจำนวนหนึ่งเริ่มไหลลงมาจากรางด้านบนเหมือนน้ำตกปลากระป๋อง!"
+      },
+      "image": "scene_2.jpg",
+      "image_prompt": "narrow dungeon corridor made of stacked canned fish boxes, some boxes sliding down from above like a trap",
+      "choices": [
+        {
+          "text": {
+            "en": "Sprint and dodge like a kid escaping mom’s slipper.",
+            "th": "วิ่งสปรินต์หลบลังด้วยความไวระดับเด็กหนีแม่ตี"
+          },
+          "next": "scene_5",
+          "requirements": {
+            "min_attributes": { "agi": 3 }
+          },
+          "on_fail_next": "scene_6"
+        },
+        {
+          "text": {
+            "en": "Use all your strength to push the crates aside.",
+            "th": "ใช้แรงทั้งหมดดันลังให้เบนทางไปด้านข้าง"
+          },
+          "next": "scene_7",
+          "requirements": {
+            "min_attributes": { "str": 3 }
+          },
+          "on_fail_next": "scene_6"
+        },
+        {
+          "text": {
+            "en": "Retreat to the main hall and rethink your life choices.",
+            "th": "ถอยกลับไปตั้งหลักที่โถงใหญ่ดีกว่า"
+          },
+          "next": "scene_1"
+        }
+      ]
+    },
+    "scene_3": {
+      "scene_id": "scene_3",
+      "type": "normal",
+      "title": {
+        "en": "Talking Fridge",
+        "th": "ตู้เย็นพูดได้"
+      },
+      "description": {
+        "en": "Yai Thongdee’s old fridge is shaking in the middle of the room. As you get close, lights flicker and the door opens by itself. A raspy voice asks, “Hungry, kid? There’s good stuff in here… but bad luck might send you straight to the toilet.”",
+        "th": "ตู้เย็นเก่าของยายทองดีสั่นฮือ ๆ อยู่กลางห้อง พอคุณเข้าใกล้ก็มีไฟวิบวับแล้วประตูตู้เย็นก็เปิดเอง เสียงแหบ ๆ ดังออกมาว่า “หิวไหมหนู ในนี้มีของดี แต่ดวงไม่ดีอาจท้องเสียได้เด้อ”"
+      },
+      "image": "scene_3.jpg",
+      "image_prompt": "old dusty refrigerator in an underground room, door slightly open, faint spooky glow inside",
+      "choices": [
+        {
+          "text": {
+            "en": "Dig around for something to eat and hope for a weird buff.",
+            "th": "ล้วงหาอะไรกินในตู้เย็น เผื่อได้บัฟพลังแปลก ๆ"
+          },
+          "next": "scene_8",
+          "requirements": {
+            "min_attributes": { "luk": 1 }
+          },
+          "on_fail_next": "scene_9"
+        },
+        {
+          "text": {
+            "en": "Ask the fridge if it knows a shortcut deeper into the dungeon.",
+            "th": "ถามตู้เย็นว่ารู้ทางลัดหาดันเจี้ยนชั้นในไหม"
+          },
+          "next": "scene_10"
+        },
+        {
+          "text": {
+            "en": "You’re creeped out. Go back to the main hall.",
+            "th": "เริ่มกลัว กลับไปโถงใหญ่ดีกว่า"
+          },
+          "next": "scene_1"
+        }
+      ]
+    },
+    "scene_4": {
+      "scene_id": "scene_4",
+      "type": "normal",
+      "title": {
+        "en": "Spirit of the Lamp Post",
+        "th": "เสาไฟมีวิญญาณ"
+      },
+      "description": {
+        "en": "An old lamp post in the corner suddenly sprouts the face of an elderly spirit. “Oh? Grandchild, what are you doing down in Yai’s dungeon?” The shop’s guardian spirit floats with hands on hips, looking both amused and mischievous.",
+        "th": "เสาไฟเก่า ๆ ด้านมุมห้องอยู่ ๆ ก็มีหน้าคนแก่ลอยโผล่ขึ้นมา “อ้าว หลาน ลงมาทำไงในดันเจี้ยนยายล่ะนี่” วิญญาณเจ้าที่ข้างร้านยืนเท้าสะเอวลอย ๆ อยู่ตรงหน้า สีหน้าดูทั้งเอ็นดูและอยากแกล้ง"
+      },
+      "image": "scene_4.jpg",
+      "image_prompt": "humorous ghostly face appearing on an old electric pole in a dim underground room, playful expression",
+      "choices": [
+        {
+          "text": {
+            "en": "Give a proper wai and politely ask for a blessing.",
+            "th": "ยกมือไหว้แล้วขอพรแบบสุภาพเรียบร้อย"
+          },
+          "next": "scene_11",
+          "requirements": {
+            "min_attributes": { "cha": 3 }
+          },
+          "on_fail_next": "scene_6"
+        },
+        {
+          "text": {
+            "en": "Crack some jokes and hope the spirit likes your vibe.",
+            "th": "ยิงมุกใส่วิญญาณ หวังให้เขาถูกใจแล้วช่วยบอกทาง"
+          },
+          "next": "scene_11",
+          "reward_attributes": { "cha": 1 }
+        },
+        {
+          "text": {
+            "en": "Pretend you don’t see anything and sneak toward the canned fish.",
+            "th": "ทำเป็นไม่เห็น ลัดไปทางลังปลากระป๋องแทน"
+          },
+          "next": "scene_2"
+        }
+      ]
+    },
+    "scene_5": {
+      "scene_id": "scene_5",
+      "type": "normal",
+      "title": {
+        "en": "Barely Dodged",
+        "th": "หลบได้แบบเสียว ๆ"
+      },
+      "description": {
+        "en": "You dash through the falling crates by a hair’s breadth, hearing them crash behind you. You’re safe… but drenched in sweat.",
+        "th": "คุณพุ่งตัวผ่านสายปลากระป๋องที่ร่วงหล่นอย่างหวุดหวิด ได้ยินเสียงดังตุ้บ ๆ ตามหลังมารัว ๆ แต่ตัวเองรอดมาได้แบบเหงื่อท่วมหลัง"
+      },
+      "image": "scene_5.jpg",
+      "image_prompt": "adventurous kid dodging falling canned goods in a funny underground corridor",
+      "choices": [
+        {
+          "text": {
+            "en": "Wipe your sweat and move on.",
+            "th": "เช็ดเหงื่อแล้วเดินหน้าต่อ"
+          },
+          "next": "scene_12",
+          "reward_attributes": { "agi": 1 }
+        }
+      ]
+    },
+    "scene_6": {
+      "scene_id": "scene_6",
+      "type": "normal",
+      "title": {
+        "en": "Crushed by Canned Fish",
+        "th": "โดนปลากระป๋องถล่ม"
+      },
+      "description": {
+        "en": "Crates slam into your shoulders and back in a full combo. You’re dizzy but still able to walk. Yai’s voice echoes in your head, “My shop stock is expensive, don’t dent it too much!”",
+        "th": "ลังปลากระป๋องกระแทกหัวไหล่และหลังคุณแบบชุดใหญ่ รู้สึกมึน ๆ หน่อย ๆ แต่ก็ยังพอเดินไหว เสียงยายทองดีดังอยู่ในหัว “ของในร้านยายแพงนะ อย่าทำบุบมาก”"
+      },
+      "image": "scene_6.jpg",
+      "image_prompt": "kid buried under a pile of canned food, cartoonish and funny, in a dungeon corridor",
+      "choices": [
+        {
+          "text": {
+            "en": "Slowly crawl out of the fish pile and keep going.",
+            "th": "ค่อย ๆ โผล่ออกจากกองปลา แล้วเดินต่อไป"
+          },
+          "next": "scene_12",
+          "reward_attributes": { "agi": -1 }
+        },
+        {
+          "text": {
+            "en": "This is too much. Head back toward the stairs.",
+            "th": "เริ่มรู้สึกไม่คุ้ม จะถอยกลับไปทางบันได"
+          },
+          "next": "ending_2"
+        }
+      ]
+    },
+    "scene_7": {
+      "scene_id": "scene_7",
+      "type": "normal",
+      "title": {
+        "en": "Kid Atlas (of Canned Fish)",
+        "th": "เด็กแบกโลก (ปลากระป๋อง)"
+      },
+      "description": {
+        "en": "You use all your strength to push the crates aside. Your muscles tremble a little, but the path is clear and you look pretty cool in your head.",
+        "th": "คุณใช้แรงทั้งหมดดันลังปลากระป๋องให้เบนออกด้านข้าง กล้ามสั่นนิด ๆ แต่ก็ช่วยให้ทางโล่งได้แบบเท่ ๆ อยู่เหมือนกัน"
+      },
+      "image": "scene_7.jpg",
+      "image_prompt": "kid pushing heavy boxes of canned food to the side in a narrow dungeon hall, heroic but comedic",
+      "choices": [
+        {
+          "text": {
+            "en": "Strike a cool pose in your imagination and move on.",
+            "th": "แอบโพสต์ท่าหล่อในหัวหนึ่งที แล้วไปต่อ"
+          },
+          "next": "scene_12",
+          "reward_attributes": { "str": 1 }
+        }
+      ]
+    },
+    "scene_8": {
+      "scene_id": "scene_8",
+      "type": "normal",
+      "title": {
+        "en": "Secret Snack in the Fridge",
+        "th": "ขนมลับในตู้เย็น"
+      },
+      "description": {
+        "en": "You rummage around and find something wrapped in a plastic bag. One bite in, and it’s weirdly delicious. You feel somehow luckier.",
+        "th": "คุณควานมือไปในตู้เย็น เจออะไรบางอย่างห่อด้วยถุงพลาสติก พอกัดเข้าไป ปรากฏว่ามันอร่อยอย่างประหลาด รู้สึกเหมือนดวงดีขึ้นเฉย"
+      },
+      "image": "scene_8.jpg",
+      "image_prompt": "kid eating mysterious snack from an old glowing fridge, feeling lucky and amused",
+      "choices": [
+        {
+          "text": {
+            "en": "Keep the wrapper as a memento and move on.",
+            "th": "เก็บซองไว้เป็นที่ระลึก แล้วเดินต่อ"
+          },
+          "next": "scene_12",
+          "reward_attributes": { "luk": 1 }
+        }
+      ]
+    },
+    "scene_9": {
+      "scene_id": "scene_9",
+      "type": "normal",
+      "title": {
+        "en": "Stomach Chaos",
+        "th": "ท้องไส้ปั่นป่วน"
+      },
+      "description": {
+        "en": "You grab something random and eat it. As you finish chewing, the fridge giggles, “That’s from a previous lifetime.” Your stomach starts to rumble ominously.",
+        "th": "คุณคว้าอะไรสักอย่างจากตู้เย็นมากิน พอเคี้ยวเสร็จตู้เย็นก็หัวเราะคิกคัก “นั่นของเมื่อชาติที่แล้วเลยนะ” ท้องคุณเริ่มรู้สึกโครกครากอย่างน่ากังวล"
+      },
+      "image": "scene_9.jpg",
+      "image_prompt": "kid clutching stomach in front of an old laughing refrigerator, comedic expression",
+      "choices": [
+        {
+          "text": {
+            "en": "Endure it and keep walking, hunched over.",
+            "th": "ทนหน่อย เดี๋ยวก็คงหาย เดินต่อไปแบบตัวงอ"
+          },
+          "next": "scene_12",
+          "reward_attributes": { "luk": -1 }
+        }
+      ]
+    },
+    "scene_10": {
+      "scene_id": "scene_10",
+      "type": "normal",
+      "title": {
+        "en": "Fridge Shortcut",
+        "th": "ทางลัดจากตู้เย็น"
+      },
+      "description": {
+        "en": "The fridge sighs and says, “Fine, fine. You look like you’re struggling… and you’re a loyal customer. I’ll show you a shortcut.” The floor under the fridge slides open, revealing a small staircase to the lowest level.",
+        "th": "ตู้เย็นถอนหายใจหนึ่งทีแล้วพูดว่า “ก็ได้ ๆ เห็นหน้าเหมือนจะลำบาก แถมยังมาซื้อที่ร้านบ่อย เดี๋ยวจะบอกทางลัดให้” พื้นใต้ตู้เย็นเลื่อนเปิดเผยบันไดเล็ก ๆ ลงไปชั้นล่างสุด"
+      },
+      "image": "scene_10.jpg",
+      "image_prompt": "old fridge sliding aside to reveal a secret staircase going deeper underground, humorous fantasy",
+      "choices": [
+        {
+          "text": {
+            "en": "Head down the shortcut without overthinking it.",
+            "th": "ลงบันไดทางลัดไปแบบไม่คิดมาก"
+          },
+          "next": "scene_13"
+        }
+      ]
+    },
+    "scene_11": {
+      "scene_id": "scene_11",
+      "type": "normal",
+      "title": {
+        "en": "Blessing from the Shop Spirit",
+        "th": "พรจากเจ้าที่ข้างร้าน"
+      },
+      "description": {
+        "en": "The guardian spirit chuckles, “Cheeky, but you’ve at least got manners.” He hands you a small glowing charm. “This will reduce bad luck a bit. Use it well.” You feel slightly more charming already.",
+        "th": "วิญญาณเจ้าที่หัวเราะหึ ๆ “ปากดีใช้ได้ หรืออย่างน้อยก็ยังมีมารยาทอยู่บ้าง” เขายื่นยันต์แผ่นเล็ก ๆ ให้ “อันนี้กันซวยระดับนึง ใช้ดี ๆ ละ” คุณรู้สึกว่าตัวเองดูมีเสน่ห์ขึ้นนิดหน่อย"
+      },
+      "image": "scene_11.jpg",
+      "image_prompt": "friendly Thai household spirit handing a glowing paper charm to a kid in an underground room",
+      "choices": [
+        {
+          "text": {
+            "en": "Take the charm and crawl through the secret vent the spirit points at.",
+            "th": "รับยันต์แล้วมุดไปทางช่องลมลับที่เจ้าที่ชี้ให้"
+          },
+          "next": "scene_13",
+          "reward_attributes": { "cha": 1, "luk": 1 }
+        }
+      ]
+    },
+    "scene_12": {
+      "scene_id": "scene_12",
+      "type": "normal",
+      "title": {
+        "en": "Three-Door Hall",
+        "th": "โถงสามประตู"
+      },
+      "description": {
+        "en": "You reach a wide central hall with three doors. From the first, you hear horribly off-key karaoke. The second door has a wet squelching sound behind it. The third door has a sign that reads “Control Room (No Kids Allowed)”.",
+        "th": "คุณมาถึงโถงกว้างกลางดันเจี้ยน มีประตูสามบานเรียงกัน บานแรกมีเสียงร้องคาราโอเกะเพี้ยน ๆ เล็ดลอดออกมา บานที่สองมีเสียงแวะ ๆ เหมือนอะไรหนึบ ๆ กระดึ้บอยู่ บานที่สามมีป้ายเขียนว่า “ไปห้องควบคุม (ห้ามเด็กเข้า)”"
+      },
+      "image": "scene_12.jpg",
+      "image_prompt": "dungeon hub room with three doors, one glowing with karaoke lights, one slimy, one with a handwritten 'control room' sign in Thai",
+      "choices": [
+        {
+          "text": {
+            "en": "Open the karaoke door and see what’s going on.",
+            "th": "เปิดประตูเสียงคาราโอเกะไปดูให้รู้กันไป"
+          },
+          "next": "scene_14"
+        },
+        {
+          "text": {
+            "en": "Check the door with the squishy sound and sour smell.",
+            "th": "ลองประตูที่มีเสียงแวะ ๆ และกลิ่นเปรี้ยว ๆ"
+          },
+          "next": "scene_15"
+        },
+        {
+          "text": {
+            "en": "Ignore the warning sign and go straight to the control room.",
+            "th": "ไม่สนใจ ป้ายห้ามคือป้ายเชิญ เปิดไปห้องควบคุมเลย"
+          },
+          "next": "scene_13"
+        }
+      ]
+    },
+    "scene_13": {
+      "scene_id": "scene_13",
+      "type": "normal",
+      "title": {
+        "en": "Yai Thongdee’s Dungeon Control Room",
+        "th": "ห้องควบคุมดันเจี้ยนยายทองดี"
+      },
+      "description": {
+        "en": "You arrive in a room full of old TV screens, CCTV monitors, and colorful levers. Sticky notes on the wall say: “Red lever = snack discount. Green lever = change dungeon layout. Gold lever = DO NOT TOUCH.”",
+        "th": "คุณโผล่มาในห้องที่เต็มไปด้วยจอทีวีเก่า กล้องวงจรปิด และคันโยกสีสด ๆ หลายอัน มีกระดาษโน้ตแปะว่า “คันโยกสีแดง = ลดราคาขนม คันโยกสีเขียว = เปลี่ยนเลย์เอาท์ดันเจี้ยน คันโยกสีทอง = ห้ามยุ่งนะโว้ย”"
+      },
+      "image": "scene_13.jpg",
+      "image_prompt": "underground control room with old CRT monitors, levers in bright colors, sticky notes in Thai on the wall",
+      "choices": [
+        {
+          "text": {
+            "en": "Gently pull the green lever.",
+            "th": "ลองดันคันโยกสีเขียวเบา ๆ ดู"
+          },
+          "next": "scene_16"
+        },
+        {
+          "text": {
+            "en": "Check the CCTV screens to locate your coin.",
+            "th": "แอบดูจอกล้องวงจรปิดหาเหรียญของตัวเอง"
+          },
+          "next": "scene_19"
+        },
+        {
+          "text": {
+            "en": "Be as reckless as possible and yank the gold lever.",
+            "th": "ซนสุด ดึงคันโยกสีทองแบบไม่คิดชีวิต"
+          },
+          "next": "ending_6"
+        }
+      ]
+    },
+    "scene_14": {
+      "scene_id": "scene_14",
+      "type": "normal",
+      "title": {
+        "en": "Karaoke Shop Ghost",
+        "th": "ผีร้านคาราโอเกะเก่า"
+      },
+      "description": {
+        "en": "Inside is a tiny karaoke stage. A 90s teen ghost clutches a mic, singing so off-key the speakers tremble. He turns to you and asks, “Got any song requests?”",
+        "th": "ห้องด้านในกลายเป็นเวทีคาราโอเกะเล็ก ๆ มีผีวัยรุ่นยุค 90 จับไมค์ร้องเพลงเพี้ยนหลุดคีย์จนลำโพงสั่น เขาหันมามองคุณพร้อมถามว่า “มีเพลงแนะนำไหมน้อง?”"
+      },
+      "image": "scene_14.jpg",
+      "image_prompt": "ghostly 90s teenager singing karaoke on a tiny stage in an underground dungeon, colorful lights, funny atmosphere",
+      "choices": [
+        {
+          "text": {
+            "en": "Join him on stage and sing your heart out.",
+            "th": "ขึ้นไปร้องคู่ด้วยกันแบบเต็มที่"
+          },
+          "next": "scene_16",
+          "requirements": {
+            "min_attributes": { "cha": 3 }
+          },
+          "on_fail_next": "ending_2"
+        },
+        {
+          "text": {
+            "en": "Turn off the mic and tell him honestly how off-key he is.",
+            "th": "ปิดไมค์แล้วบอกตามตรงว่าเพี้ยนมาก ขอให้หยุด"
+          },
+          "next": "scene_18",
+          "requirements": {
+            "min_attributes": { "str": 3 }
+          },
+          "on_fail_next": "ending_2"
+        },
+        {
+          "text": {
+            "en": "Quietly tiptoe back to the three-door hall.",
+            "th": "ค่อย ๆ ถอยกลับไปโถงสามประตูแบบเนียน ๆ"
+          },
+          "next": "scene_12"
+        }
+      ]
+    },
+    "scene_15": {
+      "scene_id": "scene_15",
+      "type": "normal",
+      "title": {
+        "en": "Slime Stock Room",
+        "th": "ห้องสต็อกสไลม์"
+      },
+      "description": {
+        "en": "The floor is covered in sticky green slime that smells like expired kimchi. Some blobs have tiny eyes staring at you, looking like they want to play.",
+        "th": "พื้นห้องเต็มไปด้วยสไลม์สีเขียวเหนียว ๆ กลิ่นคล้ายกิมจิหมดอายุ สไลม์บางก้อนมีตาเล็ก ๆ มองคุณปริบ ๆ เหมือนอยากเล่นด้วย"
+      },
+      "image": "scene_15.jpg",
+      "image_prompt": "slimy storage room with cute green slimes with small eyes, comedic and slightly gross, underground dungeon",
+      "choices": [
+        {
+          "text": {
+            "en": "Try molding the slime into a cartoon character.",
+            "th": "ลองปั้นสไลม์ให้เป็นรูปตัวการ์ตูน"
+          },
+          "next": "scene_16",
+          "requirements": {
+            "min_attributes": { "luk": 2 }
+          },
+          "on_fail_next": "ending_3"
+        },
+        {
+          "text": {
+            "en": "Use nerdy science knowledge to figure out how to walk on slime without slipping.",
+            "th": "ใช้ความรู้วิทย์เนิร์ด ๆ คิดหาวิธีเดินบนสไลม์ไม่ลื่น"
+          },
+          "next": "scene_16",
+          "requirements": {
+            "classes": ["mage"],
+            "min_attributes": { "int": 3 }
+          },
+          "on_fail_next": "ending_3"
+        },
+        {
+          "text": {
+            "en": "Too risky. Head back to the three-door hall.",
+            "th": "ไม่เสี่ยง เดินถอยกลับไปโถงสามประตู"
+          },
+          "next": "scene_12"
+        }
+      ]
+    },
+    "scene_16": {
+      "scene_id": "scene_16",
+      "type": "normal",
+      "title": {
+        "en": "Yai Thongdee’s Piggy Bank Vault",
+        "th": "ห้องเก็บกระปุกยายทองดี"
+      },
+      "description": {
+        "en": "You enter a chamber with a stone pedestal in the center. Floating above it is a giant piggy bank wearing a Thai sarong. Your missing coin is stuck right on its forehead.",
+        "th": "คุณมาถึงห้องโถงที่มีแท่นหินตั้งอยู่ตรงกลาง เหนือแท่นคือ ‘กระปุกออมสินยักษ์’ รูปหมูสีชมพูใส่ผ้าถุง ลอยอยู่ในอากาศ มีเหรียญทอนของคุณแปะอยู่ตรงหน้าผากพอดี"
+      },
+      "image": "scene_16.jpg",
+      "image_prompt": "giant floating piggy bank with a Thai sarong in an underground chamber, coin stuck on its forehead, humorous fantasy",
+      "choices": [
+        {
+          "text": {
+            "en": "Try talking first: “Piggy, can I please have my coin back?”",
+            "th": "ลองคุยดีก่อน “หมูครับ ขอเหรียญผมคืนได้ไหม”"
+          },
+          "next": "scene_17"
+        },
+        {
+          "text": {
+            "en": "Use all your strength to shake the coin loose.",
+            "th": "ใช้แรงทั้งหมดเขย่ากระปุกให้เหรียญร่วง"
+          },
+          "next": "scene_18",
+          "requirements": {
+            "min_attributes": { "str": 3 }
+          },
+          "on_fail_next": "ending_2"
+        },
+        {
+          "text": {
+            "en": "Stick the guardian charm onto the piggy bank and hope for the best.",
+            "th": "เอายันต์เจ้าที่มาแปะบนกระปุก เผื่อช่วยได้"
+          },
+          "next": "scene_17",
+          "reward_attributes": { "luk": 1 }
+        }
+      ]
+    },
+    "scene_17": {
+      "scene_id": "scene_17",
+      "type": "normal",
+      "title": {
+        "en": "Negotiation with the Piggy Spirit",
+        "th": "ต่อรองกับกระปุกวิญญาณ"
+      },
+      "description": {
+        "en": "Yai Thongdee’s voice echoes from the piggy bank, “This change isn’t ordinary, grandchild. It’s the entry fee for my dungeon fun. If you want it back, you’d better give me a good reason.”",
+        "th": "เสียงยายทองดีดังออกมาจากกระปุก “เหรียญทอนนี่ไม่ธรรมดานะหลาน เป็นค่าเข้าสนุกในดันเจี้ยนของยาย ถ้าอยากได้คืน ต้องมีเหตุผลดี ๆ มาพูดคุยกันหน่อย”"
+      },
+      "image": "scene_17.jpg",
+      "image_prompt": "floating magical piggy bank speaking with a kid in a humorous negotiation scene, warm lighting",
+      "choices": [
+        {
+          "text": {
+            "en": "Explain with nerdy logic why household economics must stay balanced.",
+            "th": "อธิบายด้วยเหตุผลเนิร์ด ๆ ว่าเศรษฐศาสตร์ในบ้านต้องสมดุล"
+          },
+          "next": "ending_5",
+          "requirements": {
+            "min_attributes": { "int": 3 }
+          },
+          "on_fail_next": "ending_2"
+        },
+        {
+          "text": {
+            "en": "Use your comedy skills and make the piggy laugh so hard the coin falls off.",
+            "th": "ใช้สกิลสายฮา เล่าเรื่องตลกจนกระปุกหัวเราะเหรียญหล่น"
+          },
+          "next": "ending_4",
+          "requirements": {
+            "classes": ["joker"],
+            "min_attributes": { "cha": 3 }
+          },
+          "on_fail_next": "ending_2"
+        },
+        {
+          "text": {
+            "en": "Offer to help run the dungeon in exchange for your change.",
+            "th": "ยื่นข้อเสนอ เดี๋ยวจะมาช่วยเฝ้าร้านแลกกับเหรียญคืน"
+          },
+          "next": "ending_5"
+        }
+      ]
+    },
+    "scene_18": {
+      "scene_id": "scene_18",
+      "type": "normal",
+      "title": {
+        "en": "Shaking the Dungeon Apart",
+        "th": "เขย่าจนทั้งดันเจี้ยนสั่น"
+      },
+      "description": {
+        "en": "You leap onto the piggy bank and shake it with all your might. The floor and ceiling tremble, canned-fish dust raining everywhere. Yai shouts, “Hey! My shop’s going to break!”",
+        "th": "คุณกระโดดเกาะกระปุกแล้วเขย่าจนพื้นและเพดานสั่นสะเทือน ฝุ่นปลากระป๋องปลิวว่อน เสียงยายทองดีดังสนั่น “เฮ้ยยย เดี๋ยวของในร้านยายพัง!”"
+      },
+      "image": "scene_18.jpg",
+      "image_prompt": "kid shaking a giant floating piggy bank, whole dungeon room shaking comically",
+      "choices": [
+        {
+          "text": {
+            "en": "Quickly let go and shout an apology.",
+            "th": "รีบปล่อยมือแล้วขอโทษเสียงดัง"
+          },
+          "next": "ending_2"
+        },
+        {
+          "text": {
+            "en": "Keep shaking stubbornly until something drops.",
+            "th": "ยังดื้อ เขย่าต่อไปจนกว่าจะมีอะไรหล่น"
+          },
+          "next": "ending_4",
+          "requirements": {
+            "min_attributes": { "str": 4 }
+          },
+          "on_fail_next": "ending_2"
+        }
+      ]
+    },
+    "scene_19": {
+      "scene_id": "scene_19",
+      "type": "normal",
+      "title": {
+        "en": "CCTV and the Shop’s Secret",
+        "th": "กล้องวงจรปิดกับความลับร้านชำ"
+      },
+      "description": {
+        "en": "You flip through the old TV screens and see villagers falling into the dungeon just like you, most of them climbing back up laughing. On a few screens, Yai Thongdee is secretly adding her own coins to the piggy bank.",
+        "th": "คุณไล่ดูจอทีวีเก่า ๆ เห็นภาพลูกค้าทั้งหมู่บ้านเดินมาโดนดันเจี้ยนเหมือนคุณทุกคน และเกือบทุกคนกลับขึ้นไปแบบหัวเราะคิกคัก บางจอก็เห็นยายทองดีแอบเติมเหรียญของตัวเองลงไปในกระปุกเพิ่ม"
+      },
+      "image": "scene_19.jpg",
+      "image_prompt": "control room full of old CCTV monitors showing villagers falling into a shop dungeon, humorous scenes",
+      "choices": [
+        {
+          "text": {
+            "en": "Accept your fate. This dungeon is just Yai’s game—just play it through.",
+            "th": "ยอมรับชะตากรรม ดันเจี้ยนนี้ก็แค่เกมของยาย แค่เล่นให้จบ"
+          },
+          "next": "scene_16"
+        },
+        {
+          "text": {
+            "en": "Press the button to shut down the entire dungeon system.",
+            "th": "กดปุ่มปิดระบบดันเจี้ยนทั้งหมดจากห้องควบคุม"
+          },
+          "next": "ending_6"
+        }
+      ]
+    }
+  },
+  "endings": {
+    "ending_1": {
+      "ending_id": "ending_1",
+      "title": {
+        "en": "Good Kid, No Change",
+        "th": "เด็กดีแต่ไม่มีเหรียญทอน"
+      },
+      "summary": {
+        "en": "You go home and honestly tell your mom the change fell into a strange hole. She looks at you in silence, then says, “Next time, I’ll go myself.” You escape the dungeon, but not the extra chores.",
+        "th": "คุณเลือกกลับบ้านไปบอกแม่ตามตรงว่าเหรียญทอนหล่นหายลงรูปริศนา แม่มองหน้าเงียบ ๆ แล้วบอกว่า “คราวหน้าไปซื้อเองละกัน” คุณรอดจากดันเจี้ยน แต่ไม่ได้รอดจากงานบ้านเพิ่ม"
+      },
+      "result": {
+        "en": "Life is safe, but your household workload doubles.",
+        "th": "ชีวิตปลอดภัย แต่ในบ้านถูกใช้ให้ทำงานเพิ่มสองเท่า"
+      },
+      "image": "ending_1.jpg",
+      "image_prompt": "kid explaining to a Thai mom in a small house, mom crossing her arms, humorous domestic scene",
+      "conditions": {
+        "min_attributes": {},
+        "flags_required": []
+      }
+    },
+    "ending_2": {
+      "ending_id": "ending_2",
+      "title": {
+        "en": "Village Canned-Fish Hero",
+        "th": "ฮีโร่ปลากระป๋องประจำหมู่บ้าน"
+      },
+      "summary": {
+        "en": "After wrecking part of the dungeon, Yai Thongdee’s furious shout echoes all the way to the street. You get dragged into cleaning up all day. Villagers joke that you’re the “Canned-Fish Avalanche Hero”.",
+        "th": "หลังจากทำดันเจี้ยนพัง เสียงยายทองดีลั่นมาถึงหน้าปากซอย คุณถูกเรียกไปช่วยเก็บของทั้งวัน ชาวบ้านแซวว่าคุณคือ ‘ฮีโร่ปลากระป๋องถล่ม’ ประจำหมู่บ้าน"
+      },
+      "result": {
+        "en": "You learn that charging in too hard has a cost—usually paid in free labor.",
+        "th": "คุณได้เรียนรู้ว่าบางทีการลุยเกินไปก็มีราคาที่ต้องจ่ายเป็นแรงงานฟรี"
+      },
+      "image": "ending_2.jpg",
+      "image_prompt": "kid cleaning up a mess of canned food outside a small Thai shop while neighbors laugh and tease",
+      "conditions": {
+        "min_attributes": {},
+        "flags_required": []
+      }
+    },
+    "ending_3": {
+      "ending_id": "ending_3",
+      "title": {
+        "en": "Best Friend of Slimes",
+        "th": "เพื่อนสนิทสไลม์"
+      },
+      "summary": {
+        "en": "You play with the slimes until they absorb you as one of their own. Villagers whisper that on some nights, a slime wearing a cartoon T-shirt can be seen wandering under Yai Thongdee’s shop.",
+        "th": "คุณเล่นกับสไลม์จนถูกมันดูดเข้าไปเป็นหนึ่งในแก๊งสไลม์อย่างถาวร ชาวบ้านเล่าลือว่าบางคืนจะเห็นสไลม์ก้อนหนึ่งใส่เสื้อยืดลายการ์ตูนเดินเล่นอยู่ใต้ร้านยายทองดี"
+      },
+      "result": {
+        "en": "You never make it home, but you gain sticky new friends.",
+        "th": "คุณไม่ได้กลับบ้าน แต่ได้เพื่อนใหม่ที่หนึบหนับ"
+      },
+      "image": "ending_3.jpg",
+      "image_prompt": "cute green slime wearing a cartoon T-shirt in an underground room, smiling happily",
+      "conditions": {
+        "min_attributes": {},
+        "flags_required": []
+      }
+    },
+    "ending_4": {
+      "ending_id": "ending_4",
+      "title": {
+        "en": "Dungeon Shop Hero",
+        "th": "ฮีโร่ดันเจี้ยนร้านชำ"
+      },
+      "summary": {
+        "en": "Through jokes or brute force, you make the giant piggy bank return your change and let you go. Yai chuckles, “You cleared the dungeon, grandchild. Come play again sometime.”",
+        "th": "ไม่ว่าจะด้วยแรงหรือมุกตลก คุณทำให้กระปุกยักษ์คืนเหรียญทอนและยอมปล่อยคุณกลับขึ้นไป ยายทองดีขำ ๆ บอกว่า “ผ่านด่านแล้วนะหลาน ไว้วันหลังลงมาเล่นใหม่”"
+      },
+      "result": {
+        "en": "You become the first official dungeon clear. You earn a one-time 5-baht snack discount (which Yai doesn’t advertise).",
+        "th": "คุณกลายเป็นคนแรกที่เคลียร์ดันเจี้ยนได้อย่างเป็นทางการ มีสิทธิ์ซื้อขนมลด 5 บาทหนึ่งครั้ง (แต่อันนี้ยายไม่ได้โฆษณา)"
+      },
+      "image": "ending_4.jpg",
+      "image_prompt": "kid proudly holding a coin in front of a small shop, giant piggy bank spirit smiling faintly in the background sky",
+      "conditions": {
+        "min_attributes": {},
+        "flags_required": []
+      }
+    },
+    "ending_5": {
+      "ending_id": "ending_5",
+      "title": {
+        "en": "Dungeon Manager in Training",
+        "th": "ผู้จัดการดันเจี้ยนฝึกหัด"
+      },
+      "summary": {
+        "en": "You successfully negotiate with the piggy bank and Yai Thongdee, getting your change back in exchange for becoming a “Dungeon Manager Trainee” who helps design new stages.",
+        "th": "คุณต่อรองกับกระปุกและยายทองดีสำเร็จ ได้เหรียญทอนคืน แต่แลกกับการเป็น ‘ผู้จัดการดันเจี้ยนฝึกหัด’ ช่วยคิดด่านใหม่ ๆ ให้ลูกค้าคนอื่นมาเล่น"
+      },
+      "result": {
+        "en": "You gain experience in game design, trap placement, and maybe a small snack profit share.",
+        "th": "คุณได้ฝึกทักษะคิดเกม วางกับดัก และอาจได้ส่วนแบ่งกำไรเป็นขนมเพิ่มเล็กน้อย"
+      },
+      "image": "ending_5.jpg",
+      "image_prompt": "kid sitting at a control desk designing funny dungeon traps, old lady shop owner smiling beside",
+      "conditions": {
+        "min_attributes": {
+          "int": 2
+        },
+        "flags_required": []
+      }
+    },
+    "ending_6": {
+      "ending_id": "ending_6",
+      "title": {
+        "en": "Parallel World: Seven-Yan",
+        "th": "โลกคู่ขนานเซเว่นยัน"
+      },
+      "summary": {
+        "en": "You slam the shutdown button without reading the manual. The whole shop shakes once, then falls silent. When you go back up, the grocery has turned into a high-tech minimart called “7-Yan”, offering official dungeon packages and monthly memberships.",
+        "th": "คุณกดปุ่มปิดระบบดันเจี้ยนแบบไม่อ่านคู่มือ ทั้งร้านสั่นวูบเดียว แล้วเงียบลง เมื่อคุณขึ้นไปบนร้าน พบว่าร้านชำกลายเป็นมินิมาร์ทไฮเทคชื่อ ‘7-ยัน’ มีดันเจี้ยนให้เล่นแบบเป็นทางการ พร้อมแพ็คเกจรายเดือน"
+      },
+      "result": {
+        "en": "You’re not sure this is the same world anymore, but one thing is clear: Yai’s change management system just hit a new level.",
+        "th": "คุณไม่แน่ใจว่าตัวเองอยู่โลกเดิมไหม แต่ที่แน่ ๆ คือ ระบบเก็บเหรียญทอนของยายอัปเกรดไปอีกขั้นแล้ว"
+      },
+      "image": "ending_6.jpg",
+      "image_prompt": "futuristic convenience store with neon sign '7-yan' in Thai style, kid looking confused but amused",
+      "conditions": {
+        "min_attributes": {},
+        "flags_required": []
+      }
+    }
+  }
+}
