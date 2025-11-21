@@ -30,8 +30,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  เกี่ยวกับ
+                <Link to="/achievements" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  ความสำเร็จ
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  ติดต่อ
                 </Link>
               </li>
             </ul>
