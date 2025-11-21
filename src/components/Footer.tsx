@@ -41,14 +41,14 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-4">ข้อมูลทางกฎหมาย</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   นโยบายความเป็นส่วนตัว
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/terms-of-use" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   เงื่อนไขการให้บริการ
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
