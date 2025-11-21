@@ -9,10 +9,38 @@ import Footer from "@/components/Footer";
 import { Trophy, Lock, Star } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { ALL_ACHIEVEMENTS, type Achievement } from "@/data/achievements";
+import { useLanguage } from "@/contexts/language-context";
+import { getLocalizedText } from "@/lib/i18n";
 
 const AchievementsPage = () => {
   const [earnedAchievements, setEarnedAchievements] = useState<string[]>([]);
   const [selectedGenre, setSelectedGenre] = useState<string>("all");
+  const { language } = useLanguage();
+  const copy = {
+    th: {
+      title: "ความสำเร็จ",
+      description: "ปลดล็อกถ้วยรางวัลจากการพิชิตเส้นทางการผจญภัยที่แตกต่างกัน",
+      progress: "ความคืบหน้าโดยรวม",
+      percentSuffix: "% สำเร็จ",
+      filterAll: "ทั้งหมด",
+      lockedName: "???",
+      lockedDescription: "พิชิตฉากจบนี้เพื่อปลดล็อก",
+      emptyTitle: "ยังไม่มีความสำเร็จ",
+      emptySubtitle: "เริ่มการผจญภัยแรกของคุณเพื่อปลดล็อกถ้วยรางวัล!",
+    },
+    en: {
+      title: "Achievements",
+      description: "Unlock trophies by completing different adventure paths.",
+      progress: "Overall progress",
+      percentSuffix: "% complete",
+      filterAll: "All",
+      lockedName: "???",
+      lockedDescription: "Finish this ending to unlock",
+      emptyTitle: "No achievements yet",
+      emptySubtitle: "Start your first adventure to earn a trophy!",
+    },
+  } as const;
+  const text = language === "en" ? copy.en : copy.th;
 
   useEffect(() => {
     // Load earned achievements from localStorage
@@ -23,7 +51,7 @@ const AchievementsPage = () => {
   }, []);
 
   const genres = [
-    { value: "all", label: "ทั้งหมด" },
+    { value: "all", label: text.filterAll },
     { value: "High Fantasy", label: "High Fantasy" },
     { value: "Dark Fantasy", label: "Dark Fantasy" },
     { value: "Sci-Fi", label: "Sci-Fi" },
@@ -40,12 +68,10 @@ const AchievementsPage = () => {
   const totalCount = ALL_ACHIEVEMENTS.length;
   const progressPercent = Math.round((earnedCount / totalCount) * 100);
 
-  const rarityLabels: Record<Achievement["rarity"], string> = {
-    legendary: "ตำนาน",
-    epic: "มหากาพย์",
-    rare: "หายาก",
-    common: "ทั่วไป",
-  };
+  const rarityLabels: Record<Achievement["rarity"], string> =
+    language === "en"
+      ? { legendary: "Legendary", epic: "Epic", rare: "Rare", common: "Common" }
+      : { legendary: "ตำนาน", epic: "มหากาพย์", rare: "หายาก", common: "ทั่วไป" };
 
   const getRarityColor = (rarity: Achievement["rarity"]) => {
     switch (rarity) {
@@ -65,15 +91,15 @@ const AchievementsPage = () => {
           {/* Header */}
           <div className="mb-12">
             <PageHeader
-              title="ความสำเร็จ"
-              description="ปลดล็อกถ้วยรางวัลจากการพิชิตเส้นทางการผจญภัยที่แตกต่างกัน"
+              title={text.title}
+              description={text.description}
               icon={<Trophy className="h-11 w-11" />}
             />
 
             <Card className="max-w-xl mx-auto ornate-corners border-2 border-accent/50 bg-gradient-card shadow-glow-cyan mt-10">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-lg font-semibold text-foreground">ความคืบหน้าโดยรวม</span>
+                  <span className="text-lg font-semibold text-foreground">{text.progress}</span>
                   <span className="text-2xl font-bold text-accent">{earnedCount}/{totalCount}</span>
                 </div>
                 <div className="h-3 bg-muted rounded-full overflow-hidden">
@@ -82,7 +108,7 @@ const AchievementsPage = () => {
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">{progressPercent}% สำเร็จ</p>
+                <p className="text-sm text-muted-foreground mt-2">{progressPercent}{text.percentSuffix}</p>
               </CardContent>
             </Card>
           </div>
@@ -128,7 +154,7 @@ const AchievementsPage = () => {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-2 mb-2">
                              <h3 className={`font-bold text-lg ${isEarned ? "text-foreground" : "text-muted-foreground"}`}>
-                                {isEarned ? achievement.name : "???"}
+                                {isEarned ? achievement.name : text.lockedName}
                               </h3>
                               <Star className={`h-4 w-4 flex-shrink-0 ${getRarityColor(achievement.rarity).split(' ')[0]}`} />
                             </div>
@@ -138,7 +164,9 @@ const AchievementsPage = () => {
                             </Badge>
                             
                             <p className={`text-sm leading-relaxed ${isEarned ? "text-muted-foreground" : "text-muted-foreground/50"}`}>
-                              {isEarned ? achievement.description : "พิชิตฉากจบนี้เพื่อปลดล็อก"}
+                              {isEarned
+                                ? getLocalizedText(achievement.description, language)
+                                : text.lockedDescription}
                             </p>
                             
                             <div className="mt-3 pt-3 border-t border-border/30">
@@ -161,10 +189,8 @@ const AchievementsPage = () => {
               <Card className="max-w-md mx-auto ornate-corners border-2 border-border bg-gradient-card">
                 <CardContent className="p-8">
                   <Trophy className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                  <h3 className="text-xl font-bold text-foreground mb-2">ยังไม่มีความสำเร็จ</h3>
-                  <p className="text-muted-foreground">
-                    เริ่มการผจญภัยแรกของคุณเพื่อปลดล็อกถ้วยรางวัล!
-                  </p>
+                  <h3 className="text-xl font-bold text-foreground mb-2">{text.emptyTitle}</h3>
+                  <p className="text-muted-foreground">{text.emptySubtitle}</p>
                 </CardContent>
               </Card>
             </div>

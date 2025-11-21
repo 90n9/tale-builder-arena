@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,53 +7,122 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Sparkles, MessageSquare, BarChart3, Image, Play, Zap, BookOpen, Trophy } from "lucide-react";
 import heroImage from "@/assets/hero-illustration.jpg";
+import { useLanguage } from "@/contexts/language-context";
 
 const Index = () => {
-  const features = [
-    {
-      icon: <Sparkles className="h-8 w-8 text-primary" />,
-      title: "AI Dungeon Master",
-      description: "สัมผัสการเล่าเรื่องอันลื่นไหลด้วย AI ขั้นสูงที่ปรับตามทุกการตัดสินใจของคุณ",
+  const { language } = useLanguage();
+  const copy = {
+    th: {
+      hero: {
+        tagline: "เรื่องราวของคุณ ทางเลือกของคุณ",
+        description:
+          "ออกเดินทางผจญภัยสุดยิ่งใหญ่ภายใต้การนำของ AI Dungeon Master ทุกการตัดสินใจจะกำหนดโชคชะตา ในประสบการณ์ RPG เชิงข้อความที่ชวนดื่มด่ำ",
+        primaryCta: "เริ่มการผจญภัย",
+        secondaryCta: "ชมตัวอย่าง",
+      },
+      features: {
+        heading: "ฟีเจอร์เด่น",
+        description: "ขับเคลื่อนด้วยเทคโนโลยี AI ล้ำสมัยเพื่อมอบประสบการณ์การเล่าเรื่องที่เหนือชั้น",
+        cards: [
+          { title: "AI Dungeon Master", description: "สัมผัสการเล่าเรื่องอันลื่นไหลด้วย AI ขั้นสูงที่ปรับตามทุกการตัดสินใจของคุณ" },
+          { title: "เกมทางเลือก", description: "ทุกการเลือกมีผลสำคัญ เนื้อเรื่องจะแตกแขนงไม่เหมือนใครตามเส้นทางที่คุณตัดสินใจ" },
+          { title: "ระบบความสำเร็จ", description: "ปลดล็อกถ้วยรางวัลพิเศษจากฉากจบหลากหลายแนวและเส้นทาง" },
+          { title: "สถานะตัวละครแบบเรียลไทม์", description: "ติดตาม HP มานา ทอง และไอเทมต่างๆ ของคุณขณะออกผจญภัย" },
+          { title: "ภาพประกอบฉาก", description: "ดื่มด่ำกับงานภาพที่สร้างด้วย AI ที่ปลุกทุกฉากให้มีชีวิต" },
+        ],
+      },
+      steps: {
+        heading: "วิธีเริ่มเล่น",
+        description: "เพียง 3 ขั้นตอนก็เริ่มผจญภัยได้ทันที",
+        items: [
+          { title: "เริ่มภารกิจ", description: "คลิก 'เริ่มการผจญภัย' เพื่อออกเดินทาง" },
+          { title: "อ่านแล้วตัดสินใจ", description: "ติดตามเรื่องราวแล้วเลือกเส้นทางที่ต้องการ" },
+          { title: "สร้างเรื่องของคุณ", description: "ให้ทางเลือกของคุณสร้างการผจญภัยที่ไม่ซ้ำใคร" },
+        ],
+      },
+      immersion: {
+        heading: "การเล่นสุดดื่มด่ำ",
+        description: "อินเทอร์เฟซเรียบง่าย เข้าใจทันที ออกแบบมาเพื่อเล่าเรื่องโดยเฉพาะ",
+        imageTitle: "งานภาพเล่าเรื่อง",
+        imageDescription: "ทุกฉากมีชีวิตด้วยภาพจาก AI เสริมบรรยากาศให้การผจญภัยของคุณสมบูรณ์ขึ้น",
+        storySample:
+          "\"คุณยืนอยู่หน้าทางเข้าดันเจี้ยนโบราณ อากาศหนาหนักไปด้วยความลี้ลับ ผลึกเรืองแสงสะท้อนแสงตามผนังทางเดินหิน เสียงกระซิบแผ่วเบาดังมาจากเบื้องลึก...\"",
+        storyTitle: "เนื้อเรื่องเข้มข้น",
+        storyDescription: "เรื่องราวน่าติดตามที่ตอบสนองต่อการเลือกของคุณ สร้างการผจญภัยไม่ซ้ำใครทุกครั้ง",
+      },
+      finalCta: {
+        heading: "พร้อมออกเดินทางหรือยัง?",
+        description: "การผจญภัยของคุณกำลังรออยู่ ก้าวสู่โลกที่ทุกการเลือกมีความหมาย และทุกเรื่องราวไม่เหมือนใคร",
+        button: "เล่นทันที",
+      },
     },
-    {
-      icon: <MessageSquare className="h-8 w-8 text-secondary" />,
-      title: "เกมทางเลือก",
-      description: "ทุกการเลือกมีผลสำคัญ เนื้อเรื่องจะแตกแขนงไม่เหมือนใครตามเส้นทางที่คุณตัดสินใจ",
+    en: {
+      hero: {
+        tagline: "Your story, your choices",
+        description:
+          "Set out on an epic adventure guided by an AI Dungeon Master. Every decision shapes your fate in a deeply immersive text RPG.",
+        primaryCta: "Start adventure",
+        secondaryCta: "See preview",
+      },
+      features: {
+        heading: "Key features",
+        description: "Powered by advanced AI to deliver richer, more reactive storytelling.",
+        cards: [
+          { title: "AI Dungeon Master", description: "Seamless storytelling from adaptive AI that responds to every decision." },
+          { title: "Branching choices", description: "Every choice matters with narratives that split and stay unique to your path." },
+          { title: "Achievements", description: "Unlock special trophies from diverse endings and routes." },
+          { title: "Live character stats", description: "Track HP, mana, gold, and gear as you venture forward." },
+          { title: "Scene art", description: "Immerse yourself with AI-crafted visuals that bring each encounter to life." },
+        ],
+      },
+      steps: {
+        heading: "How to begin",
+        description: "Just three steps to start exploring.",
+        items: [
+          { title: "Begin the quest", description: "Click 'Start Adventure' to set off." },
+          { title: "Read and decide", description: "Follow the story and choose your path." },
+          { title: "Forge your tale", description: "Let your choices craft a unique adventure." },
+        ],
+      },
+      immersion: {
+        heading: "Immersive play",
+        description: "A clean, intuitive interface built for storytelling.",
+        imageTitle: "Narrative visuals",
+        imageDescription: "AI-generated art brings every scene to life and deepens the mood.",
+        storySample:
+          "\"You stand at the mouth of an ancient dungeon, air thick with secrets. Glowing crystals line the stone walls as whispers drift up from the depths...\"",
+        storyTitle: "Layered narrative",
+        storyDescription: "A reactive storyline that reshapes itself around your choices, every run feeling new.",
+      },
+      finalCta: {
+        heading: "Ready to head out?",
+        description: "Your adventure is waiting. Step into a world where every choice matters and no journey is the same.",
+        button: "Play now",
+      },
     },
-    {
-      icon: <Trophy className="h-8 w-8 text-primary" />,
-      title: "ระบบความสำเร็จ",
-      description: "ปลดล็อกถ้วยรางวัลพิเศษจากฉากจบหลากหลายแนวและเส้นทาง",
-    },
-    {
-      icon: <BarChart3 className="h-8 w-8 text-secondary" />,
-      title: "สถานะตัวละครแบบเรียลไทม์",
-      description: "ติดตาม HP มานา ทอง และไอเทมต่างๆ ของคุณขณะออกผจญภัย",
-    },
-    {
-      icon: <Image className="h-8 w-8 text-primary" />,
-      title: "ภาพประกอบฉาก",
-      description: "ดื่มด่ำกับงานภาพที่สร้างด้วย AI ที่ปลุกทุกฉากให้มีชีวิต",
-    },
-  ];
+  } as const;
 
-  const steps = [
-    {
-      icon: <Play className="h-6 w-6" />,
-      title: "เริ่มภารกิจ",
-      description: "คลิก 'เริ่มการผจญภัย' เพื่อออกเดินทาง",
-    },
-    {
-      icon: <BookOpen className="h-6 w-6" />,
-      title: "อ่านแล้วตัดสินใจ",
-      description: "ติดตามเรื่องราวแล้วเลือกเส้นทางที่ต้องการ",
-    },
-    {
-      icon: <Zap className="h-6 w-6" />,
-      title: "สร้างเรื่องของคุณ",
-      description: "ให้ทางเลือกของคุณสร้างการผจญภัยที่ไม่ซ้ำใคร",
-    },
-  ];
+  const text = language === "en" ? copy.en : copy.th;
+
+  const featureItems = [
+    { icon: <Sparkles className="h-8 w-8 text-primary" /> },
+    { icon: <MessageSquare className="h-8 w-8 text-secondary" /> },
+    { icon: <Trophy className="h-8 w-8 text-primary" /> },
+    { icon: <BarChart3 className="h-8 w-8 text-secondary" /> },
+    { icon: <Image className="h-8 w-8 text-primary" /> },
+  ].map((item, index) => ({
+    ...item,
+    ...text.features.cards[index],
+  }));
+
+  const stepItems = [
+    { icon: <Play className="h-6 w-6" /> },
+    { icon: <BookOpen className="h-6 w-6" /> },
+    { icon: <Zap className="h-6 w-6" /> },
+  ].map((item, index) => ({
+    ...item,
+    ...text.steps.items[index],
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -83,14 +154,13 @@ const Index = () => {
             <div className="mb-8">
               <div className="inline-block bg-card/80 backdrop-blur-sm border-2 border-accent/30 rounded px-6 py-3">
                 <p className="text-xl md:text-2xl text-accent font-semibold uppercase tracking-wider">
-                  เรื่องราวของคุณ ทางเลือกของคุณ
+                  {text.hero.tagline}
                 </p>
               </div>
             </div>
             
             <p className="text-xl md:text-2xl text-foreground/90 mb-12 leading-relaxed drop-shadow-[0_0_20px_rgba(0,0,0,0.8)] max-w-3xl mx-auto">
-              ออกเดินทางผจญภัยสุดยิ่งใหญ่ภายใต้การนำของ AI Dungeon Master ทุกการตัดสินใจจะกำหนดโชคชะตา 
-              ในประสบการณ์ RPG เชิงข้อความที่ชวนดื่มด่ำ
+              {text.hero.description}
             </p>
             
             <div className="flex flex-wrap gap-6 justify-center">
@@ -99,7 +169,7 @@ const Index = () => {
                 size="lg"
                 className="bg-gradient-primary hover:shadow-glow-orange transition-all text-lg font-semibold px-10 py-7 text-primary-foreground border-2 border-secondary/50"
               >
-                <Link href="/game">เริ่มการผจญภัย</Link>
+                <Link href="/game">{text.hero.primaryCta}</Link>
               </Button>
               <Button
                 asChild
@@ -107,7 +177,7 @@ const Index = () => {
                 variant="outline"
                 className="border-2 border-accent/50 text-accent hover:bg-accent/10 hover:shadow-glow-cyan transition-all text-lg px-10 py-7 backdrop-blur-sm bg-background/30"
               >
-                <Link href="/about">ชมตัวอย่าง</Link>
+                <Link href="/about">{text.hero.secondaryCta}</Link>
               </Button>
             </div>
           </div>
@@ -128,17 +198,17 @@ const Index = () => {
           <div className="text-center mb-20">
             <div className="section-divider mb-12" />
             <h2 className="text-5xl font-bold mb-6 text-foreground uppercase tracking-wide">
-              ฟีเจอร์เด่น
+              {text.features.heading}
             </h2>
             <p className="text-muted-foreground text-xl max-w-2xl mx-auto">
-              ขับเคลื่อนด้วยเทคโนโลยี AI ล้ำสมัยเพื่อมอบประสบการณ์การเล่าเรื่องที่เหนือชั้น
+              {text.features.description}
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
-            {features.map((feature, index) => (
+            {featureItems.map((feature) => (
               <Card 
-                key={index}
+                key={feature.title}
                 className="ornate-corners border-2 border-border/50 bg-gradient-card backdrop-blur-sm hover:shadow-card hover:border-accent/50 transition-all duration-500 hover:-translate-y-2 group"
               >
                 <CardContent className="pt-8 pb-8 text-center">
@@ -166,16 +236,16 @@ const Index = () => {
           <div className="text-center mb-20">
             <div className="section-divider mb-12" />
             <h2 className="text-5xl font-bold mb-6 text-foreground uppercase tracking-wide">
-              วิธีเริ่มเล่น
+              {text.steps.heading}
             </h2>
             <p className="text-muted-foreground text-xl">
-              เพียง 3 ขั้นตอนก็เริ่มผจญภัยได้ทันที
+              {text.steps.description}
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
-            {steps.map((step, index) => (
-              <div key={index} className="relative">
+            {stepItems.map((step, index) => (
+              <div key={step.title} className="relative">
                 <div className="text-center">
                   <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground shadow-glow-orange border-2 border-secondary/30">
                     {step.icon}
@@ -187,7 +257,7 @@ const Index = () => {
                     {step.description}
                   </p>
                 </div>
-                {index < steps.length - 1 && (
+                {index < stepItems.length - 1 && (
                   <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gradient-to-r from-accent via-accent/50 to-transparent" />
                 )}
               </div>
@@ -203,10 +273,10 @@ const Index = () => {
           <div className="text-center mb-20">
             <div className="section-divider mb-12" />
             <h2 className="text-5xl font-bold mb-6 text-foreground uppercase tracking-wide">
-              การเล่นสุดดื่มด่ำ
+              {text.immersion.heading}
             </h2>
             <p className="text-muted-foreground text-xl">
-              อินเทอร์เฟซเรียบง่าย เข้าใจทันที ออกแบบมาเพื่อเล่าเรื่องโดยเฉพาะ
+              {text.immersion.description}
             </p>
           </div>
           
@@ -219,22 +289,21 @@ const Index = () => {
                       <div className="absolute inset-0 bg-gradient-cyan opacity-10 group-hover:opacity-20 transition-opacity" />
                       <Image className="h-16 w-16 text-accent/50 relative z-10" />
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">งานภาพเล่าเรื่อง</h3>
+                    <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">{text.immersion.imageTitle}</h3>
                     <p className="text-muted-foreground text-lg leading-relaxed">
-                      ทุกฉากมีชีวิตด้วยภาพจาก AI เสริมบรรยากาศให้การผจญภัยของคุณสมบูรณ์ขึ้น
+                      {text.immersion.imageDescription}
                     </p>
                   </div>
                   
                   <div className="space-y-6">
                     <div className="h-64 bg-muted/30 rounded-lg p-6 overflow-auto border border-border/30 backdrop-blur-sm">
                       <p className="text-foreground italic text-lg leading-relaxed">
-                        "คุณยืนอยู่หน้าทางเข้าดันเจี้ยนโบราณ อากาศหนาหนักไปด้วยความลี้ลับ 
-                        ผลึกเรืองแสงสะท้อนแสงตามผนังทางเดินหิน เสียงกระซิบแผ่วเบาดังมาจากเบื้องลึก..."
+                        {text.immersion.storySample}
                       </p>
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">เนื้อเรื่องเข้มข้น</h3>
+                    <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">{text.immersion.storyTitle}</h3>
                     <p className="text-muted-foreground text-lg leading-relaxed">
-                      เรื่องราวน่าติดตามที่ตอบสนองต่อการเลือกของคุณ สร้างการผจญภัยไม่ซ้ำใครทุกครั้ง
+                      {text.immersion.storyDescription}
                     </p>
                   </div>
                 </div>
@@ -250,17 +319,17 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="section-divider mb-12" />
           <h2 className="text-5xl md:text-6xl font-bold mb-8 text-foreground uppercase tracking-wide">
-            พร้อมออกเดินทางหรือยัง?
+            {text.finalCta.heading}
           </h2>
           <p className="text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-            การผจญภัยของคุณกำลังรออยู่ ก้าวสู่โลกที่ทุกการเลือกมีความหมาย และทุกเรื่องราวไม่เหมือนใคร
+            {text.finalCta.description}
           </p>
           <Button
             asChild
             size="lg"
             className="bg-gradient-primary hover:shadow-glow-orange transition-all text-xl font-bold px-12 py-8 text-primary-foreground border-2 border-secondary/50 uppercase tracking-wider"
           >
-            <Link href="/game">เล่นทันที</Link>
+            <Link href="/game">{text.finalCta.button}</Link>
           </Button>
         </div>
       </section>

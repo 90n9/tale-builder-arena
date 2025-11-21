@@ -13,6 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import gamePlaceholder from "@/assets/game-scene-placeholder.jpg";
 import { randomAchievementForGenre, findAchievementById } from "@/data/achievements";
 import { findGameBySlug } from "@/data/games";
+import { useLanguage } from "@/contexts/language-context";
 import {
   INITIAL_CHOICES,
   INITIAL_NARRATION,
@@ -23,6 +24,7 @@ import {
   type AdventureSummary,
   type CharacterSelection,
 } from "@/lib/game-config";
+import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 
 type StoryResponse = {
   turn: number;
@@ -40,23 +42,70 @@ const DEFAULT_STATS: AdventureStats = {
   gold: 150,
 };
 
-const DEFAULT_INVENTORY = ["ดาบเหล็ก", "ยาฟื้นพลัง", "คบเพลิง", "แผนที่โบราณ"];
-const DEFAULT_QUESTS = ["สำรวจดันเจี้ยนโบราณ", "ค้นหาโบราณวัตถุที่หายสาบสูญ", "กำจัดอสูรรัตติกาล"];
+const DEFAULT_INVENTORY: LocalizedText[] = [
+  { th: "ดาบเหล็ก", en: "Steel sword" },
+  { th: "ยาฟื้นพลัง", en: "Healing potion" },
+  { th: "คบเพลิง", en: "Torch" },
+  { th: "แผนที่โบราณ", en: "Ancient map" },
+];
+const DEFAULT_QUESTS: LocalizedText[] = [
+  { th: "สำรวจดันเจี้ยนโบราณ", en: "Explore the ancient dungeon" },
+  { th: "ค้นหาโบราณวัตถุที่หายสาบสูญ", en: "Recover the lost relic" },
+  { th: "กำจัดอสูรรัตติกาล", en: "Defeat the nightborn beast" },
+];
 
 const GamePlayPage = () => {
   const params = useParams<{ slug: string }>();
   const slug = (params?.slug ?? "").toString();
   const router = useRouter();
   const game = useMemo(() => findGameBySlug(slug), [slug]);
+  const { language } = useLanguage();
+  const copy = {
+    th: {
+      loading: "กำลังเตรียมการผจญภัยของคุณ...",
+      turn: "เทิร์นที่",
+      restart: "เริ่มใหม่",
+      changeCharacter: "เปลี่ยนตัวละคร",
+      story: "เรื่องราว",
+      whatNext: "คุณจะทำอะไรต่อ?",
+      characterStatus: "สถานะตัวละคร",
+      inventory: "ช่องเก็บของ",
+      quests: "ภารกิจที่ทำอยู่",
+      setupWarning: "โปรดตั้งค่าตัวละครก่อนเริ่มเล่น",
+      goToSetup: "ไปตั้งค่าการผจญภัย",
+      fallbackNotice: "ระบบขอใช้เส้นเรื่องสำรองเนื่องจากเกิดข้อผิดพลาดชั่วคราว",
+      youChose: "คุณเลือก",
+      currentSceneAlt: "ฉากปัจจุบัน",
+    },
+    en: {
+      loading: "Preparing your adventure...",
+      turn: "Turn",
+      restart: "Restart",
+      changeCharacter: "Change character",
+      story: "Story",
+      whatNext: "What will you do next?",
+      characterStatus: "Character status",
+      inventory: "Inventory",
+      quests: "Active quests",
+      setupWarning: "Please set up your character before playing",
+      goToSetup: "Go to setup",
+      fallbackNotice: "Using a backup storyline due to a temporary error",
+      youChose: "You chose",
+      currentSceneAlt: "Current scene",
+    },
+  } as const;
+  const text = language === "en" ? copy.en : copy.th;
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [turn, setTurn] = useState(1);
   const [character, setCharacter] = useState<CharacterSelection | null>(null);
   const [stats] = useState<AdventureStats>(DEFAULT_STATS);
-  const [inventory] = useState(DEFAULT_INVENTORY);
-  const [quests] = useState(DEFAULT_QUESTS);
-  const [narration, setNarration] = useState<string>(INITIAL_NARRATION);
-  const [choices, setChoices] = useState<string[]>(INITIAL_CHOICES);
+  const inventory = useMemo(() => DEFAULT_INVENTORY.map((item) => getLocalizedText(item, language)), [language]);
+  const quests = useMemo(() => DEFAULT_QUESTS.map((quest) => getLocalizedText(quest, language)), [language]);
+  const [narration, setNarration] = useState<string>(() => getLocalizedText(INITIAL_NARRATION, language));
+  const [choices, setChoices] = useState<string[]>(() =>
+    INITIAL_CHOICES.map((choice) => getLocalizedText(choice, language)),
+  );
 
   useEffect(() => {
     if (!slug) return;
@@ -90,12 +139,19 @@ const GamePlayPage = () => {
         attributes: { ...createDefaultAttributes(), ...(parsed.attributes ?? {}) },
       });
     } catch (error) {
-      console.error("ไม่สามารถโหลดตัวละครได้", error);
+      console.error("Unable to load character", error);
       router.replace(`/game/${slug}`);
     } finally {
       setIsInitializing(false);
     }
   }, [game, router, slug]);
+
+  useEffect(() => {
+    if (turn === 1) {
+      setNarration(getLocalizedText(INITIAL_NARRATION, language));
+      setChoices(INITIAL_CHOICES.map((choice) => getLocalizedText(choice, language)));
+    }
+  }, [language, turn]);
 
   const handleChoice = async (choice: string) => {
     if (!character || !game) return;
@@ -113,11 +169,12 @@ const GamePlayPage = () => {
           genre: character.genre,
           race: character.race,
           className: character.class,
+          language,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("ไม่สามารถประมวลผลเรื่องราวได้");
+        throw new Error("Unable to process story");
       }
 
       const data = (await response.json()) as StoryResponse;
@@ -154,7 +211,7 @@ const GamePlayPage = () => {
       console.error(error);
       setNarration(
         (previous) =>
-          `${previous}\n\nคุณเลือก: ${choice}\n(ระบบขอใช้เส้นเรื่องสำรองเนื่องจากเกิดข้อผิดพลาดชั่วคราว)`,
+          `${previous}\n\n${text.youChose}: ${choice}\n(${text.fallbackNotice})`,
       );
       setTurn((prev) => prev + 1);
     } finally {
@@ -164,8 +221,8 @@ const GamePlayPage = () => {
 
   const handleRestartStory = () => {
     setTurn(1);
-    setNarration(INITIAL_NARRATION);
-    setChoices(INITIAL_CHOICES);
+    setNarration(getLocalizedText(INITIAL_NARRATION, language));
+    setChoices(INITIAL_CHOICES.map((choice) => getLocalizedText(choice, language)));
     setIsLoading(false);
     sessionStorage.removeItem(getEndSummaryStorageKey(slug));
   };
@@ -181,7 +238,7 @@ const GamePlayPage = () => {
         <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
           <CardContent className="p-12 flex flex-col items-center gap-4">
             <Loader2 className="h-10 w-10 text-accent animate-spin" />
-            <p className="text-muted-foreground text-lg text-center">กำลังเตรียมการผจญภัยของคุณ...</p>
+            <p className="text-muted-foreground text-lg text-center">{text.loading}</p>
           </CardContent>
         </Card>
       </div>
@@ -209,7 +266,9 @@ const GamePlayPage = () => {
                   </Badge>
                 </div>
                 <h1 className="text-3xl font-bold text-foreground mb-1">{game.title}</h1>
-                <p className="text-muted-foreground">เทิร์นที่ {turn} • {game.tagline}</p>
+                <p className="text-muted-foreground">
+                  {text.turn} {turn} • {getLocalizedText(game.tagline, language)}
+                </p>
               </div>
               <div className="flex gap-2">
                 <Button
@@ -218,10 +277,10 @@ const GamePlayPage = () => {
                   className="border-destructive text-destructive hover:bg-destructive/10"
                 >
                   <RefreshCw className="h-4 w-4 mr-2" />
-                  เริ่มใหม่
+                  {text.restart}
                 </Button>
                 <Button variant="secondary" onClick={handleChangeCharacter}>
-                  เปลี่ยนตัวละคร
+                  {text.changeCharacter}
                 </Button>
               </div>
             </div>
@@ -238,7 +297,7 @@ const GamePlayPage = () => {
                       ) : (
                         <Image
                           src={gamePlaceholder}
-                          alt="ฉากปัจจุบัน"
+                          alt={text.currentSceneAlt}
                           fill
                           priority
                           className="object-cover"
@@ -253,7 +312,7 @@ const GamePlayPage = () => {
                   <CardContent className="p-6">
                     <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
                       <Sparkles className="h-5 w-5 text-accent" />
-                      เรื่องราว
+                      {text.story}
                     </h2>
                     <ScrollArea className="h-[300px] pr-4">
                       <p className="text-foreground leading-relaxed whitespace-pre-line">{narration}</p>
@@ -263,7 +322,7 @@ const GamePlayPage = () => {
 
                 <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
                   <CardContent className="p-6">
-                    <h2 className="text-xl font-semibold text-foreground mb-4">คุณจะทำอะไรต่อ?</h2>
+                    <h2 className="text-xl font-semibold text-foreground mb-4">{text.whatNext}</h2>
                     <div className="grid md:grid-cols-2 gap-3">
                       {choices.map((choice, index) => (
                         <Button
@@ -285,7 +344,7 @@ const GamePlayPage = () => {
               <div className="space-y-6">
                 <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
                   <CardContent className="p-6">
-                    <h2 className="text-lg font-semibold text-foreground mb-4">สถานะตัวละคร</h2>
+                    <h2 className="text-lg font-semibold text-foreground mb-4">{text.characterStatus}</h2>
 
                     <div className="space-y-4">
                       <div>
@@ -339,7 +398,7 @@ const GamePlayPage = () => {
                   <CardContent className="p-6">
                     <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                       <Package className="h-5 w-5 text-accent" />
-                      ช่องเก็บของ
+                      {text.inventory}
                     </h2>
                     <div className="flex flex-wrap gap-2">
                       {inventory.map((item, index) => (
@@ -353,7 +412,7 @@ const GamePlayPage = () => {
 
                 <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
                   <CardContent className="p-6">
-                    <h2 className="text-lg font-semibold text-foreground mb-4">ภารกิจที่ทำอยู่</h2>
+                    <h2 className="text-lg font-semibold text-foreground mb-4">{text.quests}</h2>
                     <ul className="space-y-3">
                       {quests.map((quest, index) => (
                         <li key={index} className="flex items-start gap-2">
@@ -391,10 +450,10 @@ const GamePlayPage = () => {
               <CardContent className="p-12 text-center space-y-4">
                 <Sparkles className="h-10 w-10 text-accent mx-auto" />
                 <p className="text-lg text-muted-foreground">
-                  โปรดตั้งค่าตัวละครก่อนเริ่มเล่น
+                  {text.setupWarning}
                 </p>
                 <Button onClick={() => router.push(`/game/${slug}`)} className="bg-gradient-primary hover:shadow-glow-orange">
-                  ไปตั้งค่าการผจญภัย
+                  {text.goToSetup}
                 </Button>
               </CardContent>
             </Card>

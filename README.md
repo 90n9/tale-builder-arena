@@ -1,6 +1,6 @@
 # TaleBuilder Arena
 
-Thai-language AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. The experience centers on character creation, an interactive story mock, and an achievements tracker.
+AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. The experience centers on character creation, an interactive story mock, and an achievements tracker. The UI is bilingual (TH/EN) with Thai as default.
 
 ## Requirements
 - Node 18.18+ (Next.js 15) and npm.
@@ -22,8 +22,8 @@ Thai-language AI-driven text RPG rebuilt on Next.js for better SEO, routing, and
 - Assets: theme images in `src/assets`; public files that should be served verbatim belong in `public/`.
 
 ## API Contract
-- `POST /api/story` accepts `{ choice?: string; genre?: string; race?: string; className?: string; turn?: number }` and returns `{ turn, narration, choices, shouldEnd, achievementId }`.
-- The endpoint is mock-only: it stitches narration, rotates 4 choice options, clamps turns to 6, and seeds a genre-matching achievement when `shouldEnd` is true.
+- `POST /api/story` accepts `{ choice?: string; genre?: string; race?: string; className?: string; turn?: number; language?: "th" | "en" }` and returns `{ turn, narration, choices, shouldEnd, achievementId }`.
+- The endpoint is mock-only: it stitches narration, rotates 4 choice options, clamps turns to 6, and seeds a genre-matching achievement when `shouldEnd` is true. `language` controls the narration/choices text and defaults to Thai when omitted.
 - `GET /api/story` responds with a short usage hint for debugging.
 
 ## State & Persistence
@@ -43,3 +43,4 @@ Thai-language AI-driven text RPG rebuilt on Next.js for better SEO, routing, and
 - TypeScript + React function components; PascalCase components, camelCase variables, kebab-case filenames for single exports.
 - Run ESLint (`eslint.config.js`) before committing; keep assets in `src/assets` and public files in `public`.
 - Follow the patterns in `docs/design-system.md` before adjusting UI. Commit messages are short and imperative (e.g., “Add dashboard charts”).
+- For copy/UI changes, add both Thai and English strings. Use `LanguageProvider` + `useLanguage` for switching, and store translatable strings as `LocalizedText` objects in data/util files. Thai is the default and is persisted in `localStorage`.

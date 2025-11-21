@@ -10,6 +10,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { findGameBySlug } from "@/data/games";
+import { useLanguage } from "@/contexts/language-context";
+import { getLocalizedText } from "@/lib/i18n";
 import {
   ATTRIBUTE_MAX_POINTS,
   attributeLabels,
@@ -34,6 +36,42 @@ const GameSetupPage = () => {
   const slug = (params?.slug ?? "").toString();
   const router = useRouter();
   const game = useMemo(() => findGameBySlug(slug), [slug]);
+  const { language } = useLanguage();
+  const copy = {
+    th: {
+      tone: "โทน:",
+      length: "ความยาว:",
+      backToStories: "กลับไปเลือกเรื่องอื่น",
+      chooseRaceTitle: "เลือกเผ่าพันธุ์",
+      chooseRaceSubtitle: "ตั้งรากฐานเชื้อสายให้เข้ากับโทนของเรื่อง",
+      backToGameList: "กลับไปเลือกรายการเกม",
+      chooseClassTitle: "เลือกสายอาชีพ",
+      chooseClassSubtitle: "จับคู่กับทีมของคุณเพื่อรับมือสถานการณ์ของเรื่องนี้",
+      backToRace: "กลับไปเลือกเผ่าพันธุ์",
+      attributesTitle: "ปรับค่าสถานะ",
+      attributesSubtitle: "บาลานซ์ความแข็งแกร่งเพื่อเตรียมรับมือเหตุการณ์เฉพาะของเรื่องนี้",
+      pointsUsed: "ใช้แต้มแล้ว",
+      backToClass: "กลับไปเลือกสายอาชีพ",
+      start: "เริ่มการผจญภัย",
+    },
+    en: {
+      tone: "Tone:",
+      length: "Length:",
+      backToStories: "Back to other stories",
+      chooseRaceTitle: "Choose your race",
+      chooseRaceSubtitle: "Set your lineage to match the tone of this tale.",
+      backToGameList: "Back to game list",
+      chooseClassTitle: "Choose your class",
+      chooseClassSubtitle: "Pair with your party to tackle this scenario.",
+      backToRace: "Back to race selection",
+      attributesTitle: "Distribute attributes",
+      attributesSubtitle: "Balance your strengths for this story's challenges.",
+      pointsUsed: "Points used",
+      backToClass: "Back to class selection",
+      start: "Start adventure",
+    },
+  } as const;
+  const text = language === "en" ? copy.en : copy.th;
   const [step, setStep] = useState<CharacterCreationStep>("race");
   const [character, setCharacter] = useState<CharacterSelection>(() => ({
     ...createEmptyCharacter(),
@@ -66,7 +104,7 @@ const GameSetupPage = () => {
       setCharacter(restored);
       setStep(getNextStep(restored));
     } catch (error) {
-      console.error("ไม่สามารถโหลดตัวละครที่บันทึกไว้ได้", error);
+      console.error("Unable to load saved character", error);
     }
   }, [game, router, slug]);
 
@@ -112,17 +150,19 @@ const GameSetupPage = () => {
               <div className="space-y-2">
                 <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
                 <h1 className="text-4xl font-bold text-foreground uppercase tracking-wide">{game.title}</h1>
-                <p className="text-secondary font-semibold">{game.tagline}</p>
-                <p className="text-muted-foreground max-w-3xl leading-relaxed">{game.description}</p>
+                <p className="text-secondary font-semibold">{getLocalizedText(game.tagline, language)}</p>
+                <p className="text-muted-foreground max-w-3xl leading-relaxed">
+                  {getLocalizedText(game.description, language)}
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {game.highlights.map((highlight) => (
                     <Badge
-                      key={highlight}
+                      key={highlight.th}
                       variant="secondary"
                       className="bg-accent/15 text-accent border border-accent/30"
                     >
                       <Flame className="h-3 w-3 mr-1 text-accent" />
-                      {highlight}
+                      {getLocalizedText(highlight, language)}
                     </Badge>
                   ))}
                 </div>
@@ -130,15 +170,17 @@ const GameSetupPage = () => {
               <div className="text-left md:text-right space-y-2">
                 <p className="text-sm text-muted-foreground flex items-center gap-2 md:justify-end">
                   <Compass className="h-4 w-4 text-secondary" />
-                  โทน: <span className="text-foreground">{game.tone}</span>
+                  {text.tone} <span className="text-foreground">{getLocalizedText(game.tone, language)}</span>
                 </p>
-                <p className="text-sm text-muted-foreground">ความยาว: {game.length}</p>
+                <p className="text-sm text-muted-foreground">
+                  {text.length} {getLocalizedText(game.length, language)}
+                </p>
                 <Button
                   variant="outline"
                   onClick={() => router.push("/game")}
                   className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
                 >
-                  กลับไปเลือกเรื่องอื่น
+                  {text.backToStories}
                 </Button>
               </div>
             </CardContent>
@@ -148,8 +190,8 @@ const GameSetupPage = () => {
             <div className="space-y-8">
               <div className="text-center space-y-3">
                 <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
-                <h2 className="text-5xl font-bold text-foreground">เลือกเผ่าพันธุ์</h2>
-                <p className="text-muted-foreground text-lg">ตั้งรากฐานเชื้อสายให้เข้ากับโทนของเรื่อง</p>
+                <h2 className="text-5xl font-bold text-foreground">{text.chooseRaceTitle}</h2>
+                <p className="text-muted-foreground text-lg">{text.chooseRaceSubtitle}</p>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -161,7 +203,7 @@ const GameSetupPage = () => {
                   >
                     <CardContent className="p-6 text-center space-y-2">
                       <h3 className="text-2xl font-bold text-foreground">{race.name}</h3>
-                      <p className="text-muted-foreground">{race.description}</p>
+                      <p className="text-muted-foreground">{getLocalizedText(race.description, language)}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -174,7 +216,7 @@ const GameSetupPage = () => {
                   className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  กลับไปเลือกรายการเกม
+                  {text.backToGameList}
                 </Button>
               </div>
             </div>
@@ -187,8 +229,8 @@ const GameSetupPage = () => {
                   <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
                   <Badge className="bg-accent/20 text-accent border border-accent/30">{character.race}</Badge>
                 </div>
-                <h2 className="text-5xl font-bold text-foreground">เลือกสายอาชีพ</h2>
-                <p className="text-muted-foreground text-lg">จับคู่กับทีมของคุณเพื่อรับมือสถานการณ์ของเรื่องนี้</p>
+                <h2 className="text-5xl font-bold text-foreground">{text.chooseClassTitle}</h2>
+                <p className="text-muted-foreground text-lg">{text.chooseClassSubtitle}</p>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -200,7 +242,7 @@ const GameSetupPage = () => {
                   >
                     <CardContent className="p-6 text-center space-y-2">
                       <h3 className="text-2xl font-bold text-foreground">{cls.name}</h3>
-                      <p className="text-muted-foreground">{cls.description}</p>
+                      <p className="text-muted-foreground">{getLocalizedText(cls.description, language)}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -213,7 +255,7 @@ const GameSetupPage = () => {
                   className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  กลับไปเลือกเผ่าพันธุ์
+                  {text.backToRace}
                 </Button>
               </div>
             </div>
@@ -227,10 +269,10 @@ const GameSetupPage = () => {
                   <Badge className="bg-accent/20 text-accent border border-accent/30">{character.race}</Badge>
                   <Badge className="bg-accent/20 text-accent border border-accent/30">{character.class}</Badge>
                 </div>
-                <h2 className="text-5xl font-bold text-foreground">ปรับค่าสถานะ</h2>
-                <p className="text-muted-foreground text-lg">บาลานซ์ความแข็งแกร่งเพื่อเตรียมรับมือเหตุการณ์เฉพาะของเรื่องนี้</p>
+                <h2 className="text-5xl font-bold text-foreground">{text.attributesTitle}</h2>
+                <p className="text-muted-foreground text-lg">{text.attributesSubtitle}</p>
                 <p className="text-sm text-muted-foreground">
-                  ใช้แต้มแล้ว:{" "}
+                  {text.pointsUsed}:{" "}
                   <span className={totalAttributePoints > ATTRIBUTE_MAX_POINTS ? "text-destructive" : "text-accent"}>
                     {totalAttributePoints}
                   </span>{" "}
@@ -245,7 +287,7 @@ const GameSetupPage = () => {
                       <div key={key} className="space-y-2">
                         <div className="flex justify-between items-center">
                           <Label className="text-foreground text-lg">
-                            {attributeLabels[key as keyof CharacterSelection["attributes"]] ?? key}
+                            {getLocalizedText(attributeLabels[key as keyof CharacterSelection["attributes"]], language) ?? key}
                           </Label>
                           <span className="text-accent font-bold text-xl">{value}</span>
                         </div>
@@ -270,14 +312,14 @@ const GameSetupPage = () => {
                   className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  กลับไปเลือกสายอาชีพ
+                  {text.backToClass}
                 </Button>
                 <Button
                   onClick={handleStartGame}
                   disabled={!canStart}
                   className="bg-gradient-primary hover:shadow-glow-orange"
                 >
-                  เริ่มการผจญภัย
+                  {text.start}
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </div>

@@ -20,6 +20,7 @@
 - Use PascalCase for components, camelCase for variables/functions, and kebab-case for filenames that export a single component.
 - Follow existing Tailwind utility patterns; co-locate component-specific styles with the component.
 - ESLint rules are defined in `eslint.config.js`; run lint before committing.
+- All user-facing copy must be bilingual (Thai default, English alternate). Store translatable text as `LocalizedText` objects and read via `useLanguage`/`LanguageProvider`; do not hardcode single-language strings in UI.
 
 ## Testing Guidelines
 - No automated test suite is configured yet. Add tests alongside features when practical (e.g., `*.test.tsx`) and ensure they can run via a future `npm test`.

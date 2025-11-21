@@ -4,9 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Scroll } from "lucide-react";
+import { useLanguage } from "@/contexts/language-context";
+import { LanguageToggle } from "@/components/LanguageToggle";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const { language } = useLanguage();
+  const labels = {
+    th: {
+      home: "หน้าหลัก",
+      achievements: "ความสำเร็จ",
+      start: "เริ่มการผจญภัย",
+    },
+    en: {
+      home: "Home",
+      achievements: "Achievements",
+      start: "Start Adventure",
+    },
+  } as const;
+  const text = language === "en" ? labels.en : labels.th;
   
   const isActive = (path: string) => pathname === path;
 
@@ -27,7 +43,7 @@ const Navbar = () => {
               isActive("/") ? "text-accent" : "text-muted-foreground"
             }`}
           >
-            หน้าหลัก
+            {text.home}
           </Link>
           <Link
             href="/achievements"
@@ -35,12 +51,12 @@ const Navbar = () => {
               isActive("/achievements") ? "text-accent" : "text-muted-foreground"
             }`}
           >
-            ความสำเร็จ
+            {text.achievements}
           </Link>
-          
+          <LanguageToggle />
           <Button asChild className="bg-gradient-primary hover:shadow-glow-orange transition-all text-sm font-semibold uppercase text-primary-foreground border border-secondary/50">
             <Link href="/game">
-              เริ่มการผจญภัย
+              {text.start}
             </Link>
           </Button>
         </div>

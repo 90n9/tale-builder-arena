@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { findAchievementById, type Achievement } from "@/data/achievements";
 import { findGameBySlug } from "@/data/games";
+import { useLanguage } from "@/contexts/language-context";
+import { getLocalizedText } from "@/lib/i18n";
 import { getEndSummaryStorageKey, type AdventureSummary } from "@/lib/game-config";
 
 const EndGamePage = () => {
@@ -17,6 +19,50 @@ const EndGamePage = () => {
   const slug = (params?.slug ?? "").toString();
   const router = useRouter();
   const game = useMemo(() => findGameBySlug(slug), [slug]);
+  const { language } = useLanguage();
+  const copy = {
+    th: {
+      loading: "กำลังดึงข้อมูลสรุปการผจญภัย...",
+      completed: (title: string) => `${title} เสร็จสิ้น!`,
+      summaryTitle: "สรุปเส้นทาง",
+      characterInfo: "ข้อมูลตัวละคร",
+      genre: "แนวเรื่อง:",
+      race: "เผ่าพันธุ์:",
+      class: "สายอาชีพ:",
+      stats: "สถิติการผจญภัย",
+      turnCount: "จำนวนเทิร์น:",
+      finalHp: "HP สุดท้าย:",
+      gold: "ทองที่เก็บได้:",
+      achievementUnlocked: "ปลดล็อกความสำเร็จ!",
+      yourStory: "เรื่องเล่าของคุณ",
+      closing: (title: string) =>
+        `คุณก้าวผ่านบททดสอบจาก ${title} และกลับออกมาพร้อมประสบการณ์ล้ำค่า พร้อมจะออกผจญภัยอีกครั้งหรือไม่?`,
+      viewAchievements: "ดูความสำเร็จทั้งหมด",
+      playAgain: "เล่นอีกครั้ง",
+      changeCharacter: "เปลี่ยนตัวละคร",
+    },
+    en: {
+      loading: "Fetching your adventure recap...",
+      completed: (title: string) => `${title} completed!`,
+      summaryTitle: "Journey summary",
+      characterInfo: "Character details",
+      genre: "Genre:",
+      race: "Race:",
+      class: "Class:",
+      stats: "Adventure stats",
+      turnCount: "Turn count:",
+      finalHp: "Final HP:",
+      gold: "Gold collected:",
+      achievementUnlocked: "Achievement unlocked!",
+      yourStory: "Your tale",
+      closing: (title: string) =>
+        `You cleared ${title} and returned with hard-earned experience. Ready to dive back in?`,
+      viewAchievements: "View all achievements",
+      playAgain: "Play again",
+      changeCharacter: "Change character",
+    },
+  } as const;
+  const text = language === "en" ? copy.en : copy.th;
   const [summary, setSummary] = useState<AdventureSummary | null>(null);
   const [achievement, setAchievement] = useState<Achievement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -62,7 +108,7 @@ const EndGamePage = () => {
             <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
               <CardContent className="p-12 flex flex-col items-center gap-4">
                 <Loader2 className="h-10 w-10 text-accent animate-spin" />
-                <p className="text-muted-foreground text-lg text-center">กำลังดึงข้อมูลสรุปการผจญภัย...</p>
+                <p className="text-muted-foreground text-lg text-center">{text.loading}</p>
               </CardContent>
             </Card>
           </div>
@@ -82,8 +128,8 @@ const EndGamePage = () => {
             <div className="mb-8">
               <Sparkles className="h-20 w-20 text-accent mx-auto mb-4 animate-pulse" />
             </div>
-            <h1 className="text-6xl font-bold text-foreground mb-4">{game.title} เสร็จสิ้น!</h1>
-            <p className="text-muted-foreground text-xl">{game.tagline}</p>
+            <h1 className="text-6xl font-bold text-foreground mb-4">{text.completed(game.title)}</h1>
+            <p className="text-muted-foreground text-xl">{getLocalizedText(game.tagline, language)}</p>
             <div className="flex items-center justify-center gap-2 mt-4">
               <Badge className="bg-accent/20 text-accent border border-accent/30">{character.race}</Badge>
               <Badge className="bg-accent/20 text-accent border border-accent/30">{character.class}</Badge>
@@ -92,36 +138,36 @@ const EndGamePage = () => {
 
           <Card className="ornate-corners border-2 border-accent/50 bg-gradient-card shadow-glow-cyan mb-8">
             <CardContent className="p-8">
-              <h2 className="text-3xl font-bold text-foreground mb-6 text-center">สรุปเส้นทาง</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-6 text-center">{text.summaryTitle}</h2>
 
               <div className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-accent">ข้อมูลตัวละคร</h3>
+                    <h3 className="text-lg font-semibold text-accent">{text.characterInfo}</h3>
                     <div className="space-y-2 text-foreground">
                       <p>
-                        <span className="text-muted-foreground">แนวเรื่อง:</span> {character.genre}
+                        <span className="text-muted-foreground">{text.genre}</span> {character.genre}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">เผ่าพันธุ์:</span> {character.race}
+                        <span className="text-muted-foreground">{text.race}</span> {character.race}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">สายอาชีพ:</span> {character.class}
+                        <span className="text-muted-foreground">{text.class}</span> {character.class}
                       </p>
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-accent">สถิติการผจญภัย</h3>
+                    <h3 className="text-lg font-semibold text-accent">{text.stats}</h3>
                     <div className="space-y-2 text-foreground">
                       <p>
-                        <span className="text-muted-foreground">จำนวนเทิร์น:</span> {turn}
+                        <span className="text-muted-foreground">{text.turnCount}</span> {turn}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">HP สุดท้าย:</span> {stats.hp}/{stats.maxHp}
+                        <span className="text-muted-foreground">{text.finalHp}</span> {stats.hp}/{stats.maxHp}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">ทองที่เก็บได้:</span> {stats.gold}
+                        <span className="text-muted-foreground">{text.gold}</span> {stats.gold}
                       </p>
                     </div>
                   </div>
@@ -131,7 +177,7 @@ const EndGamePage = () => {
                   <div className="pt-6 border-t border-border">
                     <h3 className="text-lg font-semibold text-accent mb-4 flex items-center gap-2">
                       <Trophy className="h-5 w-5" />
-                      ปลดล็อกความสำเร็จ!
+                      {text.achievementUnlocked}
                     </h3>
                     <Card className="ornate-corners border-2 border-secondary/50 bg-secondary/10">
                       <CardContent className="p-4">
@@ -139,7 +185,9 @@ const EndGamePage = () => {
                           <Trophy className="h-8 w-8 text-secondary flex-shrink-0 mt-1" />
                           <div>
                             <h4 className="text-xl font-bold text-secondary mb-2">{achievement.name}</h4>
-                            <p className="text-foreground mb-2">{achievement.description}</p>
+                            <p className="text-foreground mb-2">
+                              {getLocalizedText(achievement.description, language)}
+                            </p>
                             <Badge className="bg-secondary/20 text-secondary border border-secondary/30 capitalize">
                               {achievement.rarity}
                             </Badge>
@@ -151,10 +199,9 @@ const EndGamePage = () => {
                 )}
 
                 <div className="pt-6 border-t border-border">
-                  <h3 className="text-lg font-semibold text-foreground mb-3 text-center">เรื่องเล่าของคุณ</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-3 text-center">{text.yourStory}</h3>
                   <p className="text-muted-foreground text-center leading-relaxed">
-                    คุณก้าวผ่านบททดสอบจาก {game.title} และกลับออกมาพร้อมประสบการณ์ล้ำค่า
-                    พร้อมจะออกผจญภัยอีกครั้งหรือไม่?
+                    {text.closing(game.title)}
                   </p>
                 </div>
               </div>
@@ -169,19 +216,19 @@ const EndGamePage = () => {
             >
               <Link href="/achievements">
                 <Trophy className="h-5 w-5 mr-2" />
-                ดูความสำเร็จทั้งหมด
+                {text.viewAchievements}
               </Link>
             </Button>
             <Button onClick={handleReplay} className="bg-gradient-primary hover:shadow-glow-orange text-lg px-8 py-6">
               <RefreshCw className="h-5 w-5 mr-2" />
-              เล่นอีกครั้ง
+              {text.playAgain}
             </Button>
             <Button
               variant="secondary"
               className="text-lg px-8 py-6"
               onClick={handleChangeCharacter}
             >
-              เปลี่ยนตัวละคร
+              {text.changeCharacter}
             </Button>
           </div>
         </div>

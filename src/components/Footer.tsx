@@ -1,7 +1,41 @@
+"use client";
+
 import Link from "next/link";
 import { Scroll } from "lucide-react";
+import { useLanguage } from "@/contexts/language-context";
 
 const Footer = () => {
+  const { language } = useLanguage();
+  const copy = {
+    th: {
+      description: "เกมเล่าเรื่องด้วยพลัง AI ที่ปล่อยให้ทุกการตัดสินใจของคุณกำหนดชะตาเรื่องราว",
+      quickLinks: "ลิงก์ด่วน",
+      home: "หน้าหลัก",
+      play: "เล่นเกม",
+      achievements: "ความสำเร็จ",
+      about: "เกี่ยวกับเรา",
+      contact: "ติดต่อเรา",
+      legal: "ข้อมูลทางกฎหมาย",
+      privacy: "นโยบายความเป็นส่วนตัว",
+      terms: "เงื่อนไขการให้บริการ",
+      copyright: "© 2025 TaleBuilder Arena. สงวนลิขสิทธิ์",
+    },
+    en: {
+      description: "An AI-powered storytelling game where every choice reshapes the journey.",
+      quickLinks: "Quick Links",
+      home: "Home",
+      play: "Play",
+      achievements: "Achievements",
+      about: "About",
+      contact: "Contact",
+      legal: "Legal",
+      privacy: "Privacy Policy",
+      terms: "Terms of Use",
+      copyright: "© 2025 TaleBuilder Arena. All rights reserved.",
+    },
+  } as const;
+  const text = language === "en" ? copy.en : copy.th;
+
   return (
     <footer className="bg-card border-t border-border mt-20">
       <div className="container mx-auto px-4 py-12">
@@ -12,52 +46,52 @@ const Footer = () => {
               <span className="font-bold text-foreground">TaleBuilder Arena</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              เกมเล่าเรื่องด้วยพลัง AI ที่ปล่อยให้ทุกการตัดสินใจของคุณกำหนดชะตาเรื่องราว
+              {text.description}
             </p>
           </div>
           
           <div>
-            <h3 className="font-semibold text-foreground mb-4">ลิงก์ด่วน</h3>
+            <h3 className="font-semibold text-foreground mb-4">{text.quickLinks}</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  หน้าหลัก
+                  {text.home}
                 </Link>
               </li>
               <li>
                 <Link href="/game" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  เล่นเกม
+                  {text.play}
                 </Link>
               </li>
               <li>
                 <Link href="/achievements" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  ความสำเร็จ
+                  {text.achievements}
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  เกี่ยวกับเรา
+                  {text.about}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  ติดต่อเรา
+                  {text.contact}
                 </Link>
               </li>
             </ul>
           </div>
           
           <div>
-            <h3 className="font-semibold text-foreground mb-4">ข้อมูลทางกฎหมาย</h3>
+            <h3 className="font-semibold text-foreground mb-4">{text.legal}</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  นโยบายความเป็นส่วนตัว
+                  {text.privacy}
                 </Link>
               </li>
               <li>
                 <Link href="/terms-of-use" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  เงื่อนไขการให้บริการ
+                  {text.terms}
                 </Link>
               </li>
             </ul>
@@ -66,7 +100,7 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
-            © 2025 TaleBuilder Arena. สงวนลิขสิทธิ์
+            {text.copyright}
           </p>
         </div>
       </div>

@@ -4,8 +4,26 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/language-context";
 
 export default function NotFound() {
+  const { language } = useLanguage();
+  const copy = {
+    th: {
+      title: "ไม่พบหน้านี้",
+      description: "ดูเหมือนว่าคุณเดินออกนอกเส้นทาง กลับสู่ด่านหลักหรือเริ่มการผจญภัยใหม่เพื่อเดินหน้าต่อ",
+      backHome: "กลับหน้าหลัก",
+      play: "เริ่มการผจญภัย",
+    },
+    en: {
+      title: "Page not found",
+      description: "Looks like you strayed off the path. Return to base or start a new run to keep going.",
+      backHome: "Back home",
+      play: "Start adventure",
+    },
+  } as const;
+  const text = language === "en" ? copy.en : copy.th;
+
   return (
     <div className="min-h-screen bg-background relative">
       <Navbar />
@@ -21,9 +39,9 @@ export default function NotFound() {
                   <Compass className="h-12 w-12 text-accent" />
                 </div>
               </div>
-              <h1 className="text-5xl font-bold text-foreground uppercase tracking-wide">ไม่พบหน้านี้</h1>
+              <h1 className="text-5xl font-bold text-foreground uppercase tracking-wide">{text.title}</h1>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                ดูเหมือนว่าคุณเดินออกนอกเส้นทาง กลับสู่ด่านหลักหรือเริ่มการผจญภัยใหม่เพื่อเดินหน้าต่อ
+                {text.description}
               </p>
 
               <div className="flex flex-wrap gap-4 justify-center">
@@ -34,13 +52,13 @@ export default function NotFound() {
                 >
                   <Link href="/">
                     <Home className="h-5 w-5 mr-2" />
-                    กลับหน้าหลัก
+                    {text.backHome}
                   </Link>
                 </Button>
                 <Button className="bg-gradient-primary hover:shadow-glow-orange">
                   <Link href="/game" className="flex items-center">
                     <Play className="h-5 w-5 mr-2" />
-                    เริ่มการผจญภัย
+                    {text.play}
                   </Link>
                 </Button>
               </div>
