@@ -49,31 +49,40 @@ const GamePage = () => {
   });
 
   const genres = [
-    { name: "High Fantasy", description: "Epic adventures in magical realms" },
-    { name: "Dark Fantasy", description: "Gothic horror meets fantasy" },
-    { name: "Sci-Fi", description: "Futuristic technology and space exploration" },
-    { name: "Cyberpunk", description: "High tech, low life urban dystopia" },
-    { name: "Horror", description: "Survival against terrifying forces" },
-    { name: "Post-Apocalyptic", description: "Survive in the wasteland" },
+    { name: "High Fantasy", description: "ผจญภัยยิ่งใหญ่ในดินแดนเวทมนตร์" },
+    { name: "Dark Fantasy", description: "แฟนตาซีเข้มข้นผสานสยองขวัญกอธิค" },
+    { name: "Sci-Fi", description: "เทคโนโลยีอนาคตและการสำรวจอวกาศ" },
+    { name: "Cyberpunk", description: "โลกดิสโทเปียเทคโนโลยีสูง ชีวิตต่ำ" },
+    { name: "Horror", description: "เอาชีวิตรอดจากสิ่งลี้ลับน่าสะพรึง" },
+    { name: "Post-Apocalyptic", description: "ดิ้นรนอยู่รอดในดินแดนร้างพินาศ" },
   ];
 
   const races = [
-    { name: "Human", description: "Versatile and adaptable" },
-    { name: "Elf", description: "Graceful and wise" },
-    { name: "Dwarf", description: "Strong and resilient" },
-    { name: "Orc", description: "Powerful and fierce" },
-    { name: "Halfling", description: "Quick and lucky" },
-    { name: "Dragonborn", description: "Ancient and powerful" },
+    { name: "Human", description: "ยืดหยุ่นและปรับตัวเก่ง" },
+    { name: "Elf", description: "สง่างามและเปี่ยมปัญญา" },
+    { name: "Dwarf", description: "แข็งแรงและทรหด" },
+    { name: "Orc", description: "ทรงพลังและดุร้าย" },
+    { name: "Halfling", description: "ว่องไวและโชคดี" },
+    { name: "Dragonborn", description: "ทรงอำนาจจากสายเลือดโบราณ" },
   ];
 
   const classes = [
-    { name: "Warrior", description: "Master of melee combat" },
-    { name: "Mage", description: "Wielder of arcane magic" },
-    { name: "Rogue", description: "Stealth and cunning" },
-    { name: "Cleric", description: "Divine healer and protector" },
-    { name: "Ranger", description: "Nature's guardian" },
-    { name: "Paladin", description: "Holy warrior of justice" },
+    { name: "Warrior", description: "เชี่ยวชาญการต่อสู้ประชิดตัว" },
+    { name: "Mage", description: "จอมเวทผู้ควบคุมมนตร์" },
+    { name: "Rogue", description: "ลอบเร้นและชาญฉลาด" },
+    { name: "Cleric", description: "ผู้เยียวยาและพิทักษ์ด้วยพลังศักดิ์สิทธิ์" },
+    { name: "Ranger", description: "ผู้พิทักษ์แห่งธรรมชาติ" },
+    { name: "Paladin", description: "อัศวินศักดิ์สิทธิ์ผู้เที่ยงธรรม" },
   ];
+
+  const attributeLabels: Record<keyof Character["attributes"], string> = {
+    strength: "พละกำลัง",
+    intelligence: "สติปัญญา",
+    dexterity: "ความว่องไว",
+    constitution: "ความทนทาน",
+    wisdom: "ปรีชาญาณ",
+    charisma: "เสน่ห์",
+  };
 
   // Mock game state
   const [stats] = useState({
@@ -85,29 +94,29 @@ const GamePage = () => {
   });
 
   const [inventory] = useState([
-    "Iron Sword",
-    "Health Potion",
-    "Torch",
-    "Ancient Map",
+    "ดาบเหล็ก",
+    "ยาฟื้นพลัง",
+    "คบเพลิง",
+    "แผนที่โบราณ",
   ]);
 
   const [quests] = useState([
-    "Explore the Ancient Dungeon",
-    "Find the Lost Artifact",
-    "Defeat the Shadow Beast",
+    "สำรวจดันเจี้ยนโบราณ",
+    "ค้นหาโบราณวัตถุที่หายสาบสูญ",
+    "กำจัดอสูรรัตติกาล",
   ]);
 
-  const narration = `You stand at the entrance of an ancient dungeon, its weathered stone walls covered in mysterious glowing runes. The air is thick with an otherworldly energy, and the faint sound of dripping water echoes from the depths below. Your torch flickers, casting dancing shadows that seem almost alive. 
+  const narration = `คุณยืนอยู่หน้าดันเจี้ยนโบราณ กำแพงหินเก่าคร่ำคร่าประดับด้วยรูนเรืองแสงลึกลับ อากาศข้นหนืดด้วยพลังบางอย่างและเสียงหยดน้ำแว่วก้องจากเบื้องลึก คบเพลิงในมือสะบัดไหวสร้างเงาเต้นระยับราวกับมีชีวิต 
 
-Before you lie three paths: a narrow corridor to the left emanating a cold blue light, a wide passage straight ahead with ancient carvings on the walls, and a steep stairway descending to the right into darkness.
+เบื้องหน้ามีสามเส้นทาง: ทางเดินแคบทางซ้ายที่เรืองแสงสีฟ้าเย็นเฉียบ ทางเดินกว้างตรงหน้าพร้อมลายแกะสลักโบราณบนผนัง และบันไดชันทางขวาที่ทอดลงสู่ความมืดมิด
 
-What will you do?`;
+คุณจะทำอย่างไรต่อไป?`;
 
   const choices = [
-    "Take the narrow corridor with blue light",
-    "Enter the wide passage with carvings",
-    "Descend the dark stairway",
-    "Examine the runes more carefully first",
+    "เดินเข้าทางเดินแคบที่มีแสงสีฟ้า",
+    "เข้าสู่ทางเดินกว้างที่มีลายแกะสลัก",
+    "ลงบันไดสู่ความมืด",
+    "ตรวจสอบรูนเรืองแสงให้ละเอียดก่อน",
   ];
 
   const handleChoice = (choice: string) => {
@@ -195,8 +204,8 @@ What will you do?`;
     <div className="min-h-screen bg-background pt-20 pb-8 px-4">
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-foreground mb-4">Choose Your Genre</h1>
-          <p className="text-muted-foreground text-lg">Select the world you wish to explore</p>
+          <h1 className="text-5xl font-bold text-foreground mb-4">เลือกแนวเรื่อง</h1>
+          <p className="text-muted-foreground text-lg">เลือกโลกที่คุณอยากออกสำรวจ</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -224,8 +233,8 @@ What will you do?`;
           <Badge className="mb-4 bg-accent/20 text-accent border border-accent/30">
             {character.genre}
           </Badge>
-          <h1 className="text-5xl font-bold text-foreground mb-4">Choose Your Race</h1>
-          <p className="text-muted-foreground text-lg">Select your character's heritage</p>
+          <h1 className="text-5xl font-bold text-foreground mb-4">เลือกเผ่าพันธุ์</h1>
+          <p className="text-muted-foreground text-lg">เลือกรากฐานเชื้อสายของตัวละครคุณ</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -250,7 +259,7 @@ What will you do?`;
             className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Genre
+            ย้อนกลับไปเลือกแนว
           </Button>
         </div>
       </div>
@@ -269,8 +278,8 @@ What will you do?`;
               {character.race}
             </Badge>
           </div>
-          <h1 className="text-5xl font-bold text-foreground mb-4">Choose Your Class</h1>
-          <p className="text-muted-foreground text-lg">Select your character's profession</p>
+          <h1 className="text-5xl font-bold text-foreground mb-4">เลือกสายอาชีพ</h1>
+          <p className="text-muted-foreground text-lg">เลือกบทบาทที่ตัวละครของคุณถนัด</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -295,7 +304,7 @@ What will you do?`;
             className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Race
+            กลับไปเลือกเผ่าพันธุ์
           </Button>
         </div>
       </div>
@@ -317,12 +326,12 @@ What will you do?`;
               {character.class}
             </Badge>
           </div>
-          <h1 className="text-5xl font-bold text-foreground mb-4">Set Your Attributes</h1>
+          <h1 className="text-5xl font-bold text-foreground mb-4">ปรับค่าสถานะ</h1>
           <p className="text-muted-foreground text-lg mb-2">
-            Distribute your character's abilities
+            กระจายค่าสถานะให้สมดุลตามสไตล์ที่คุณอยากเล่น
           </p>
           <p className="text-sm text-muted-foreground">
-            Points Used: <span className={totalAttributePoints > maxAttributePoints ? "text-destructive" : "text-accent"}>{totalAttributePoints}</span> / {maxAttributePoints}
+            ใช้แต้มแล้ว: <span className={totalAttributePoints > maxAttributePoints ? "text-destructive" : "text-accent"}>{totalAttributePoints}</span> / {maxAttributePoints}
           </p>
         </div>
 
@@ -332,7 +341,9 @@ What will you do?`;
               {Object.entries(character.attributes).map(([key, value]) => (
                 <div key={key} className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <Label className="text-foreground text-lg capitalize">{key}</Label>
+                    <Label className="text-foreground text-lg">
+                      {attributeLabels[key as keyof Character["attributes"]] ?? key}
+                    </Label>
                     <span className="text-accent font-bold text-xl">{value}</span>
                   </div>
                   <Slider
@@ -356,14 +367,14 @@ What will you do?`;
             className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Class
+            กลับไปเลือกสายอาชีพ
           </Button>
           <Button
             onClick={handleStartGame}
             disabled={totalAttributePoints > maxAttributePoints}
             className="bg-gradient-primary hover:shadow-glow-orange"
           >
-            Start Adventure
+            เริ่มการผจญภัย
             <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         </div>
@@ -386,8 +397,8 @@ What will you do?`;
                   {character.class}
                 </Badge>
               </div>
-              <h1 className="text-3xl font-bold text-foreground mb-1">Current Adventure</h1>
-              <p className="text-muted-foreground">Turn {turn} • Chapter 1: The Ancient Dungeon</p>
+              <h1 className="text-3xl font-bold text-foreground mb-1">การผจญภัยปัจจุบัน</h1>
+              <p className="text-muted-foreground">เทิร์นที่ {turn} • บทที่ 1: ดันเจี้ยนโบราณ</p>
             </div>
             <Button
               variant="outline"
@@ -395,7 +406,7 @@ What will you do?`;
               className="border-destructive text-destructive hover:bg-destructive/10"
             >
               <RefreshCw className="h-4 w-4 mr-2" />
-              Restart
+              เริ่มใหม่
             </Button>
           </div>
 
@@ -412,7 +423,7 @@ What will you do?`;
                   ) : (
                     <img
                       src={gamePlaceholder}
-                      alt="Current scene"
+                      alt="ฉากปัจจุบัน"
                       className="w-full aspect-video object-cover"
                     />
                   )}
@@ -424,7 +435,7 @@ What will you do?`;
                 <CardContent className="p-6">
                   <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-accent" />
-                    Story
+                    เรื่องราว
                   </h2>
                   <ScrollArea className="h-[300px] pr-4">
                     <p className="text-foreground leading-relaxed whitespace-pre-line">
@@ -438,7 +449,7 @@ What will you do?`;
               <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
                 <CardContent className="p-6">
                   <h2 className="text-xl font-semibold text-foreground mb-4">
-                    What will you do?
+                    คุณจะทำอะไรต่อ?
                   </h2>
                   <div className="grid md:grid-cols-2 gap-3">
                     {choices.map((choice, index) => (
@@ -463,7 +474,7 @@ What will you do?`;
               {/* Character Stats */}
               <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
                 <CardContent className="p-6">
-                  <h2 className="text-lg font-semibold text-foreground mb-4">Character Stats</h2>
+                  <h2 className="text-lg font-semibold text-foreground mb-4">สถานะตัวละคร</h2>
                   
                   <div className="space-y-4">
                     <div>
@@ -518,7 +529,7 @@ What will you do?`;
                 <CardContent className="p-6">
                   <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                     <Package className="h-5 w-5 text-accent" />
-                    Inventory
+                    ช่องเก็บของ
                   </h2>
                   <div className="flex flex-wrap gap-2">
                     {inventory.map((item, index) => (
@@ -537,7 +548,7 @@ What will you do?`;
               {/* Quest Log */}
               <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
                 <CardContent className="p-6">
-                  <h2 className="text-lg font-semibold text-foreground mb-4">Active Quests</h2>
+                  <h2 className="text-lg font-semibold text-foreground mb-4">ภารกิจที่ทำอยู่</h2>
                   <ul className="space-y-3">
                     {quests.map((quest, index) => (
                       <li key={index} className="flex items-start gap-2">
@@ -562,31 +573,31 @@ What will you do?`;
           <div className="mb-8">
             <Sparkles className="h-20 w-20 text-accent mx-auto mb-4 animate-pulse" />
           </div>
-          <h1 className="text-6xl font-bold text-foreground mb-4">Adventure Complete!</h1>
-          <p className="text-muted-foreground text-xl">Your journey through the ancient dungeon has come to an end</p>
+          <h1 className="text-6xl font-bold text-foreground mb-4">การผจญภัยเสร็จสมบูรณ์!</h1>
+          <p className="text-muted-foreground text-xl">การเดินทางในดันเจี้ยนโบราณมาถึงบทสรุปแล้ว</p>
         </div>
 
         <Card className="ornate-corners border-2 border-accent/50 bg-gradient-card shadow-glow-cyan mb-8">
           <CardContent className="p-8">
-            <h2 className="text-3xl font-bold text-foreground mb-6 text-center">Final Summary</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-6 text-center">สรุปเส้นทาง</h2>
             
             <div className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-accent">Character Details</h3>
+                  <h3 className="text-lg font-semibold text-accent">ข้อมูลตัวละคร</h3>
                   <div className="space-y-2 text-foreground">
-                    <p><span className="text-muted-foreground">Genre:</span> {character.genre}</p>
-                    <p><span className="text-muted-foreground">Race:</span> {character.race}</p>
-                    <p><span className="text-muted-foreground">Class:</span> {character.class}</p>
+                    <p><span className="text-muted-foreground">แนวเรื่อง:</span> {character.genre}</p>
+                    <p><span className="text-muted-foreground">เผ่าพันธุ์:</span> {character.race}</p>
+                    <p><span className="text-muted-foreground">สายอาชีพ:</span> {character.class}</p>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-accent">Adventure Stats</h3>
+                  <h3 className="text-lg font-semibold text-accent">สถิติการผจญภัย</h3>
                   <div className="space-y-2 text-foreground">
-                    <p><span className="text-muted-foreground">Turns Taken:</span> {turn}</p>
-                    <p><span className="text-muted-foreground">Final HP:</span> {stats.hp}/{stats.maxHp}</p>
-                    <p><span className="text-muted-foreground">Gold Collected:</span> {stats.gold}</p>
+                    <p><span className="text-muted-foreground">จำนวนเทิร์น:</span> {turn}</p>
+                    <p><span className="text-muted-foreground">HP สุดท้าย:</span> {stats.hp}/{stats.maxHp}</p>
+                    <p><span className="text-muted-foreground">ทองที่เก็บได้:</span> {stats.gold}</p>
                   </div>
                 </div>
               </div>
@@ -595,7 +606,7 @@ What will you do?`;
                 <div className="pt-6 border-t border-border">
                   <h3 className="text-lg font-semibold text-accent mb-4 flex items-center gap-2">
                     <Trophy className="h-5 w-5" />
-                    Achievement Unlocked!
+                    ปลดล็อกความสำเร็จ!
                   </h3>
                   <Card className="ornate-corners border-2 border-secondary/50 bg-secondary/10">
                     <CardContent className="p-4">
@@ -619,11 +630,11 @@ What will you do?`;
               )}
 
               <div className="pt-6 border-t border-border">
-                <h3 className="text-lg font-semibold text-foreground mb-3 text-center">Your Legacy</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-3 text-center">เรื่องเล่าของคุณ</h3>
                 <p className="text-muted-foreground text-center leading-relaxed">
-                  You ventured into the unknown, faced dangers untold, and emerged victorious. 
-                  The tales of your bravery will be sung in taverns across the realm. 
-                  Will you embark on another adventure?
+                  คุณกล้าก้าวสู่ความไม่รู้ เผชิญอันตรายมากมาย และกลับออกมาพร้อมชัยชนะ 
+                  เรื่องราวความกล้าหาญจะถูกเล่าขานในโรงเตี๊ยมทั่วทุกแคว้น 
+                  พร้อมจะออกผจญภัยอีกครั้งหรือไม่?
                 </p>
               </div>
             </div>
@@ -637,7 +648,7 @@ What will you do?`;
               className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan text-lg px-8 py-6"
             >
               <Trophy className="h-5 w-5 mr-2" />
-              View All Achievements
+              ดูความสำเร็จทั้งหมด
             </Button>
           </Link>
           <Button
@@ -645,7 +656,7 @@ What will you do?`;
             className="bg-gradient-primary hover:shadow-glow-orange text-lg px-8 py-6"
           >
             <RefreshCw className="h-5 w-5 mr-2" />
-            Start New Adventure
+            เริ่มการผจญภัยใหม่
           </Button>
         </div>
       </div>

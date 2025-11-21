@@ -12,42 +12,42 @@ const Footer = () => {
               <span className="font-bold text-foreground">TaleBuilder Arena</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              AI-powered narrative adventures where your choices shape the story.
+              เกมเล่าเรื่องด้วยพลัง AI ที่ปล่อยให้ทุกการตัดสินใจของคุณกำหนดชะตาเรื่องราว
             </p>
           </div>
           
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
+            <h3 className="font-semibold text-foreground mb-4">ลิงก์ด่วน</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Home
+                  หน้าหลัก
                 </Link>
               </li>
               <li>
                 <Link to="/game" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Play
+                  เล่นเกม
                 </Link>
               </li>
               <li>
                 <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  About
+                  เกี่ยวกับ
                 </Link>
               </li>
             </ul>
           </div>
           
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Legal</h3>
+            <h3 className="font-semibold text-foreground mb-4">ข้อมูลทางกฎหมาย</h3>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Privacy Policy
+                  นโยบายความเป็นส่วนตัว
                 </a>
               </li>
               <li>
                 <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Terms of Service
+                  เงื่อนไขการให้บริการ
                 </a>
               </li>
             </ul>
@@ -56,7 +56,7 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
-            © 2025 TaleBuilder Arena. All rights reserved.
+            © 2025 TaleBuilder Arena. สงวนลิขสิทธิ์
           </p>
         </div>
       </div>

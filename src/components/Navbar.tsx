@@ -24,7 +24,7 @@ const Navbar = () => {
               isActive("/") ? "text-accent" : "text-muted-foreground"
             }`}
           >
-            Home
+            หน้าหลัก
           </Link>
           <Link
             to="/game"
@@ -32,7 +32,7 @@ const Navbar = () => {
               isActive("/game") ? "text-accent" : "text-muted-foreground"
             }`}
           >
-            Play
+            เล่นเกม
           </Link>
           <Link
             to="/achievements"
@@ -40,7 +40,7 @@ const Navbar = () => {
               isActive("/achievements") ? "text-accent" : "text-muted-foreground"
             }`}
           >
-            Achievements
+            ความสำเร็จ
           </Link>
           <Link
             to="/about"
@@ -48,12 +48,12 @@ const Navbar = () => {
               isActive("/about") ? "text-accent" : "text-muted-foreground"
             }`}
           >
-            About
+            เกี่ยวกับ
           </Link>
           
           <Link to="/game">
             <Button className="bg-gradient-primary hover:shadow-glow-orange transition-all text-sm font-semibold uppercase text-primary-foreground border border-secondary/50">
-              Start Adventure
+              เริ่มการผจญภัย
             </Button>
           </Link>
         </div>
