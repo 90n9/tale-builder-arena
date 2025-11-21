@@ -76,7 +76,7 @@ const Index = () => {
           <div className="max-w-4xl mx-auto">
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
               <span className="text-foreground drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
-                Quest Weaver
+                TaleBuilder Arena
               </span>
             </h1>
             

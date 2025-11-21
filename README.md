@@ -1,6 +1,6 @@
-# Tale Builder Arena
+# TaleBuilder Arena
 
-React + TypeScript + Vite project styled with Tailwind and shadcn UI primitives. This repo powers the Tale Builder Arena front-end.
+React + TypeScript + Vite project styled with Tailwind and shadcn UI primitives. This repo powers the TaleBuilder Arena front-end.
 
 ## Quick Start
 - Prereq: Node.js and npm installed.

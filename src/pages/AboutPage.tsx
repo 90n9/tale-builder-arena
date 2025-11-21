@@ -23,7 +23,7 @@ const AboutPage = () => {
           <div className="text-center mb-16">
             <h1 className="text-5xl font-bold mb-6">
               <span className="bg-gradient-primary bg-clip-text text-transparent">
-                About Quest Weaver
+                About TaleBuilder Arena
               </span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
@@ -36,10 +36,10 @@ const AboutPage = () => {
           <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card mb-12">
             <CardContent className="p-8 space-y-6">
               <section>
-                <h2 className="text-2xl font-bold text-foreground mb-4">What is Quest Weaver?</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-4">What is TaleBuilder Arena?</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Quest Weaver is an AI-powered text adventure game that serves as your personal Dungeon Master. 
-                  Unlike traditional games with fixed storylines, Quest Weaver generates unique narratives on the fly, 
+                  TaleBuilder Arena is an AI-powered text adventure game that serves as your personal Dungeon Master. 
+                  Unlike traditional games with fixed storylines, TaleBuilder Arena generates unique narratives on the fly, 
                   adapting to your choices and creating a truly personalized adventure every time you play.
                 </p>
               </section>
@@ -99,7 +99,7 @@ const AboutPage = () => {
               <section>
                 <h2 className="text-2xl font-bold text-foreground mb-4">Project Goals</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Quest Weaver is an exploration of how AI can enhance interactive storytelling. 
+                  TaleBuilder Arena is an exploration of how AI can enhance interactive storytelling. 
                   We're experimenting with ways to make narratives more responsive, personal, and engaging. 
                   This is a creative project that pushes the boundaries of what's possible when human 
                   creativity meets artificial intelligence.

@@ -13,7 +13,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2 group">
           <Scroll className="h-6 w-6 text-accent group-hover:text-secondary transition-colors" />
           <span className="text-xl font-bold text-foreground">
-            Quest Weaver
+            TaleBuilder Arena
           </span>
         </Link>
         

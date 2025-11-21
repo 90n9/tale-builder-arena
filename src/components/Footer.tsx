@@ -9,7 +9,7 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
               <Scroll className="h-5 w-5 text-primary" />
-              <span className="font-bold text-foreground">Quest Weaver</span>
+              <span className="font-bold text-foreground">TaleBuilder Arena</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               AI-powered narrative adventures where your choices shape the story.
@@ -56,7 +56,7 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
-            © 2025 Quest Weaver. All rights reserved.
+            © 2025 TaleBuilder Arena. All rights reserved.
           </p>
         </div>
       </div>
