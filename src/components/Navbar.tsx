@@ -27,28 +27,12 @@ const Navbar = () => {
             หน้าหลัก
           </Link>
           <Link
-            to="/game"
-            className={`text-sm font-medium uppercase tracking-wider transition-colors hover:text-accent ${
-              isActive("/game") ? "text-accent" : "text-muted-foreground"
-            }`}
-          >
-            เล่นเกม
-          </Link>
-          <Link
             to="/achievements"
             className={`text-sm font-medium uppercase tracking-wider transition-colors hover:text-accent ${
               isActive("/achievements") ? "text-accent" : "text-muted-foreground"
             }`}
           >
             ความสำเร็จ
-          </Link>
-          <Link
-            to="/about"
-            className={`text-sm font-medium uppercase tracking-wider transition-colors hover:text-accent ${
-              isActive("/about") ? "text-accent" : "text-muted-foreground"
-            }`}
-          >
-            เกี่ยวกับ
           </Link>
           
           <Link to="/game">
