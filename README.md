@@ -24,7 +24,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 
 ## API Contract
 - Setup data per game: `GET /api/game/[slug]/setup?race={id}&class={id}` returns races, classes, attributes, base attributes (including race/class bonuses), and points to distribute. Attribute bonuses are not exposed in the payload.
-- Story mock: `POST /api/story` accepts `{ choice?: string; genre?: string; race?: string; className?: string; turn?: number; language?: "th" | "en" }` and returns `{ turn, narration, choices, shouldEnd, achievementId }`. It stitches narration, rotates 4 choice options, clamps turns to 6, and seeds a genre-matching achievement when `shouldEnd` is true. `language` controls the narration/choices text and defaults to Thai when omitted.
+- Story (JSON-driven): `POST /api/story` accepts `{ gameId, currentSceneId, selectedChoiceId, language, character: { classId, raceId, attributes } }` and returns `{ sceneId, narration, choices: [{ id, text }], turn, shouldEnd, achievementId }`. It reads scenes/endings from `src/data/game-content/**`, applies `requirements`/`on_fail_next`, localizes text, and emits `{game_id}-{ending_id}` achievements when an ending is reached. Language defaults to Thai when omitted.
 - `GET /api/story` responds with a short usage hint for debugging.
 
 ## State & Persistence

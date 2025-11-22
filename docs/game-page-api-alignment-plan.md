@@ -1,17 +1,17 @@
 # Game Page + API Alignment Plan
 
 ## Context
-- `/game`, `/game/[slug]`, and `/game/[slug]/play` currently use hardcoded races/classes/attributes and mock narration (`INITIAL_*` from `src/lib/game-config.ts`).
-- `POST /api/story` builds synthetic text and choices; it does not read `src/data/game-content/**.json`.
-- JSON files already define races, classes, attributes, config.starting_attributes, scenes with requirements/rewards, and endings that generate achievements.
-- Attribute IDs in JSON are short-form (`str`, `int`, `agi`, `cha`, `luk`) while UI labels in `game-config.ts` are long-form fields (`strength`, `intelligence`, etc.), so mappings are inconsistent.
-- Session keys for character/progress exist (`taleBuilderCharacter:{slug}`, `taleBuilderEndSummary:{slug}`), and achievements rely on `{game_id}-{ending_id}` IDs.
+- `/game`, `/game/[slug]`, and `/game/[slug]/play` have been moved off the old `INITIAL_*` stubs. The play page now calls `/api/story` with `gameId`, `sceneId`, `choiceId`, and character context (class/race/attributes) to resolve real scenes from `src/data/game-content/**.json`.
+- `POST /api/story` now reads JSON scenes/endings, applies `requirements` and `on_fail_next`, localizes titles/descriptions/choices, and emits deterministic `achievementId`s of the form `{game_id}-{ending_id}`. Endings surface `shouldEnd`, localized narration, and choice list (empty when ending).
+- JSON files already define races, classes, attributes, `config.starting_attributes`, scenes with requirements/rewards, and endings. Attribute IDs in JSON remain short-form (`str`, `int`, `agi`, `cha`, `luk`), and the UI reads labels from the JSON attributes array.
+- Session keys for character/progress remain (`taleBuilderCharacter:{slug}`, `taleBuilderEndSummary:{slug}`), and achievements still store in `localStorage`.
 
-## Goals
-- Drive setup, play, and end flows from the JSON game files instead of stubs.
-- Align the API contract with the JSON schema so choices, requirements, rewards, scenes, and endings resolve from the authored content.
-- Preserve bilingual UX using `LocalizedText` and `useLanguage`; avoid one-language strings.
-- Keep compatibility with achievements (`buildAchievementId` pattern) and session storage shapes, expanding them as needed for scene state.
+## Goals (status)
+- ✅ Drive play flow from JSON scenes/endings through `/api/story` (sceneId + choices from content).
+- ✅ Align API contract with JSON schema for choices/requirements/endings; localized responses only.
+- 🔄 Remaining: migrate setup page to JSON-driven config/attribute distribution and end page to show ending text from JSON.
+- ✅ Preserve bilingual UX via `LocalizedText` and `useLanguage`; no single-language strings in play flow.
+- ✅ Keep achievements/session storage compatible while adding `sceneId` + choice IDs to flow.
 
 ## Guardrails & References
 - Follow `AGENTS.md` and `docs/design-system.md`; keep UI bilingual and on-brand (Thai default, English alternate).
@@ -23,7 +23,7 @@
   - `GameContent`, `Scene`, `Choice`, `Ending`, `AttributeId` types mirroring the JSON schema.
   - A map of `game_id -> content` loaded from JSON files.
   - Helpers: `getGameContent(slug)`, `getStartScene(content)`, `getEnding(content, id)`, `getAttributeLabel(content, attrId)`.
-- Add an attribute ID ↔ UI label map derived from `content.attributes`; keep `attributeLabels` only as a fallback.
+- Attribute labels should come from `content.attributes`; keep `attributeLabels` only as a fallback.
 - Expose config helpers for `starting_attributes` (base values + `points_to_distribute`) and bonuses (`attribute_bonus`, `starting_bonus`, `bonus_attributes`).
 
 ## Game Setup Page Plan (`/game/[slug]`)
@@ -35,21 +35,17 @@
 - Keep existing navigation but source copy from `LocalizedText` in content where applicable (titles, subtitles, etc.).
 
 ## Gameplay Flow Plan (`/game/[slug]/play`)
-- Replace `INITIAL_NARRATION/CHOICES` with the JSON `start` scene (explicit `scene_id` or first key).
-- Track `currentSceneId`, `attributes`, `flags`, and `turn`. Apply `reward_attributes` deltas when choices grant bonuses and respect `global_flags.enable_attribute_rewards`.
-- Evaluate choice `requirements` (classes/min_attributes). If requirements fail and `on_fail_next` exists, route there; otherwise block or stay.
-- When a scene points to an `ending_*`, resolve the ending object, push summary to sessionStorage (`taleBuilderEndSummary:{slug}`) with `endingId`, `achievementId`, and the final attribute snapshot.
-- Surface scene image paths using `config.asset_paths.images` + `scene.image` (fallback to placeholder if missing).
+- ✅ Replace `INITIAL_NARRATION/CHOICES` with JSON-driven scenes via `/api/story` (`sceneId`/choices are returned already localized).
+- Track `currentSceneId`, `attributes`, `flags`, and `turn`. Apply `reward_attributes` deltas when choices grant bonuses and respect `global_flags.enable_attribute_rewards`. **(pending in UI)**
+- ✅ Evaluate choice `requirements` (classes/min_attributes). If requirements fail and `on_fail_next` exists, route there.
+- ✅ When a scene points to an `ending_*`, resolve the ending object, push summary to sessionStorage (`taleBuilderEndSummary:{slug}`) with `endingId`, `achievementId`, and the final attribute snapshot.
+- Surface scene image paths using `config.asset_paths.images` + `scene.image` (fallback to placeholder if missing). **(pending media hook-up)**
 
 ## API Plan (`/api/story`)
-- Extend payload to include `slug`, `sceneId`, `choiceId` (or choice text), `attributes`, `classId`, `raceId`, `flags`, and `language`.
-- Load `GameContent` by `slug`; validate `sceneId`/choice. Compute:
-  - `nextSceneId` based on success/fail requirements.
-  - Updated `attributes` after applying `reward_attributes`.
-  - `shouldEnd` + `endingId` when targeting an ending; include ending text and achievement ID.
-  - Localized `scene.title`, `scene.description`, `choices` for the next scene.
-- Return a structured response the play page can render without re-deriving labels. Keep a graceful fallback message if content is missing.
-- Optionally add a GET handler for debugging that lists available scenes/endings for the slug.
+- ✅ Payload: `{ gameId, currentSceneId, selectedChoiceId, language, character: { classId, raceId, attributes } }`.
+- ✅ Loads `GameContent` by `gameId`; validates scene/choice, applies `requirements` and `on_fail_next`, and returns localized `sceneId`, `narration`, `choices` (id + text), `shouldEnd`, and `achievementId` when ending.
+- TODO: propagate `reward_attributes` and flags in the response so the client can update attributes mid-run.
+- GET handler remains a simple usage message; could be extended to list scenes/endings for debugging.
 
 ## End Page Plan (`/game/[slug]/end`)
 - Read the enriched summary (endingId, achievementId, final attributes). Render ending title/summary/result from JSON and continue to reuse achievements lookup.
@@ -63,8 +59,8 @@
 ## TODO (execution order)
 1) Add typed content loader for JSON files and attribute label helpers.  
 2) Update setup page to consume JSON-driven races/classes/attributes/config and persist the expanded selection shape.  
-3) Redefine `/api/story` to be slug/content-aware with requirement/reward handling and ending resolution.  
-4) Refactor play page to consume the new API payload, render real scenes/images, and manage play-state persistence.  
+3) **Done**: Redefine `/api/story` to be slug/content-aware with requirement handling and ending resolution.  
+4) **Done (initial)**: Refactor play page to consume the new API payload (sceneId/choices), manage play-state; still need attribute reward updates and media wiring.  
 5) Update end page to show JSON ending data and the new summary shape.  
 6) Validate (`npm run validate:game-content`), lint, and run a local playthrough for both games to confirm bilingual text and flow.
 

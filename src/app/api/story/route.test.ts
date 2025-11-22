@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { GET as getStory, POST as postStory } from "./route";
 
 describe("GET /api/story", () => {
@@ -13,25 +13,11 @@ describe("GET /api/story", () => {
 });
 
 describe("POST /api/story", () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  it("advances the turn and returns unique choices", async () => {
-    vi.spyOn(Math, "random")
-      .mockReturnValueOnce(0)
-      .mockReturnValueOnce(0.2)
-      .mockReturnValueOnce(0.4)
-      .mockReturnValue(0.6);
-
+  it("returns the start scene when no choice is provided", async () => {
     const request = new Request("http://localhost/api/story", {
       method: "POST",
       body: JSON.stringify({
-        choice: "Examine the mural",
-        genre: "fantasy_dungeon",
-        race: "elf",
-        className: "mage",
-        turn: 1,
+        gameId: "crypt_of_the_shattered_star",
         language: "en",
       }),
     });
@@ -40,38 +26,51 @@ describe("POST /api/story", () => {
 
     expect(response.status).toBe(200);
     const body = await response.json();
-    expect(body.turn).toBe(2);
+    expect(body.sceneId).toBe("start");
+    expect(body.narration).toContain("The Forgotten Steps");
+    expect(body.choices).toHaveLength(2);
     expect(body.shouldEnd).toBe(false);
-    expect(body.narration).toContain("Your character (fantasy_dungeon");
-    expect(body.choices).toHaveLength(4);
-    expect(new Set(body.choices).size).toBe(4);
-    expect(body.choices).toContain('Confirm choice "Examine the mural" and proceed');
-    expect(body.achievementId).toBeNull();
   });
 
-  it("caps the run and returns an achievement on the final turn", async () => {
-    vi.spyOn(Math, "random")
-      .mockReturnValueOnce(0)
-      .mockReturnValueOnce(0.2)
-      .mockReturnValueOnce(0.4)
-      .mockReturnValueOnce(0.6)
-      .mockReturnValue(0);
-
+  it("uses requirements to route to fail scenes", async () => {
     const request = new Request("http://localhost/api/story", {
       method: "POST",
       body: JSON.stringify({
-        genre: "fantasy_dungeon",
-        turn: 5,
+        gameId: "crypt_of_the_shattered_star",
+        currentSceneId: "scene_2",
+        selectedChoiceId: "scene_5",
+        language: "en",
+        character: {
+          classId: "warrior",
+          attributes: { agi: 1 },
+        },
+      }),
+    });
+
+    const response = await postStory(request);
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.sceneId).toBe("scene_6");
+    expect(body.shouldEnd).toBe(false);
+  });
+
+  it("returns an ending when the chosen path leads to one", async () => {
+    const request = new Request("http://localhost/api/story", {
+      method: "POST",
+      body: JSON.stringify({
+        gameId: "crypt_of_the_shattered_star",
+        currentSceneId: "start",
+        selectedChoiceId: "ending_1",
         language: "en",
       }),
     });
 
     const response = await postStory(request);
-
     expect(response.status).toBe(200);
     const body = await response.json();
-    expect(body.turn).toBe(6);
+    expect(body.sceneId).toBe("ending_1");
     expect(body.shouldEnd).toBe(true);
+    expect(body.narration).toContain("The Road Not Taken");
     expect(body.achievementId).toBe("crypt_of_the_shattered_star-ending_1");
   });
 });
