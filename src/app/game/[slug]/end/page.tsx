@@ -29,6 +29,7 @@ const EndGamePage = () => {
       genre: "แนวเรื่อง:",
       race: "เผ่าพันธุ์:",
       class: "สายอาชีพ:",
+      background: "ภูมิหลัง:",
       stats: "สถิติการผจญภัย",
       turnCount: "จำนวนเทิร์น:",
       finalHp: "HP สุดท้าย:",
@@ -49,6 +50,7 @@ const EndGamePage = () => {
       genre: "Genre:",
       race: "Race:",
       class: "Class:",
+      background: "Background:",
       stats: "Adventure stats",
       turnCount: "Turn count:",
       finalHp: "Final HP:",
@@ -120,6 +122,9 @@ const EndGamePage = () => {
   const { character, stats, turn } = summary;
   const raceLabel = character.raceName ? getLocalizedText(character.raceName, language) : character.race;
   const classLabel = character.className ? getLocalizedText(character.className, language) : character.class;
+  const backgroundLabel = character.backgroundName
+    ? getLocalizedText(character.backgroundName, language)
+    : character.background || "";
 
   return (
     <>
@@ -137,6 +142,7 @@ const EndGamePage = () => {
             <div className="flex items-center justify-center gap-2 mt-4">
               <Badge className="bg-accent/20 text-accent border border-accent/30">{raceLabel}</Badge>
               <Badge className="bg-accent/20 text-accent border border-accent/30">{classLabel}</Badge>
+              <Badge className="bg-accent/20 text-accent border border-accent/30">{backgroundLabel}</Badge>
             </div>
           </div>
 
@@ -158,6 +164,9 @@ const EndGamePage = () => {
                       </p>
                       <p>
                         <span className="text-muted-foreground">{text.class}</span> {classLabel}
+                      </p>
+                      <p>
+                        <span className="text-muted-foreground">{text.background}</span> {backgroundLabel}
                       </p>
                     </div>
                   </div>

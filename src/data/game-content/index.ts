@@ -27,6 +27,12 @@ export type GameSetupContent = {
     description: LocalizedText;
     starting_bonus?: AttributeBonus;
   }>;
+  backgrounds: Array<{
+    id: string;
+    name: LocalizedText;
+    description: LocalizedText;
+    bonus_attributes?: AttributeBonus;
+  }>;
   attributes: Array<{
     id: string;
     name: LocalizedText;

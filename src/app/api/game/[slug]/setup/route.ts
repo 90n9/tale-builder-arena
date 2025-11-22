@@ -6,6 +6,7 @@ type SetupResponse = {
   gameId: string;
   races: Array<{ id: string; name: LocalizedText; description: LocalizedText }>;
   classes: Array<{ id: string; name: LocalizedText; description: LocalizedText }>;
+  backgrounds: Array<{ id: string; name: LocalizedText; description: LocalizedText }>;
   attributes: Array<{ id: string; name: LocalizedText }>;
   baseAttributes: Record<string, number>;
   pointsToDistribute: number;
@@ -43,13 +44,15 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   const searchParams = new URL(request.url).searchParams;
   const raceId = searchParams.get("race");
   const classId = searchParams.get("class");
+  const backgroundId = searchParams.get("background");
 
   const raceBonus = game.races.find((race) => race.id === raceId)?.attribute_bonus;
   const classBonus = game.classes.find((cls) => cls.id === classId)?.starting_bonus;
+  const backgroundBonus = game.backgrounds.find((bg) => bg.id === backgroundId)?.bonus_attributes;
 
   const baseAttributes = combineAttributeBonuses(
     game.config.starting_attributes.base_values,
-    [raceBonus, classBonus],
+    [raceBonus, classBonus, backgroundBonus],
     game.attributes.map((attr) => attr.id),
   );
 
@@ -57,6 +60,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     gameId: game.game_id,
     races: game.races.map(({ attribute_bonus, ...rest }) => rest),
     classes: game.classes.map(({ starting_bonus, ...rest }) => rest),
+    backgrounds: game.backgrounds.map(({ bonus_attributes, ...rest }) => rest),
     attributes: game.attributes,
     baseAttributes,
     pointsToDistribute: game.config.starting_attributes.points_to_distribute,

@@ -6,8 +6,10 @@ export type CharacterSelection = {
   genre: string;
   race: string;
   class: string;
+  background: string;
   raceName?: LocalizedText;
   className?: LocalizedText;
+  backgroundName?: LocalizedText;
   attributes: CharacterAttributes;
 };
 
@@ -25,6 +27,7 @@ export const createEmptyCharacter = (): CharacterSelection => ({
   genre: "",
   race: "",
   class: "",
+  background: "",
   attributes: createDefaultAttributes(),
 });
 

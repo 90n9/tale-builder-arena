@@ -126,7 +126,7 @@ const GamePlayPage = () => {
 
     try {
       const parsed = JSON.parse(saved) as Partial<CharacterSelection>;
-      if (!parsed.race || !parsed.class) {
+      if (!parsed.race || !parsed.class || !parsed.background) {
         router.replace(`/game/${slug}`);
         return;
       }
@@ -135,8 +135,10 @@ const GamePlayPage = () => {
         genre: game.genre,
         race: parsed.race,
         class: parsed.class,
+        background: parsed.background,
         raceName: parsed.raceName,
         className: parsed.className,
+        backgroundName: parsed.backgroundName,
         attributes: parsed.attributes ?? {},
       });
     } catch (error) {
@@ -256,6 +258,9 @@ const GamePlayPage = () => {
 
     const raceLabel = character.raceName ? getLocalizedText(character.raceName, language) : character.race;
     const classLabel = character.className ? getLocalizedText(character.className, language) : character.class;
+    const backgroundLabel = character.backgroundName
+      ? getLocalizedText(character.backgroundName, language)
+      : character.background || "";
 
     return (
       <div className="min-h-screen bg-background">
@@ -269,6 +274,9 @@ const GamePlayPage = () => {
                   </Badge>
                   <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
                     {classLabel}
+                  </Badge>
+                  <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
+                    {backgroundLabel}
                   </Badge>
                   <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
                     {getLocalizedText(game.genreLabel, language)}

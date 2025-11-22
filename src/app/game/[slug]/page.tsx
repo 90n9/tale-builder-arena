@@ -12,22 +12,25 @@ import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { createEmptyCharacter, getCharacterStorageKey, type CharacterSelection } from "@/lib/game-config";
 
-type CharacterCreationStep = "race" | "class" | "attributes";
+type CharacterCreationStep = "race" | "class" | "background" | "attributes";
 
 const getNextStep = (current: CharacterSelection): CharacterCreationStep => {
   if (!current.race) return "race";
   if (!current.class) return "class";
+  if (!current.background) return "background";
   return "attributes";
 };
 
 type SetupRace = { id: string; name: LocalizedText; description: LocalizedText };
 type SetupClass = { id: string; name: LocalizedText; description: LocalizedText };
+type SetupBackground = { id: string; name: LocalizedText; description: LocalizedText };
 type SetupAttribute = { id: string; name: LocalizedText };
 
 type SetupApiResponse = {
   gameId: string;
   races: SetupRace[];
   classes: SetupClass[];
+  backgrounds: SetupBackground[];
   attributes: SetupAttribute[];
   baseAttributes: Record<string, number>;
   pointsToDistribute: number;
@@ -50,6 +53,9 @@ const GameSetupPage = () => {
       chooseClassTitle: "เลือกสายอาชีพ",
       chooseClassSubtitle: "จับคู่กับทีมของคุณเพื่อรับมือสถานการณ์ของเรื่องนี้",
       backToRace: "กลับไปเลือกเผ่าพันธุ์",
+      chooseBackgroundTitle: "เลือกเส้นทางชีวิต",
+      chooseBackgroundSubtitle: "เติมสีสันอดีตของตัวละครเพื่อปลดล็อกจุดแข็งเฉพาะ",
+      backToClassList: "กลับไปเลือกสายอาชีพ",
       attributesTitle: "ปรับค่าสถานะ",
       attributesSubtitle: "บาลานซ์ความแข็งแกร่งเพื่อเตรียมรับมือเหตุการณ์เฉพาะของเรื่องนี้",
       pointsUsed: "ใช้แต้มแล้ว",
@@ -69,6 +75,9 @@ const GameSetupPage = () => {
       chooseClassTitle: "Choose your class",
       chooseClassSubtitle: "Pair with your party to tackle this scenario.",
       backToRace: "Back to race selection",
+      chooseBackgroundTitle: "Choose a backstory",
+      chooseBackgroundSubtitle: "Give your hero a past that unlocks unique strengths.",
+      backToClassList: "Back to class selection",
       attributesTitle: "Distribute attributes",
       attributesSubtitle: "Balance your strengths for this story's challenges.",
       pointsUsed: "Points used",
@@ -93,13 +102,17 @@ const GameSetupPage = () => {
     setupData?.races.find((race) => race.id === character.race)?.name ?? character.raceName ?? null;
   const selectedClassLabel =
     setupData?.classes.find((cls) => cls.id === character.class)?.name ?? character.className ?? null;
+  const selectedBackgroundLabel =
+    setupData?.backgrounds.find((bg) => bg.id === character.background)?.name ??
+    character.backgroundName ??
+    null;
 
   const totalAttributePoints = Object.values(character.attributes ?? {}).reduce((a, b) => a + b, 0);
   const baseAttributeTotal = setupData ? Object.values(setupData.baseAttributes).reduce((a, b) => a + b, 0) : 0;
   const maxAttributePoints = baseAttributeTotal + (setupData?.pointsToDistribute ?? 0);
   const pointsRemaining = maxAttributePoints - totalAttributePoints;
   const canStart =
-    Boolean(character.race && character.class) &&
+    Boolean(character.race && character.class && character.background) &&
     Boolean(setupData) &&
     totalAttributePoints <= maxAttributePoints &&
     !isLoadingSetup;
@@ -132,6 +145,8 @@ const GameSetupPage = () => {
     useAttributes?: CharacterSelection["attributes"];
     raceName?: LocalizedText;
     className?: LocalizedText;
+    backgroundId?: string;
+    backgroundName?: LocalizedText;
   } = {}) => {
     if (!game) return;
     setIsLoadingSetup(true);
@@ -139,8 +154,13 @@ const GameSetupPage = () => {
 
     try {
       const params = new URLSearchParams();
-      if (options.raceId) params.set("race", options.raceId);
-      if (options.classId) params.set("class", options.classId);
+      const raceQuery = options.raceId ?? character.race;
+      const classQuery = options.classId ?? character.class;
+      const backgroundQuery = options.backgroundId ?? character.background;
+
+      if (raceQuery) params.set("race", raceQuery);
+      if (classQuery) params.set("class", classQuery);
+      if (backgroundQuery) params.set("background", backgroundQuery);
       const query = params.toString();
 
       const response = await fetch(`/api/game/${slug}/setup${query ? `?${query}` : ""}`);
@@ -161,18 +181,25 @@ const GameSetupPage = () => {
 
       const raceId = options.raceId ?? character.race ?? "";
       const classId = options.classId ?? character.class ?? "";
+      const backgroundId = options.backgroundId ?? character.background ?? "";
 
       const raceName =
         data.races.find((race) => race.id === raceId)?.name ?? options.raceName ?? character.raceName;
       const className =
         data.classes.find((cls) => cls.id === classId)?.name ?? options.className ?? character.className;
+      const backgroundName =
+        data.backgrounds.find((bg) => bg.id === backgroundId)?.name ??
+        options.backgroundName ??
+        character.backgroundName;
 
       const nextCharacter: CharacterSelection = {
         genre: game.genre,
         race: raceId,
         class: classId,
+        background: backgroundId,
         raceName,
         className,
+        backgroundName,
         attributes,
       };
 
@@ -217,17 +244,36 @@ const GameSetupPage = () => {
       useAttributes: parsed?.attributes,
       raceName: parsed?.raceName,
       className: parsed?.className,
+      backgroundId: parsed?.background,
+      backgroundName: parsed?.backgroundName,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [game, router, slug]);
 
   const handleSelectRace = (race: string) => {
-    fetchSetupData({ raceId: race });
+    fetchSetupData({
+      raceId: race,
+      classId: character.class || undefined,
+      backgroundId: character.background || undefined,
+    });
     setStep("class");
   };
 
   const handleSelectClass = (className: string) => {
-    fetchSetupData({ raceId: character.race || undefined, classId: className });
+    fetchSetupData({
+      raceId: character.race || undefined,
+      classId: className,
+      backgroundId: character.background || undefined,
+    });
+    setStep("background");
+  };
+
+  const handleSelectBackground = (backgroundId: string) => {
+    fetchSetupData({
+      raceId: character.race || undefined,
+      classId: character.class || undefined,
+      backgroundId,
+    });
     setStep("attributes");
   };
 
@@ -236,7 +282,9 @@ const GameSetupPage = () => {
     const raceName = setupData?.races.find((race) => race.id === character.race)?.name ?? character.raceName;
     const className =
       setupData?.classes.find((cls) => cls.id === character.class)?.name ?? character.className;
-    const payload: CharacterSelection = { ...character, raceName, className };
+    const backgroundName =
+      setupData?.backgrounds.find((bg) => bg.id === character.background)?.name ?? character.backgroundName;
+    const payload: CharacterSelection = { ...character, raceName, className, backgroundName };
     sessionStorage.setItem(getCharacterStorageKey(slug), JSON.stringify(payload));
     router.push(`/game/${slug}/play`);
   };
@@ -394,6 +442,60 @@ const GameSetupPage = () => {
             </div>
           )}
 
+          {step === "background" && (
+            <div className="space-y-8">
+              <div className="text-center space-y-3">
+                <div className="flex gap-2 justify-center">
+                  <Badge className="bg-accent/20 text-accent border border-accent/30">
+                    {getLocalizedText(game.genreLabel, language)}
+                  </Badge>
+                  {selectedRaceLabel && (
+                    <Badge className="bg-accent/20 text-accent border border-accent/30">
+                      {getLocalizedText(selectedRaceLabel, language)}
+                    </Badge>
+                  )}
+                  {selectedClassLabel && (
+                    <Badge className="bg-accent/20 text-accent border border-accent/30">
+                      {getLocalizedText(selectedClassLabel, language)}
+                    </Badge>
+                  )}
+                </div>
+                <h2 className="text-5xl font-bold text-foreground">{text.chooseBackgroundTitle}</h2>
+                <p className="text-muted-foreground text-lg">{text.chooseBackgroundSubtitle}</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {setupData?.backgrounds.map((background) => (
+                  <Card
+                    key={background.id}
+                    className="ornate-corners border-2 border-border bg-gradient-card shadow-card cursor-pointer transition-all hover:border-accent hover:shadow-glow-cyan"
+                    onClick={() => handleSelectBackground(background.id)}
+                  >
+                    <CardContent className="p-6 text-center space-y-2">
+                      <h3 className="text-2xl font-bold text-foreground">
+                        {getLocalizedText(background.name, language)}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {getLocalizedText(background.description, language)}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              <div className="text-center">
+                <Button
+                  variant="outline"
+                  onClick={() => setStep("class")}
+                  className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  {text.backToClassList}
+                </Button>
+              </div>
+            </div>
+          )}
+
           {step === "attributes" && (
             <div className="space-y-8">
               <div className="text-center space-y-3">
@@ -407,6 +509,11 @@ const GameSetupPage = () => {
                   {selectedClassLabel && (
                     <Badge className="bg-accent/20 text-accent border border-accent/30">
                       {getLocalizedText(selectedClassLabel, language)}
+                    </Badge>
+                  )}
+                  {selectedBackgroundLabel && (
+                    <Badge className="bg-accent/20 text-accent border border-accent/30">
+                      {getLocalizedText(selectedBackgroundLabel, language)}
                     </Badge>
                   )}
                 </div>
