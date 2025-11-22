@@ -62,6 +62,7 @@ export async function POST(request: Request) {
   const language: Language = payload.language === "en" ? "en" : "th";
   const gameId = payload.gameId ?? cryptOfTheShatteredStar.game_id;
   const game = GAME_CONTENTS[gameId];
+  const buildChoiceId = (sceneId: string, index: number, choice: StoryChoice) => `${sceneId}::${index}::${choice.next}`;
 
   if (!game) {
     return NextResponse.json({ message: "Game not found" }, { status: 400 });
@@ -111,7 +112,12 @@ export async function POST(request: Request) {
     const scene = findScene(currentSceneId);
     if (!scene) return "start";
 
-    const choice = scene.choices.find((item) => item.next === selectedChoiceId) ?? scene.choices[0];
+    const choice = scene.choices
+      .map((item, index) => ({
+        item,
+        id: buildChoiceId(scene.scene_id, index, item),
+      }))
+      .find(({ item, id }) => item.next === selectedChoiceId || id === selectedChoiceId)?.item ?? scene.choices[0];
     if (!choice) return selectedChoiceId;
 
     const meets = meetsRequirements(choice.requirements);
@@ -152,8 +158,8 @@ export async function POST(request: Request) {
     .filter(Boolean)
     .join("\n\n");
 
-  const choices = safeScene.choices.map((choice) => ({
-    id: choice.next,
+  const choices = safeScene.choices.map((choice, index) => ({
+    id: buildChoiceId(safeScene.scene_id, index, choice),
     text: getLocalizedText(choice.text, language),
   }));
 

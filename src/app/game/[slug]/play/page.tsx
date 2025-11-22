@@ -26,6 +26,12 @@ type StoryResponse = {
   achievementId?: string | null;
 };
 
+type ChoiceItem = {
+  id: string;
+  text: string;
+  targetId: string;
+};
+
 const DEFAULT_STATS: AdventureStats = {
   hp: 85,
   maxHp: 100,
@@ -99,7 +105,7 @@ const GamePlayPage = () => {
   const [character, setCharacter] = useState<CharacterSelection | null>(null);
   const [stats] = useState<AdventureStats>(DEFAULT_STATS);
   const [narration, setNarration] = useState<string>("");
-  const [choices, setChoices] = useState<Array<{ id: string; text: string }>>([]);
+  const [choices, setChoices] = useState<Array<ChoiceItem>>([]);
   const [currentSceneId, setCurrentSceneId] = useState<string | null>(null);
   const lastLanguageRef = useRef(language);
   const attributeSummaries = useMemo(() => {
@@ -161,7 +167,19 @@ const GamePlayPage = () => {
         const data = (await response.json()) as StoryResponse;
         setTurn(data.turn);
         setNarration(data.narration);
-        setChoices(data.choices ?? []);
+        const seenIds = new Map<string, number>();
+        const normalizedChoices: ChoiceItem[] = (data.choices ?? []).map((choice) => {
+          const count = seenIds.get(choice.id) ?? 0;
+          seenIds.set(choice.id, count + 1);
+          const suffix = count > 0 ? `-${count}` : "";
+
+          return {
+            id: `${choice.id}${suffix}`,
+            text: choice.text,
+            targetId: choice.id,
+          };
+        });
+        setChoices(normalizedChoices);
         setCurrentSceneId(data.sceneId ?? null);
 
         if (data.shouldEnd) {
@@ -255,8 +273,8 @@ const GamePlayPage = () => {
     }
   }, [game, router, slug]);
 
-  const handleChoice = (choice: { id: string; text: string }) => {
-    void loadScene(choice);
+  const handleChoice = (choice: ChoiceItem) => {
+    void loadScene({ id: choice.targetId, text: choice.text });
   };
 
   const handleRestartStory = () => {
