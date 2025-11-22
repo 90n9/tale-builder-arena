@@ -1,35 +1,24 @@
 import { type LocalizedText } from "@/lib/i18n";
 
-export type CharacterAttributes = {
-  strength: number;
-  intelligence: number;
-  dexterity: number;
-  constitution: number;
-  wisdom: number;
-  charisma: number;
-};
+export type CharacterAttributes = Record<string, number>;
 
 export type CharacterSelection = {
   genre: string;
   race: string;
   class: string;
+  raceName?: LocalizedText;
+  className?: LocalizedText;
   attributes: CharacterAttributes;
 };
 
 export const CHARACTER_STORAGE_KEY = "taleBuilderCharacter";
 export const END_SUMMARY_STORAGE_KEY = "taleBuilderEndSummary";
-export const ATTRIBUTE_MAX_POINTS = 75;
 
 export const getCharacterStorageKey = (slug: string) => `${CHARACTER_STORAGE_KEY}:${slug}`;
 export const getEndSummaryStorageKey = (slug: string) => `${END_SUMMARY_STORAGE_KEY}:${slug}`;
 
-export const createDefaultAttributes = (): CharacterAttributes => ({
-  strength: 10,
-  intelligence: 10,
-  dexterity: 10,
-  constitution: 10,
-  wisdom: 10,
-  charisma: 10,
+export const createDefaultAttributes = (baseAttributes?: Record<string, number>): CharacterAttributes => ({
+  ...(baseAttributes ?? {}),
 });
 
 export const createEmptyCharacter = (): CharacterSelection => ({
@@ -77,33 +66,6 @@ export const genres = [
     description: { th: "ดิ้นรนอยู่รอดในดินแดนร้างพินาศ", en: "Struggle to endure a ruined world" },
   },
 ];
-
-export const races = [
-  { name: "Human", description: { th: "ยืดหยุ่นและปรับตัวเก่ง", en: "Adaptable and resourceful" } },
-  { name: "Elf", description: { th: "สง่างามและเปี่ยมปัญญา", en: "Graceful and wise" } },
-  { name: "Dwarf", description: { th: "แข็งแรงและทรหด", en: "Sturdy and relentless" } },
-  { name: "Orc", description: { th: "ทรงพลังและดุร้าย", en: "Powerful and fierce" } },
-  { name: "Halfling", description: { th: "ว่องไวและโชคดี", en: "Quick-footed and lucky" } },
-  { name: "Dragonborn", description: { th: "ทรงอำนาจจากสายเลือดโบราณ", en: "Ancient bloodline, great power" } },
-];
-
-export const classes = [
-  { name: "Warrior", description: { th: "เชี่ยวชาญการต่อสู้ประชิดตัว", en: "Excels at close combat" } },
-  { name: "Mage", description: { th: "จอมเวทผู้ควบคุมมนตร์", en: "Master of arcane power" } },
-  { name: "Rogue", description: { th: "ลอบเร้นและชาญฉลาด", en: "Stealthy and cunning" } },
-  { name: "Cleric", description: { th: "ผู้เยียวยาและพิทักษ์ด้วยพลังศักดิ์สิทธิ์", en: "Heals and shields with faith" } },
-  { name: "Ranger", description: { th: "ผู้พิทักษ์แห่งธรรมชาติ", en: "Nature's vigilant guardian" } },
-  { name: "Paladin", description: { th: "อัศวินศักดิ์สิทธิ์ผู้เที่ยงธรรม", en: "Holy knight of justice" } },
-];
-
-export const attributeLabels: Record<keyof CharacterAttributes, LocalizedText> = {
-  strength: { th: "พละกำลัง", en: "Strength" },
-  intelligence: { th: "สติปัญญา", en: "Intelligence" },
-  dexterity: { th: "ความว่องไว", en: "Dexterity" },
-  constitution: { th: "ความทนทาน", en: "Constitution" },
-  wisdom: { th: "ปรีชาญาณ", en: "Wisdom" },
-  charisma: { th: "เสน่ห์", en: "Charisma" },
-};
 
 export const INITIAL_NARRATION: LocalizedText = {
   th: `คุณยืนอยู่หน้าดันเจี้ยนโบราณ กำแพงหินเก่าคร่ำคร่าประดับด้วยรูนเรืองแสงลึกลับ อากาศข้นหนืดด้วยพลังบางอย่างและเสียงหยดน้ำแว่วก้องจากเบื้องลึก คบเพลิงในมือสะบัดไหวสร้างเงาเต้นระยับราวกับมีชีวิต 

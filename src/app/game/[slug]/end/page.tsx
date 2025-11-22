@@ -118,6 +118,8 @@ const EndGamePage = () => {
   }
 
   const { character, stats, turn } = summary;
+  const raceLabel = character.raceName ? getLocalizedText(character.raceName, language) : character.race;
+  const classLabel = character.className ? getLocalizedText(character.className, language) : character.class;
 
   return (
     <>
@@ -133,8 +135,8 @@ const EndGamePage = () => {
             </h1>
             <p className="text-muted-foreground text-xl">{getLocalizedText(game.tagline, language)}</p>
             <div className="flex items-center justify-center gap-2 mt-4">
-              <Badge className="bg-accent/20 text-accent border border-accent/30">{character.race}</Badge>
-              <Badge className="bg-accent/20 text-accent border border-accent/30">{character.class}</Badge>
+              <Badge className="bg-accent/20 text-accent border border-accent/30">{raceLabel}</Badge>
+              <Badge className="bg-accent/20 text-accent border border-accent/30">{classLabel}</Badge>
             </div>
           </div>
 
@@ -152,10 +154,10 @@ const EndGamePage = () => {
                         {getLocalizedText(game.genreLabel, language)}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">{text.race}</span> {character.race}
+                        <span className="text-muted-foreground">{text.race}</span> {raceLabel}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">{text.class}</span> {character.class}
+                        <span className="text-muted-foreground">{text.class}</span> {classLabel}
                       </p>
                     </div>
                   </div>

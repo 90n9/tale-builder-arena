@@ -17,7 +17,6 @@ import { useLanguage } from "@/contexts/language-context";
 import {
   INITIAL_CHOICES,
   INITIAL_NARRATION,
-  createDefaultAttributes,
   getCharacterStorageKey,
   getEndSummaryStorageKey,
   type AdventureStats,
@@ -65,7 +64,7 @@ const GamePlayPage = () => {
       loading: "กำลังเตรียมการผจญภัยของคุณ...",
       turn: "เทิร์นที่",
       restart: "เริ่มใหม่",
-      changeCharacter: "เปลี่ยนตัวละคร",
+      startOver: "เริ่มใหม่",
       story: "เรื่องราว",
       whatNext: "คุณจะทำอะไรต่อ?",
       characterStatus: "สถานะตัวละคร",
@@ -81,7 +80,7 @@ const GamePlayPage = () => {
       loading: "Preparing your adventure...",
       turn: "Turn",
       restart: "Restart",
-      changeCharacter: "Change character",
+      startOver: "Start over",
       story: "Story",
       whatNext: "What will you do next?",
       characterStatus: "Character status",
@@ -136,7 +135,9 @@ const GamePlayPage = () => {
         genre: game.genre,
         race: parsed.race,
         class: parsed.class,
-        attributes: { ...createDefaultAttributes(), ...(parsed.attributes ?? {}) },
+        raceName: parsed.raceName,
+        className: parsed.className,
+        attributes: parsed.attributes ?? {},
       });
     } catch (error) {
       console.error("Unable to load character", error);
@@ -227,8 +228,13 @@ const GamePlayPage = () => {
     sessionStorage.removeItem(getEndSummaryStorageKey(slug));
   };
 
-  const handleChangeCharacter = () => {
+  const handleStartOver = () => {
+    const characterKey = getCharacterStorageKey(slug);
+    const summaryKey = getEndSummaryStorageKey(slug);
+    sessionStorage.removeItem(characterKey);
+    sessionStorage.removeItem(summaryKey);
     handleRestartStory();
+    setCharacter(null);
     router.push(`/game/${slug}`);
   };
 
@@ -248,6 +254,9 @@ const GamePlayPage = () => {
   const renderGame = () => {
     if (!character || !game) return null;
 
+    const raceLabel = character.raceName ? getLocalizedText(character.raceName, language) : character.race;
+    const classLabel = character.className ? getLocalizedText(character.className, language) : character.class;
+
     return (
       <div className="min-h-screen bg-background">
         <div className="pt-20 pb-8 px-4">
@@ -256,10 +265,10 @@ const GamePlayPage = () => {
               <div>
                 <div className="flex gap-2 mb-2">
                   <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
-                    {character.race}
+                    {raceLabel}
                   </Badge>
                   <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
-                    {character.class}
+                    {classLabel}
                   </Badge>
                   <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
                     {getLocalizedText(game.genreLabel, language)}
@@ -272,19 +281,14 @@ const GamePlayPage = () => {
                   {text.turn} {turn} • {getLocalizedText(game.tagline, language)}
                 </p>
               </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={handleRestartStory}
-                  className="border-destructive text-destructive hover:bg-destructive/10"
-                >
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  {text.restart}
-                </Button>
-                <Button variant="secondary" onClick={handleChangeCharacter}>
-                  {text.changeCharacter}
-                </Button>
-              </div>
+              <Button
+                variant="outline"
+                onClick={handleStartOver}
+                className="border-destructive text-destructive hover:bg-destructive/10"
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                {text.startOver}
+              </Button>
             </div>
 
             <div className="grid lg:grid-cols-3 gap-6">

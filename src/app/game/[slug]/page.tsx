@@ -2,26 +2,15 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Compass, Flame } from "lucide-react";
+import { ArrowLeft, ArrowRight, Compass, Flame, Loader2, Minus, Plus } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { findGameBySlug } from "@/data/games";
 import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText } from "@/lib/i18n";
-import {
-  ATTRIBUTE_MAX_POINTS,
-  attributeLabels,
-  classes,
-  createDefaultAttributes,
-  createEmptyCharacter,
-  getCharacterStorageKey,
-  races,
-  type CharacterSelection,
-} from "@/lib/game-config";
+import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
+import { createEmptyCharacter, getCharacterStorageKey, type CharacterSelection } from "@/lib/game-config";
 
 type CharacterCreationStep = "race" | "class" | "attributes";
 
@@ -29,6 +18,19 @@ const getNextStep = (current: CharacterSelection): CharacterCreationStep => {
   if (!current.race) return "race";
   if (!current.class) return "class";
   return "attributes";
+};
+
+type SetupRace = { id: string; name: LocalizedText; description: LocalizedText };
+type SetupClass = { id: string; name: LocalizedText; description: LocalizedText };
+type SetupAttribute = { id: string; name: LocalizedText };
+
+type SetupApiResponse = {
+  gameId: string;
+  races: SetupRace[];
+  classes: SetupClass[];
+  attributes: SetupAttribute[];
+  baseAttributes: Record<string, number>;
+  pointsToDistribute: number;
 };
 
 const GameSetupPage = () => {
@@ -52,6 +54,9 @@ const GameSetupPage = () => {
       attributesSubtitle: "บาลานซ์ความแข็งแกร่งเพื่อเตรียมรับมือเหตุการณ์เฉพาะของเรื่องนี้",
       pointsUsed: "ใช้แต้มแล้ว",
       backToClass: "กลับไปเลือกสายอาชีพ",
+      loadingAttributes: "กำลังโหลดค่าสถานะ...",
+      loadingOptions: "กำลังโหลดตัวเลือก...",
+      pointsLeft: "แต้มที่เหลือ",
       start: "เริ่มการผจญภัย",
     },
     en: {
@@ -68,15 +73,121 @@ const GameSetupPage = () => {
       attributesSubtitle: "Balance your strengths for this story's challenges.",
       pointsUsed: "Points used",
       backToClass: "Back to class selection",
+      loadingAttributes: "Loading attributes...",
+      loadingOptions: "Loading options...",
+      pointsLeft: "Points left",
       start: "Start adventure",
     },
   } as const;
   const text = language === "en" ? copy.en : copy.th;
   const [step, setStep] = useState<CharacterCreationStep>("race");
+  const [setupData, setSetupData] = useState<SetupApiResponse | null>(null);
+  const [isLoadingSetup, setIsLoadingSetup] = useState(false);
+  const [setupError, setSetupError] = useState<LocalizedText | null>(null);
   const [character, setCharacter] = useState<CharacterSelection>(() => ({
     ...createEmptyCharacter(),
     genre: game?.genre ?? "",
   }));
+
+  const selectedRaceLabel =
+    setupData?.races.find((race) => race.id === character.race)?.name ?? character.raceName ?? null;
+  const selectedClassLabel =
+    setupData?.classes.find((cls) => cls.id === character.class)?.name ?? character.className ?? null;
+
+  const totalAttributePoints = Object.values(character.attributes ?? {}).reduce((a, b) => a + b, 0);
+  const baseAttributeTotal = setupData ? Object.values(setupData.baseAttributes).reduce((a, b) => a + b, 0) : 0;
+  const maxAttributePoints = baseAttributeTotal + (setupData?.pointsToDistribute ?? 0);
+  const pointsRemaining = maxAttributePoints - totalAttributePoints;
+  const canStart =
+    Boolean(character.race && character.class) &&
+    Boolean(setupData) &&
+    totalAttributePoints <= maxAttributePoints &&
+    !isLoadingSetup;
+
+  const handleAdjustAttribute = (attributeId: string, delta: number) => {
+    if (!setupData) return;
+
+    setCharacter((prev) => {
+      const baseValue = setupData.baseAttributes?.[attributeId] ?? 0;
+      const currentValue = prev.attributes?.[attributeId] ?? baseValue;
+      const attributeCap = baseValue + (setupData.pointsToDistribute ?? 0);
+      const proposed = Math.min(attributeCap, Math.max(baseValue, currentValue + delta));
+
+      if (proposed === currentValue) return prev;
+
+      const nextAttributes = { ...prev.attributes, [attributeId]: proposed };
+      const nextTotal = Object.values(nextAttributes).reduce((a, b) => a + b, 0);
+
+      if (nextTotal > maxAttributePoints) {
+        return prev;
+      }
+
+      return { ...prev, attributes: nextAttributes };
+    });
+  };
+
+  const fetchSetupData = async (options: {
+    raceId?: string;
+    classId?: string;
+    useAttributes?: CharacterSelection["attributes"];
+    raceName?: LocalizedText;
+    className?: LocalizedText;
+  } = {}) => {
+    if (!game) return;
+    setIsLoadingSetup(true);
+    setSetupError(null);
+
+    try {
+      const params = new URLSearchParams();
+      if (options.raceId) params.set("race", options.raceId);
+      if (options.classId) params.set("class", options.classId);
+      const query = params.toString();
+
+      const response = await fetch(`/api/game/${slug}/setup${query ? `?${query}` : ""}`);
+      if (!response.ok) {
+        throw new Error("Unable to load setup data");
+      }
+
+      const data = (await response.json()) as SetupApiResponse;
+      setSetupData(data);
+
+      const baseAttributes = data.baseAttributes ?? {};
+      const attributes = data.attributes.reduce<Record<string, number>>((acc, attr) => {
+        const baseValue = baseAttributes[attr.id] ?? 0;
+        const savedValue = options.useAttributes?.[attr.id];
+        acc[attr.id] = Math.max(baseValue, savedValue ?? baseValue);
+        return acc;
+      }, {});
+
+      const raceId = options.raceId ?? character.race ?? "";
+      const classId = options.classId ?? character.class ?? "";
+
+      const raceName =
+        data.races.find((race) => race.id === raceId)?.name ?? options.raceName ?? character.raceName;
+      const className =
+        data.classes.find((cls) => cls.id === classId)?.name ?? options.className ?? character.className;
+
+      const nextCharacter: CharacterSelection = {
+        genre: game.genre,
+        race: raceId,
+        class: classId,
+        raceName,
+        className,
+        attributes,
+      };
+
+      setCharacter(nextCharacter);
+      setStep(getNextStep(nextCharacter));
+    } catch (error) {
+      console.error(error);
+      setSetupError({
+        th: "ไม่สามารถโหลดการตั้งค่าตัวละครได้",
+        en: "Unable to load character setup",
+      });
+    } finally {
+      setIsLoadingSetup(false);
+    }
+  };
 
   useEffect(() => {
     if (game && character.genre !== game.genre) {
@@ -91,48 +202,42 @@ const GameSetupPage = () => {
     }
 
     const saved = sessionStorage.getItem(getCharacterStorageKey(slug));
-    if (!saved) return;
-
-    try {
-      const parsed = JSON.parse(saved) as Partial<CharacterSelection>;
-      const restored: CharacterSelection = {
-        genre: game.genre,
-        race: parsed.race ?? "",
-        class: parsed.class ?? "",
-        attributes: { ...createDefaultAttributes(), ...(parsed.attributes ?? {}) },
-      };
-      setCharacter(restored);
-      setStep(getNextStep(restored));
-    } catch (error) {
-      console.error("Unable to load saved character", error);
+    let parsed: Partial<CharacterSelection> | null = null;
+    if (saved) {
+      try {
+        parsed = JSON.parse(saved) as Partial<CharacterSelection>;
+      } catch (error) {
+        console.error("Unable to load saved character", error);
+      }
     }
+
+    fetchSetupData({
+      raceId: parsed?.race,
+      classId: parsed?.class,
+      useAttributes: parsed?.attributes,
+      raceName: parsed?.raceName,
+      className: parsed?.className,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [game, router, slug]);
 
-  const totalAttributePoints = Object.values(character.attributes).reduce((a, b) => a + b, 0);
-  const canStart = Boolean(character.race && character.class) && totalAttributePoints <= ATTRIBUTE_MAX_POINTS;
-
   const handleSelectRace = (race: string) => {
-    const updated = { ...character, race };
-    setCharacter(updated);
+    fetchSetupData({ raceId: race });
     setStep("class");
   };
 
   const handleSelectClass = (className: string) => {
-    const updated = { ...character, class: className };
-    setCharacter(updated);
+    fetchSetupData({ raceId: character.race || undefined, classId: className });
     setStep("attributes");
-  };
-
-  const handleAttributeChange = (attribute: keyof CharacterSelection["attributes"], value: number[]) => {
-    setCharacter({
-      ...character,
-      attributes: { ...character.attributes, [attribute]: value[0] },
-    });
   };
 
   const handleStartGame = () => {
     if (!game) return;
-    sessionStorage.setItem(getCharacterStorageKey(slug), JSON.stringify(character));
+    const raceName = setupData?.races.find((race) => race.id === character.race)?.name ?? character.raceName;
+    const className =
+      setupData?.classes.find((cls) => cls.id === character.class)?.name ?? character.className;
+    const payload: CharacterSelection = { ...character, raceName, className };
+    sessionStorage.setItem(getCharacterStorageKey(slug), JSON.stringify(payload));
     router.push(`/game/${slug}/play`);
   };
 
@@ -190,44 +295,60 @@ const GameSetupPage = () => {
             </CardContent>
           </Card>
 
-          {step === "race" && (
+          {(step === "race" || !setupData) && (
             <div className="space-y-8">
-              <div className="text-center space-y-3">
-                <Badge className="bg-accent/20 text-accent border border-accent/30">
-                  {getLocalizedText(game.genreLabel, language)}
-                </Badge>
-                <h2 className="text-5xl font-bold text-foreground">{text.chooseRaceTitle}</h2>
-                <p className="text-muted-foreground text-lg">{text.chooseRaceSubtitle}</p>
-              </div>
+              {isLoadingSetup && !setupData && (
+                <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <span>{text.loadingOptions}</span>
+                </div>
+              )}
+              {setupError && !isLoadingSetup && !setupData && (
+                <p className="text-destructive text-center">{getLocalizedText(setupError, language)}</p>
+              )}
+              {step === "race" && setupData && (
+                <>
+                  <div className="text-center space-y-3">
+                    <Badge className="bg-accent/20 text-accent border border-accent/30">
+                      {getLocalizedText(game.genreLabel, language)}
+                    </Badge>
+                    <h2 className="text-5xl font-bold text-foreground">{text.chooseRaceTitle}</h2>
+                    <p className="text-muted-foreground text-lg">{text.chooseRaceSubtitle}</p>
+                  </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {races.map((race) => (
-                  <Card
-                    key={race.name}
-                    className="ornate-corners border-2 border-border bg-gradient-card shadow-card cursor-pointer transition-all hover:border-accent hover:shadow-glow-cyan"
-                    onClick={() => handleSelectRace(race.name)}
-                  >
-                    <CardContent className="p-6 text-center space-y-2">
-                      <h3 className="text-2xl font-bold text-foreground">{race.name}</h3>
-                      <p className="text-muted-foreground">{getLocalizedText(race.description, language)}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                  {setupError && (
+                    <p className="text-destructive text-center">{getLocalizedText(setupError, language)}</p>
+                  )}
 
-              <div className="text-center">
-                <Button
-                  variant="outline"
-                  onClick={() => router.push("/game")}
-                  className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  {text.backToGameList}
-                </Button>
-              </div>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {setupData.races.map((race) => (
+                      <Card
+                        key={race.id}
+                        className="ornate-corners border-2 border-border bg-gradient-card shadow-card cursor-pointer transition-all hover:border-accent hover:shadow-glow-cyan"
+                        onClick={() => handleSelectRace(race.id)}
+                      >
+                        <CardContent className="p-6 text-center space-y-2">
+                          <h3 className="text-2xl font-bold text-foreground">{getLocalizedText(race.name, language)}</h3>
+                          <p className="text-muted-foreground">{getLocalizedText(race.description, language)}</p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+
+                  <div className="text-center">
+                    <Button
+                      variant="outline"
+                      onClick={() => router.push("/game")}
+                      className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
+                    >
+                      <ArrowLeft className="h-4 w-4 mr-2" />
+                      {text.backToGameList}
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           )}
-
           {step === "class" && (
             <div className="space-y-8">
               <div className="text-center space-y-3">
@@ -235,21 +356,25 @@ const GameSetupPage = () => {
                   <Badge className="bg-accent/20 text-accent border border-accent/30">
                     {getLocalizedText(game.genreLabel, language)}
                   </Badge>
-                  <Badge className="bg-accent/20 text-accent border border-accent/30">{character.race}</Badge>
+                  {selectedRaceLabel && (
+                    <Badge className="bg-accent/20 text-accent border border-accent/30">
+                      {getLocalizedText(selectedRaceLabel, language)}
+                    </Badge>
+                  )}
                 </div>
                 <h2 className="text-5xl font-bold text-foreground">{text.chooseClassTitle}</h2>
                 <p className="text-muted-foreground text-lg">{text.chooseClassSubtitle}</p>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {classes.map((cls) => (
+                {setupData?.classes.map((cls) => (
                   <Card
-                    key={cls.name}
+                    key={cls.id}
                     className="ornate-corners border-2 border-border bg-gradient-card shadow-card cursor-pointer transition-all hover:border-accent hover:shadow-glow-cyan"
-                    onClick={() => handleSelectClass(cls.name)}
+                    onClick={() => handleSelectClass(cls.id)}
                   >
                     <CardContent className="p-6 text-center space-y-2">
-                      <h3 className="text-2xl font-bold text-foreground">{cls.name}</h3>
+                      <h3 className="text-2xl font-bold text-foreground">{getLocalizedText(cls.name, language)}</h3>
                       <p className="text-muted-foreground">{getLocalizedText(cls.description, language)}</p>
                     </CardContent>
                   </Card>
@@ -274,42 +399,115 @@ const GameSetupPage = () => {
               <div className="text-center space-y-3">
                 <div className="flex gap-2 justify-center">
                   <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
-                  <Badge className="bg-accent/20 text-accent border border-accent/30">{character.race}</Badge>
-                  <Badge className="bg-accent/20 text-accent border border-accent/30">{character.class}</Badge>
+                  {selectedRaceLabel && (
+                    <Badge className="bg-accent/20 text-accent border border-accent/30">
+                      {getLocalizedText(selectedRaceLabel, language)}
+                    </Badge>
+                  )}
+                  {selectedClassLabel && (
+                    <Badge className="bg-accent/20 text-accent border border-accent/30">
+                      {getLocalizedText(selectedClassLabel, language)}
+                    </Badge>
+                  )}
                 </div>
                 <h2 className="text-5xl font-bold text-foreground">{text.attributesTitle}</h2>
                 <p className="text-muted-foreground text-lg">{text.attributesSubtitle}</p>
-                <p className="text-sm text-muted-foreground">
-                  {text.pointsUsed}:{" "}
-                  <span className={totalAttributePoints > ATTRIBUTE_MAX_POINTS ? "text-destructive" : "text-accent"}>
-                    {totalAttributePoints}
-                  </span>{" "}
-                  / {ATTRIBUTE_MAX_POINTS}
-                </p>
+                <div className="flex justify-center">
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-accent/40 bg-background/60 shadow-inner">
+                    <div className="h-2 w-2 rounded-full bg-gradient-primary" />
+                    <span className="text-sm text-muted-foreground uppercase tracking-wide">
+                      {text.pointsLeft}
+                    </span>
+                    <span className="text-lg font-semibold text-foreground">
+                      {Math.max(pointsRemaining, 0)}
+                    </span>
+                  </div>
+                </div>
               </div>
 
               <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
                 <CardContent className="p-8">
-                  <div className="space-y-8">
-                    {Object.entries(character.attributes).map(([key, value]) => (
-                      <div key={key} className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <Label className="text-foreground text-lg">
-                            {getLocalizedText(attributeLabels[key as keyof CharacterSelection["attributes"]], language) ?? key}
-                          </Label>
-                          <span className="text-accent font-bold text-xl">{value}</span>
-                        </div>
-                        <Slider
-                          value={[value]}
-                          onValueChange={(val) => handleAttributeChange(key as keyof CharacterSelection["attributes"], val)}
-                          min={1}
-                          max={20}
-                          step={1}
-                          className="w-full"
-                        />
-                      </div>
-                    ))}
-                  </div>
+                  {setupError && (
+                    <p className="text-destructive mb-4 text-center">
+                      {getLocalizedText(setupError, language)}
+                    </p>
+                  )}
+                  {isLoadingSetup && !setupData ? (
+                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <span>{text.loadingAttributes}</span>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {setupData?.attributes.map((attribute) => {
+                        const baseValue = setupData.baseAttributes?.[attribute.id] ?? 0;
+                        const value = character.attributes?.[attribute.id] ?? baseValue;
+                        const attributeMax = baseValue + (setupData?.pointsToDistribute ?? 0);
+                        const safeMax = Math.max(attributeMax, 1);
+                        const remaining = Math.max(pointsRemaining, 0);
+                        const barPercent = Math.min(100, Math.max(0, (value / safeMax) * 100));
+                        const baseMarker = Math.min(100, Math.max(0, (baseValue / safeMax) * 100));
+                        const additionalPercent = Math.max(0, barPercent - baseMarker);
+                        const canDecrement = value > baseValue;
+                        const canIncrement = remaining > 0 && value < attributeMax;
+                        return (
+                          <div
+                            key={attribute.id}
+                            className="rounded-lg bg-background/40 shadow-inner p-3 space-y-2"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="text-left min-w-[120px]">
+                                <p className="text-sm uppercase text-foreground tracking-wide">
+                                  {getLocalizedText(attribute.name, language) ?? attribute.id}
+                                </p>
+                                <p className="text-xs text-secondary">
+                                  {language === "en" ? "Base" : "ฐาน"}: {baseValue}
+                                </p>
+                              </div>
+                              <div className="flex-1 space-y-1">
+                                <div className="relative h-2.5 rounded-full bg-muted/70 overflow-hidden">
+                                  <div
+                                    className="absolute inset-y-0 left-0 bg-accent transition-all"
+                                    style={{ width: `${baseMarker}%` }}
+                                  />
+                                  <div
+                                    className="absolute inset-y-0"
+                                    style={{ left: `${baseMarker}%`, width: `${additionalPercent}%` }}
+                                  >
+                                    <div className="h-full w-full bg-gradient-primary" />
+                                  </div>
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  {language === "en" ? "Current" : "ปัจจุบัน"}:{" "}
+                                  <span className="text-foreground font-semibold">{value}</span>
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  variant="outline"
+                                  size="icon"
+                                  className="h-8 w-8"
+                                  disabled={!canDecrement}
+                                  onClick={() => handleAdjustAttribute(attribute.id, -1)}
+                                >
+                                  <Minus className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="icon"
+                                  className="h-8 w-8"
+                                  disabled={!canIncrement}
+                                  onClick={() => handleAdjustAttribute(attribute.id, 1)}
+                                >
+                                  <Plus className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
