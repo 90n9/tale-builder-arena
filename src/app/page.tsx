@@ -6,11 +6,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Sparkles, MessageSquare, BarChart3, Image, Play, Zap, BookOpen, Trophy } from "lucide-react";
-import heroImage from "@/assets/hero-illustration.jpg";
 import { useLanguage } from "@/contexts/language-context";
 
 const Index = () => {
   const { language } = useLanguage();
+  const heroImageSrc = "/assets/hero-illustration.jpg";
   const copy = {
     th: {
       hero: {
@@ -134,7 +134,7 @@ const Index = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url(${heroImage.src})`,
+            backgroundImage: `url(${heroImageSrc})`,
           }}
         />
         

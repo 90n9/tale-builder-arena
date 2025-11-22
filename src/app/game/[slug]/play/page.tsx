@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import gamePlaceholder from "@/assets/game-scene-placeholder.jpg";
 import { randomAchievementForGenre, findAchievementById } from "@/data/achievements";
 import { findGameBySlug } from "@/data/games";
 import { findGameSetupById } from "@/data/game-content";
@@ -34,6 +33,7 @@ const DEFAULT_STATS: AdventureStats = {
   maxMana: 80,
   gold: 150,
 };
+const gamePlaceholderSrc = "/assets/game-scene-placeholder.jpg";
 
 const GamePlayPage = () => {
   const params = useParams<{ slug: string }>();
@@ -305,7 +305,7 @@ const GamePlayPage = () => {
       ? getLocalizedText(character.backgroundName, language)
       : character.background || "";
     const highlights = game.highlights.map((highlight) => getLocalizedText(highlight, language));
-    const coverSrc = game.coverImage || gamePlaceholder;
+    const coverSrc = game.coverImage || gamePlaceholderSrc;
     const maxAttributeValue = attributeSummaries.reduce((max, attribute) => {
       return Math.max(max, attribute.value);
     }, 1);
@@ -426,7 +426,7 @@ const GamePlayPage = () => {
                         </div>
                       ) : (
                         <Image
-                          src={gamePlaceholder}
+                          src={gamePlaceholderSrc}
                           alt={text.currentSceneAlt}
                           fill
                           priority

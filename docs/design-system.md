@@ -48,4 +48,4 @@ Design references are derived from `src/app/globals.css`, `tailwind.config.ts`, 
 - Preserve the Thai copy tone currently in use; keep uppercase nav/CTA labels consistent.
 
 ## Assets
-- Hero imagery lives in `src/assets/` (e.g., `hero-illustration.jpg`). Overlay gradients should always accompany photography to maintain contrast.
+- Hero and scene imagery live in `public/assets` (e.g., `/assets/hero-illustration.jpg`). Overlay gradients should always accompany photography to maintain contrast, and prefer `next/image` with explicit sizes when embedding.

@@ -20,7 +20,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 - UI: shared components in `src/components` (navbar/footer plus shadcn-styled primitives under `src/components/ui`); reusable hooks in `src/hooks`; utilities in `src/lib`; data in `src/data`.
 - Styling: Tailwind tokens/config in `tailwind.config.ts`; global styles in `src/app/globals.css`. See `docs/design-system.md` for design tokens and patterns.
 - Game content schema and authoring steps: `docs/create-new-game.md`
-- Assets: theme images in `src/assets`; public files that should be served verbatim belong in `public/`.
+- Assets: large hero/scene images now live in `public/assets` and are referenced via `/assets/...`; keep component-bundled art (e.g., small SVGs) in `src/assets`. Public files that should be served verbatim belong in `public/`.
 
 ## API Contract
 - Setup data per game: `GET /api/game/[slug]/setup?race={id}&class={id}` returns races, classes, attributes, base attributes (including race/class bonuses), and points to distribute. Attribute bonuses are not exposed in the payload.
@@ -34,7 +34,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 
 ## Styling & Assets
 - Tailwind base/theme live in `tailwind.config.ts` and `src/app/globals.css`.
-- Lucide icons, AI gradients, and ornate corners drive the look; hero/scene art ships with `src/assets/hero-illustration.jpg` and `src/assets/game-scene-placeholder.jpg`.
+- Lucide icons, AI gradients, and ornate corners drive the look; hero/scene art ships from `public/assets/hero-illustration.jpg` and `public/assets/game-scene-placeholder.jpg`.
 
 ## Testing & Verification
 - No automated tests yet; add `*.test.ts` / `*.test.tsx` alongside new logic when helpful.
@@ -42,6 +42,6 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 
 ## Conventions
 - TypeScript + React function components; PascalCase components, camelCase variables, kebab-case filenames for single exports.
-- Run ESLint (`eslint.config.js`) before committing; keep assets in `src/assets` and public files in `public`.
+- Run ESLint (`eslint.config.js`) before committing; keep bundled assets in `src/assets` and public files (including hero/scene art) in `public`.
 - Follow the patterns in `docs/design-system.md` before adjusting UI. Commit messages are short and imperative (e.g., “Add dashboard charts”).
 - For copy/UI changes, add both Thai and English strings. Use `LanguageProvider` + `useLanguage` for switching, and store translatable strings as `LocalizedText` objects in data/util files. Thai is the default and is persisted in `localStorage`.
