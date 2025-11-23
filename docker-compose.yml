@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: tale-builder-arena-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tale_builder_arena
+      POSTGRES_USER: tba_local
+      POSTGRES_PASSWORD: tba_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tba_local -d tale_builder_arena"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgweb:
+    image: sosedoff/pgweb:0.15.0
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://tba_local:tba_password@db:5432/tale_builder_arena?sslmode=disable
+      PGWEB_AUTH_USER: ${PGWEB_AUTH_USER}
+      PGWEB_AUTH_PASS: ${PGWEB_AUTH_PASS}
+    ports:
+      - "8081:8081"
+    command: ["--bind=0.0.0.0", "--listen=8081"]
+
+volumes:
+  db_data:

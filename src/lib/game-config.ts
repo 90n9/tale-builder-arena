@@ -44,6 +44,8 @@ export type AdventureSummary = {
   stats: AdventureStats;
   character: CharacterSelection;
   achievementId?: string | null;
+  endingSceneId?: string | null;
+  endingNarration?: string | null;
 };
 
 export const genres = [

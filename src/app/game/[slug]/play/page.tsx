@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { RefreshCw, Loader2, Heart, Sparkles, Compass, Map, Shield } from "lucide-react";
+import { RefreshCw, Loader2, Heart, Sparkles, Compass, Map as MapIcon, Shield } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -202,6 +202,8 @@ const GamePlayPage = () => {
             stats,
             character,
             achievementId: achievement?.id ?? null,
+            endingSceneId: data.sceneId ?? null,
+            endingNarration: data.narration ?? null,
           };
 
           sessionStorage.setItem(getEndSummaryStorageKey(slug), JSON.stringify(summary));
@@ -412,7 +414,7 @@ const GamePlayPage = () => {
                         </div>
                         <div className="space-y-3">
                           <div className="flex items-center gap-3">
-                            <Map className="h-5 w-5 text-accent" />
+                            <MapIcon className="h-5 w-5 text-accent" />
                             <p className="text-sm text-foreground">
                               {getLocalizedText(game.genreLabel, language)}
                             </p>

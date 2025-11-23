@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import type { Route } from "next";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Menu, Scroll } from "lucide-react";
@@ -15,13 +16,11 @@ const Navbar = () => {
   const { language } = useLanguage();
   const labels = {
     th: {
-      home: "หน้าหลัก",
       achievements: "ความสำเร็จ",
       start: "เริ่มการผจญภัย",
       menu: "เมนู",
     },
     en: {
-      home: "Home",
       achievements: "Achievements",
       start: "Start Adventure",
       menu: "Menu",
@@ -29,8 +28,7 @@ const Navbar = () => {
   } as const;
   const text = language === "en" ? labels.en : labels.th;
 
-  const navLinks = [
-    { href: "/", label: text.home },
+  const navLinks: Array<{ href: Route; label: string }> = [
     { href: "/achievements", label: text.achievements },
   ];
 
