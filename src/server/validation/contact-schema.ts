@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { type ContactRequestType } from "@/lib/contact-repository";
+import { type ContactRequestType } from "@/server/ports/contact-repository";
 import { type Language } from "@/lib/i18n";
 
 export const requestTypes = ["feedback", "issue", "other"] as const satisfies ContactRequestType[];

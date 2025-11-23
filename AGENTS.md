@@ -6,6 +6,7 @@
 
 ## Project Structure & Module Organization
 - Next.js (App Router) lives in `src/app`; shared UI in `src/components`, hooks in `src/hooks`, utilities in `src/lib`, and supporting data in `src/data`.
+- Server-side/clean architecture lives in `src/server` (ports, use cases per API route, and infra adapters). Keep `src/app/api/**` handlers thin and call into use cases.
 - Global styling is handled via Tailwind with tokens in `tailwind.config.ts` and base styles in `src/app/globals.css`; PostCSS config is in `postcss.config.js`.
 - Static assets belong in `src/assets`; public files served verbatim go in `public`.
 
@@ -24,7 +25,7 @@
 - All user-facing copy must be bilingual (Thai default, English alternate). Store translatable text as `LocalizedText` objects and read via `useLanguage`/`LanguageProvider`; do not hardcode single-language strings in UI.
 
 ## Testing Guidelines
-- No automated test suite is configured yet. Add tests alongside features when practical (e.g., `*.test.tsx`) and ensure they can run via a future `npm test`.
+- Automated tests exist via `npm test` (Vitest). For backend logic, add unit tests alongside use cases in `src/server/usecases/**` and mock DB/third-party calls. Add UI tests as `*.test.tsx` when practical.
 - Perform manual smoke checks: `npm run lint` and `npm run build`; optionally `npm start` or `npm run dev` for local verification.
 
 ## Commit & Pull Request Guidelines
