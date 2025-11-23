@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/sonner";
 import { useLanguage } from "@/contexts/language-context";
-import { type ContactRequestType } from "@/lib/contact-repository";
+import { type ContactRequestType } from "@/server/ports/contact-repository";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 
 const copy: Record<string, LocalizedText> = {

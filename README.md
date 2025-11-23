@@ -28,6 +28,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
   - `/` landing, `/game` catalog, `/game/[slug]` setup, `/game/[slug]/play` turn-based scene, `/game/[slug]/end` summary
   - `/achievements`, `/about`, `/contact`, `/privacy-policy`, `/terms-of-use`, and `not-found`
 - UI: shared components in `src/components` (navbar/footer plus shadcn-styled primitives under `src/components/ui`); reusable hooks in `src/hooks`; utilities in `src/lib`; data in `src/data`.
+- Backend/clean architecture: server-only code lives in `src/server` (ports, use cases per API route, and infra adapters). API handlers in `src/app/api/**` should stay as thin adapters that call the relevant use case.
 - Styling: Tailwind tokens/config in `tailwind.config.ts`; global styles in `src/app/globals.css`. See `docs/design-system.md` for design tokens and patterns.
 - Game content schema and authoring steps: `docs/create-new-game.md`
 - Assets: large hero/scene images now live in `public/assets` and are referenced via `/assets/...`; keep component-bundled art (e.g., small SVGs) in `src/assets`. Public files that should be served verbatim belong in `public/`.
@@ -47,7 +48,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 - Lucide icons, AI gradients, and ornate corners drive the look; hero/scene art ships from `public/assets/hero-illustration.jpg` and `public/assets/game-scene-placeholder.jpg`.
 
 ## Testing & Verification
-- No automated tests yet; add `*.test.ts` / `*.test.tsx` alongside new logic when helpful.
+- Automated: `npm test` runs Vitest; `npm run test:coverage` includes coverage. Backend use cases live under `src/server/usecases/**` and have unit tests with mocks for DB/third-party calls; add new tests alongside new use cases.
 - Manual smoke: `npm run lint`, `npm run build`, then `npm start` and click through the `/game` flow; confirm achievements appear and reset by clearing `localStorage` if needed. Build output is emitted to `.next/`.
 - Contact form: start Postgres (`npm run db:up`), run `npm run prisma:migrate`, submit a message on `/contact`, and verify it writes into the `contacts` table (view via Prisma Studio `npx prisma studio` or pgweb at http://localhost:8081).
 - Contact email is optional; include it if you want a reply, otherwise submissions are stored without one.

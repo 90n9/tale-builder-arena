@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Noto_Sans_Thai, Prompt } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -22,7 +22,6 @@ export const metadata: Metadata = {
   description: "AI-driven text RPG with branching choices and rich achievements.",
   applicationName: "TaleBuilder Arena",
   manifest: "/site.webmanifest",
-  themeColor: "#0e131b",
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -31,6 +30,10 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
     shortcut: "/favicon.ico",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0e131b",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
