@@ -29,13 +29,13 @@ const game = {
 
 const gateway: GameContentGateway = {
   findSetupById(id: string) {
-    return id === game.game_id ? (game as any) : null;
+    return id === game.game_id ? (game as typeof game) : null;
   },
   findStoryGameById() {
     return null;
   },
   getDefaultStoryGame() {
-    return game as any;
+    return game as typeof game;
   },
 };
 

@@ -54,10 +54,10 @@ const mockGameContent = {
 
 const gameGateway: GameContentGateway = {
   findStoryGameById(id: string) {
-    return id === mockGameContent.game_id ? (mockGameContent as any) : null;
+    return id === mockGameContent.game_id ? mockGameContent : null;
   },
   getDefaultStoryGame() {
-    return mockGameContent as any;
+    return mockGameContent;
   },
   findSetupById() {
     return null;
@@ -104,7 +104,10 @@ describe("advanceStory use case", () => {
   });
 
   it("returns scene_not_found when no matching scene or fallback exists", () => {
-    const emptyGame = { ...mockGameContent, scenes: {} } as any;
+    const emptyGame: (typeof mockGameContent) & { scenes: Record<string, never> } = {
+      ...mockGameContent,
+      scenes: {},
+    };
     const result = advanceStory(
       {
         gameId: emptyGame.game_id,

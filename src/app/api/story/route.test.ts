@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { GET as getStory, POST as postStory } from "./route";
 import * as advanceStoryUsecase from "@/server/usecases/story/advance-story";
 
