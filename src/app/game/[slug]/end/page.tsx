@@ -125,6 +125,8 @@ const EndGamePage = () => {
   const backgroundLabel = character.backgroundName
     ? getLocalizedText(character.backgroundName, language)
     : character.background || "";
+  const endingNarration = summary.endingNarration?.trim() ?? "";
+  const endingId = summary.endingSceneId ?? null;
 
   return (
     <>
@@ -214,11 +216,22 @@ const EndGamePage = () => {
                   </div>
                 )}
 
-                <div className="pt-6 border-t border-border">
-                  <h3 className="text-lg font-semibold text-foreground mb-3 text-center">{text.yourStory}</h3>
-                  <p className="text-muted-foreground text-center leading-relaxed">
-                    {text.closing(getLocalizedText(game.title, language))}
-                  </p>
+                <div className="pt-6 border-t border-border space-y-3 text-center">
+                  <h3 className="text-lg font-semibold text-foreground">{text.yourStory}</h3>
+                  {endingId ? (
+                    <div className="flex justify-center">
+                      <Badge className="bg-secondary/20 text-secondary border border-secondary/40 uppercase tracking-wide">
+                        {endingId}
+                      </Badge>
+                    </div>
+                  ) : null}
+                  {endingNarration ? (
+                    <p className="text-foreground leading-relaxed whitespace-pre-line">{endingNarration}</p>
+                  ) : (
+                    <p className="text-muted-foreground leading-relaxed">
+                      {text.closing(getLocalizedText(game.title, language))}
+                    </p>
+                  )}
                 </div>
               </div>
             </CardContent>

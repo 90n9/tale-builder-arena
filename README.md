@@ -4,7 +4,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 
 ## Requirements
 - Node 18.18+ (Next.js 15) and npm.
-- No environment variables or external services are required; the story and achievements are mock data served from the app.
+- For contact form persistence: Postgres 15+ (Docker recipe included) and a `DATABASE_URL` env var.
 
 ## Run It
 - Install deps: `npm install`
@@ -12,6 +12,16 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 - Lint: `npm run lint`
 - Production build: `npm run build`
 - Start built app: `npm start`
+- Docker: `docker build -t tale-builder-arena .` then `docker run -p 3000:3000 tale-builder-arena` (the Prisma schema is copied before installs so the client generates during the image build)
+
+## Local Postgres (contact form)
+- Copy `.env.example` to `.env.local` and adjust credentials if needed; default URL points at the included Docker Compose service.
+- Start the database (and pgweb viewer on port 8081): `npm run db:up`
+- Generate Prisma client (after schema edits): `npm run prisma:generate`
+- Apply migrations: `npm run prisma:migrate` (uses the URL in `DATABASE_URL`)
+- pgweb UI: open http://localhost:8081 and sign in with `PGWEB_AUTH_USER/PGWEB_AUTH_PASS` from your `.env.local`.
+- psql without installing locally: `npm run db:psql` (opens psql inside the container).
+- Tail DB logs if debugging: `npm run db:logs`; stop services with `npm run db:down`.
 
 ## Project Layout
 - App router views live in `src/app`:
@@ -39,6 +49,8 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 ## Testing & Verification
 - No automated tests yet; add `*.test.ts` / `*.test.tsx` alongside new logic when helpful.
 - Manual smoke: `npm run lint`, `npm run build`, then `npm start` and click through the `/game` flow; confirm achievements appear and reset by clearing `localStorage` if needed. Build output is emitted to `.next/`.
+- Contact form: start Postgres (`npm run db:up`), run `npm run prisma:migrate`, submit a message on `/contact`, and verify it writes into the `contacts` table (view via Prisma Studio `npx prisma studio` or pgweb at http://localhost:8081).
+- Contact email is optional; include it if you want a reply, otherwise submissions are stored without one.
 
 ## Conventions
 - TypeScript + React function components; PascalCase components, camelCase variables, kebab-case filenames for single exports.

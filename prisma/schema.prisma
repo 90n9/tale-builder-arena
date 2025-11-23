@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id          BigInt    @id @default(autoincrement())
+  name        String    @db.VarChar(200)
+  email       String    @db.VarChar(255)
+  requestType String    @map("request_type") @db.VarChar(50)
+  subject     String    @db.VarChar(255)
+  message     String    @db.Text
+  locale      String    @db.VarChar(5) @default("th")
+  userAgent   String?   @map("user_agent") @db.Text
+  ipAddress   String?   @map("ip_address") @db.VarChar(80)
+  referer     String?   @db.Text
+  isSpam      Boolean   @map("is_spam") @default(false)
+  spamReason  String?   @map("spam_reason") @db.VarChar(255)
+  submittedAt DateTime  @map("submitted_at") @default(now()) @db.Timestamptz(6)
+
+  @@index([submittedAt], map: "contacts_submitted_at_idx")
+  @@map("contacts")
+}
