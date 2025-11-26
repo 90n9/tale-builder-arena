@@ -8,11 +8,16 @@ export type GameSetupContent = {
   game_id: string;
   metadata: {
     genre: string;
+    cover_image?: string;
   };
   config: {
     starting_attributes: {
       points_to_distribute: number;
       base_values: Record<string, number>;
+    };
+    asset_paths?: {
+      images?: string;
+      videos?: string;
     };
   };
   races: Array<{

@@ -4,6 +4,7 @@ import {
   type GameContentGateway,
   type StoryChoice,
   type StoryEnding,
+  type StoryGameContent,
   type StoryScene,
 } from "@/server/ports/game-content";
 import { type I18nService } from "@/server/ports/i18n";
@@ -33,6 +34,10 @@ export type AdvanceStoryResult =
         choices: Array<{ id: string; text: string }>;
         shouldEnd: boolean;
         achievementId: string | null;
+        image: string | null;
+        endingTitle: string | null;
+        endingSummary: string | null;
+        endingResult: string | null;
       };
     };
 
@@ -75,6 +80,16 @@ const findEnding = (game: { endings: Record<string, StoryEnding> }, endingId: st
   return game.endings[endingId] ?? null;
 };
 
+const buildImageUrl = (game: StoryGameContent, imageName?: string) => {
+  if (!imageName) return null;
+  if (/^https?:\/\//.test(imageName) || imageName.startsWith("/")) return imageName;
+
+  const base = game.config.asset_paths?.images;
+  const normalizedBase = base ? (base.endsWith("/") ? base : `${base}/`) : "/";
+
+  return `${normalizedBase}${imageName}`;
+};
+
 export const advanceStory = (request: StoryRequest, deps: AdvanceStoryDeps): AdvanceStoryResult => {
   const language: Language = request.language === "en" ? "en" : "th";
   const defaultGame = deps.gameContent.getDefaultStoryGame();
@@ -84,6 +99,8 @@ export const advanceStory = (request: StoryRequest, deps: AdvanceStoryDeps): Adv
   if (!game) {
     return { kind: "game_not_found" };
   }
+
+  const coverImage = buildImageUrl(game, game.metadata?.cover_image);
 
   const turn = typeof request.turn === "number" && request.turn > 0 ? request.turn : 0;
   const nextTurn = request.selectedChoiceId ? turn + 1 : Math.max(turn, 1);
@@ -133,6 +150,10 @@ export const advanceStory = (request: StoryRequest, deps: AdvanceStoryDeps): Adv
         choices: [],
         shouldEnd: true,
         achievementId,
+        image: buildImageUrl(game, ending.image) ?? coverImage,
+        endingTitle: title,
+        endingSummary: summary,
+        endingResult: result,
       },
     };
   }
@@ -163,6 +184,10 @@ export const advanceStory = (request: StoryRequest, deps: AdvanceStoryDeps): Adv
       choices,
       shouldEnd: false,
       achievementId: null,
+      image: buildImageUrl(game, safeScene.image) ?? coverImage,
+      endingTitle: null,
+      endingSummary: null,
+      endingResult: null,
     },
   };
 };

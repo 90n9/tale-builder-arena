@@ -11,10 +11,12 @@ import { PageHeader } from "@/components/PageHeader";
 import { ALL_ACHIEVEMENTS, type Achievement } from "@/data/achievements";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText } from "@/lib/i18n";
+import { trackInteraction } from "@/lib/analytics";
 
 const AchievementsPage = () => {
   const [earnedAchievements, setEarnedAchievements] = useState<string[]>([]);
   const [selectedGenre, setSelectedGenre] = useState<string>("all");
+  const [hasLoaded, setHasLoaded] = useState(false);
   const { language } = useLanguage();
   const copy = {
     th: {
@@ -48,6 +50,7 @@ const AchievementsPage = () => {
     if (saved) {
       setEarnedAchievements(JSON.parse(saved));
     }
+    setHasLoaded(true);
   }, []);
 
   const genres = useMemo(() => {
@@ -73,6 +76,16 @@ const AchievementsPage = () => {
     language === "en"
       ? { legendary: "Legendary", epic: "Epic", rare: "Rare", common: "Common" }
       : { legendary: "ตำนาน", epic: "มหากาพย์", rare: "หายาก", common: "ทั่วไป" };
+
+  useEffect(() => {
+    if (!hasLoaded) return;
+    trackInteraction({
+      action: "achievements-view",
+      category: "progress",
+      label: `${earnedCount}/${totalCount}`,
+      params: { count_unlocked: earnedCount, total: totalCount, language },
+    });
+  }, [earnedCount, hasLoaded, language, totalCount]);
 
   const getRarityColor = (rarity: Achievement["rarity"]) => {
     switch (rarity) {

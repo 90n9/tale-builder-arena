@@ -95,13 +95,20 @@ const GameListPage = () => {
               const highlights = game.highlights.map((highlight) => getLocalizedText(highlight, language));
               const progressState = progress[game.slug];
               const hasInProgress = Boolean(progressState?.hasCharacter) && !progressState?.hasSummary;
+              const coverSrc = game.coverImage || "/assets/game-scene-placeholder.jpg";
 
               return (
                 <Card
                   key={game.slug}
-                  className="ornate-corners border-2 border-border bg-gradient-card shadow-card backdrop-blur-sm hover:border-accent hover:shadow-glow-cyan transition-all duration-300"
+                  className="relative overflow-hidden ornate-corners border-2 border-border bg-card/30 shadow-card backdrop-blur-sm hover:border-accent hover:shadow-glow-cyan transition-all duration-300"
                 >
-                  <CardContent className="p-8 space-y-6">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${coverSrc})` }}
+                    aria-hidden
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/80 to-background/60" aria-hidden />
+                  <CardContent className="relative z-10 p-8 space-y-6">
                     <div className="flex items-center justify-between gap-3">
                       <Badge className="bg-accent/20 text-accent border border-accent/30">
                         {getLocalizedText(game.genreLabel, language)}
@@ -143,6 +150,9 @@ const GameListPage = () => {
                           <Button
                             onClick={() => handleContinue(game.slug)}
                             className="w-full sm:w-auto bg-gradient-primary hover:shadow-glow-orange text-primary-foreground border-2 border-secondary/50"
+                            data-ga-event="game-continue"
+                            data-ga-category="gameplay"
+                            data-ga-label={game.slug}
                           >
                             {text.continue}
                             <ArrowRight className="h-4 w-4 ml-2" />
@@ -151,6 +161,9 @@ const GameListPage = () => {
                             variant="outline"
                             onClick={() => handleStartOver(game.slug)}
                             className="w-full sm:w-auto border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
+                            data-ga-event="restart-run"
+                            data-ga-category="progress"
+                            data-ga-label={game.slug}
                           >
                             <RefreshCw className="h-4 w-4 mr-2" />
                             {text.startOver}
@@ -162,7 +175,12 @@ const GameListPage = () => {
                             asChild
                             className="w-full sm:w-auto bg-gradient-primary hover:shadow-glow-orange text-primary-foreground border-2 border-secondary/50"
                           >
-                            <Link href={`/game/${game.slug}`}>
+                            <Link
+                              href={`/game/${game.slug}`}
+                              data-ga-event="game-card-click"
+                              data-ga-category="gameplay"
+                              data-ga-label={game.slug}
+                            >
                               {text.setup}
                               <ArrowRight className="h-4 w-4 ml-2" />
                             </Link>

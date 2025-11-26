@@ -53,13 +53,21 @@ const Navbar = () => {
               className={`text-sm font-medium uppercase tracking-wider transition-colors hover:text-accent ${
                 isActive(link.href) ? "text-accent" : "text-muted-foreground"
               }`}
+              data-ga-event="nav-link-click"
+              data-ga-category="navigation"
+              data-ga-label={link.href}
             >
               {link.label}
             </Link>
           ))}
           <LanguageToggle />
           <Button asChild className="bg-gradient-primary hover:shadow-glow-orange transition-all text-sm font-semibold uppercase text-primary-foreground border border-secondary/50">
-            <Link href="/game">
+            <Link
+              href="/game"
+              data-ga-event="nav-link-click"
+              data-ga-category="navigation"
+              data-ga-label="/game"
+            >
               {text.start}
             </Link>
           </Button>
@@ -71,7 +79,14 @@ const Navbar = () => {
             size="sm"
             className="bg-gradient-primary hover:shadow-glow-orange transition-all text-xs font-semibold uppercase text-primary-foreground border border-secondary/50 px-3"
           >
-            <Link href="/game">{text.start}</Link>
+            <Link
+              href="/game"
+              data-ga-event="nav-link-click"
+              data-ga-category="navigation"
+              data-ga-label="/game"
+            >
+              {text.start}
+            </Link>
           </Button>
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild>
@@ -87,7 +102,14 @@ const Navbar = () => {
             <SheetContent side="right" className="bg-background/95 backdrop-blur-xl border-border">
               <div className="mt-8 flex flex-col gap-6">
                 <div className="flex items-center justify-between">
-                  <Link href="/" className="flex items-center gap-2" onClick={handleCloseMenu}>
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2"
+                    onClick={handleCloseMenu}
+                    data-ga-event="nav-link-click"
+                    data-ga-category="navigation"
+                    data-ga-label="/"
+                  >
                     <Scroll className="h-5 w-5 text-accent" />
                     <span className="text-lg font-bold text-foreground">TaleBuilder Arena</span>
                   </Link>
@@ -102,6 +124,9 @@ const Navbar = () => {
                           isActive(link.href) ? "text-accent" : "text-muted-foreground"
                         }`}
                         onClick={handleCloseMenu}
+                        data-ga-event="nav-link-click"
+                        data-ga-category="navigation"
+                        data-ga-label={link.href}
                       >
                         {link.label}
                       </Link>
@@ -114,7 +139,14 @@ const Navbar = () => {
                     className="w-full bg-gradient-primary hover:shadow-glow-orange text-sm font-semibold uppercase text-primary-foreground border border-secondary/50"
                     onClick={handleCloseMenu}
                   >
-                    <Link href="/game">{text.start}</Link>
+                    <Link
+                      href="/game"
+                      data-ga-event="nav-link-click"
+                      data-ga-category="navigation"
+                      data-ga-label="/game"
+                    >
+                      {text.start}
+                    </Link>
                   </Button>
                 </SheetClose>
               </div>

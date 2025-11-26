@@ -11,6 +11,7 @@ import { findGameBySlug } from "@/data/games";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { createEmptyCharacter, getCharacterStorageKey, type CharacterSelection } from "@/lib/game-config";
+import { trackInteraction } from "@/lib/analytics";
 
 type CharacterCreationStep = "race" | "class" | "background" | "attributes";
 
@@ -286,6 +287,18 @@ const GameSetupPage = () => {
       setupData?.backgrounds.find((bg) => bg.id === character.background)?.name ?? character.backgroundName;
     const payload: CharacterSelection = { ...character, raceName, className, backgroundName };
     sessionStorage.setItem(getCharacterStorageKey(slug), JSON.stringify(payload));
+    trackInteraction({
+      action: "game-start",
+      category: "gameplay",
+      label: slug,
+      params: {
+        game_slug: slug,
+        race_id: character.race,
+        class_id: character.class,
+        background_id: character.background,
+        language,
+      },
+    });
     router.push(`/game/${slug}/play`);
   };
 
@@ -631,6 +644,9 @@ const GameSetupPage = () => {
                   onClick={handleStartGame}
                   disabled={!canStart}
                   className="bg-gradient-primary hover:shadow-glow-orange"
+                  data-ga-event="game-start"
+                  data-ga-category="gameplay"
+                  data-ga-label={slug}
                 >
                   {text.start}
                   <ArrowRight className="h-4 w-4 ml-2" />

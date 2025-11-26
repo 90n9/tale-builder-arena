@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Loader2, RefreshCw, Sparkles, Trophy } from "lucide-react";
@@ -24,16 +25,13 @@ const EndGamePage = () => {
     th: {
       loading: "กำลังดึงข้อมูลสรุปการผจญภัย...",
       completed: (title: string) => `${title} เสร็จสิ้น!`,
-      summaryTitle: "สรุปเส้นทาง",
-      characterInfo: "ข้อมูลตัวละคร",
-      genre: "แนวเรื่อง:",
-      race: "เผ่าพันธุ์:",
-      class: "สายอาชีพ:",
-      background: "ภูมิหลัง:",
-      stats: "สถิติการผจญภัย",
-      turnCount: "จำนวนเทิร์น:",
-      finalHp: "HP สุดท้าย:",
-      gold: "ทองที่เก็บได้:",
+      summaryTitle: "สรุปการเดินทาง",
+      characterInfo: "ข้อมูลผจญภัย",
+      genre: "แนวเรื่อง",
+      race: "เผ่าพันธุ์",
+      class: "สายอาชีพ",
+      background: "ภูมิหลัง",
+      turnCount: "จำนวนเทิร์น",
       achievementUnlocked: "ปลดล็อกความสำเร็จ!",
       yourStory: "เรื่องเล่าของคุณ",
       closing: (title: string) =>
@@ -45,16 +43,13 @@ const EndGamePage = () => {
     en: {
       loading: "Fetching your adventure recap...",
       completed: (title: string) => `${title} completed!`,
-      summaryTitle: "Journey summary",
-      characterInfo: "Character details",
-      genre: "Genre:",
-      race: "Race:",
-      class: "Class:",
-      background: "Background:",
-      stats: "Adventure stats",
-      turnCount: "Turn count:",
-      finalHp: "Final HP:",
-      gold: "Gold collected:",
+      summaryTitle: "Journey recap",
+      characterInfo: "Adventure info",
+      genre: "Genre",
+      race: "Race",
+      class: "Class",
+      background: "Background",
+      turnCount: "Turn count",
       achievementUnlocked: "Achievement unlocked!",
       yourStory: "Your tale",
       closing: (title: string) =>
@@ -119,7 +114,7 @@ const EndGamePage = () => {
     );
   }
 
-  const { character, stats, turn } = summary;
+  const { character, turn } = summary;
   const raceLabel = character.raceName ? getLocalizedText(character.raceName, language) : character.race;
   const classLabel = character.className ? getLocalizedText(character.className, language) : character.class;
   const backgroundLabel = character.backgroundName
@@ -127,128 +122,77 @@ const EndGamePage = () => {
     : character.background || "";
   const endingNarration = summary.endingNarration?.trim() ?? "";
   const endingId = summary.endingSceneId ?? null;
+  const endingImage = summary.endingImage ?? game.coverImage ?? "/assets/game-scene-placeholder.jpg";
+  const narrationParts = endingNarration ? endingNarration.split(/\n{2,}/).filter(Boolean) : [];
+  const endingTitle = summary.endingTitle ?? narrationParts[0] ?? getLocalizedText(game.title, language);
+  const endingSummary = summary.endingSummary ?? narrationParts[1] ?? text.closing(getLocalizedText(game.title, language));
+  const endingResult = summary.endingResult ?? narrationParts[2] ?? narrationParts[1] ?? "";
 
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-background pt-20 pb-8 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <div className="mb-8">
-              <Sparkles className="h-20 w-20 text-accent mx-auto mb-4 animate-pulse" />
-            </div>
-            <h1 className="text-6xl font-bold text-foreground mb-4">
-              {text.completed(getLocalizedText(game.title, language))}
-            </h1>
-            <p className="text-muted-foreground text-xl">{getLocalizedText(game.tagline, language)}</p>
-            <div className="flex items-center justify-center gap-2 mt-4">
-              <Badge className="bg-accent/20 text-accent border border-accent/30">{raceLabel}</Badge>
-              <Badge className="bg-accent/20 text-accent border border-accent/30">{classLabel}</Badge>
-              <Badge className="bg-accent/20 text-accent border border-accent/30">{backgroundLabel}</Badge>
+      <div className="min-h-screen bg-background pt-16 pb-12 px-4">
+        <div className="container mx-auto max-w-4xl space-y-8">
+          <div className="overflow-hidden rounded-3xl border-2 border-border shadow-card bg-muted/20">
+            <div className="relative w-full aspect-[16/9]">
+              <Image src={endingImage} alt={endingTitle} fill className="object-cover" />
             </div>
           </div>
 
-          <Card className="ornate-corners border-2 border-accent/50 bg-gradient-card shadow-glow-cyan mb-8">
-            <CardContent className="p-8">
-              <h2 className="text-3xl font-bold text-foreground mb-6 text-center">{text.summaryTitle}</h2>
-
-              <div className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-accent">{text.characterInfo}</h3>
-                    <div className="space-y-2 text-foreground">
-                      <p>
-                        <span className="text-muted-foreground">{text.genre}</span>{" "}
-                        {getLocalizedText(game.genreLabel, language)}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">{text.race}</span> {raceLabel}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">{text.class}</span> {classLabel}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">{text.background}</span> {backgroundLabel}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-accent">{text.stats}</h3>
-                    <div className="space-y-2 text-foreground">
-                      <p>
-                        <span className="text-muted-foreground">{text.turnCount}</span> {turn}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">{text.finalHp}</span> {stats.hp}/{stats.maxHp}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">{text.gold}</span> {stats.gold}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {achievement && (
-                  <div className="pt-6 border-t border-border">
-                    <h3 className="text-lg font-semibold text-accent mb-4 flex items-center gap-2">
-                      <Trophy className="h-5 w-5" />
-                      {text.achievementUnlocked}
-                    </h3>
-                    <Card className="ornate-corners border-2 border-secondary/50 bg-secondary/10">
-                      <CardContent className="p-4">
-                        <div className="flex items-start gap-3">
-                          <Trophy className="h-8 w-8 text-secondary flex-shrink-0 mt-1" />
-                          <div>
-                            <h4 className="text-xl font-bold text-secondary mb-2">
-                              {getLocalizedText(achievement.name, language)}
-                            </h4>
-                            <p className="text-foreground mb-2">
-                              {getLocalizedText(achievement.description, language)}
-                            </p>
-                            <Badge className="bg-secondary/20 text-secondary border border-secondary/30 capitalize">
-                              {achievement.rarity}
-                            </Badge>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
-
-                <div className="pt-6 border-t border-border space-y-3 text-center">
-                  <h3 className="text-lg font-semibold text-foreground">{text.yourStory}</h3>
-                  {endingId ? (
-                    <div className="flex justify-center">
-                      <Badge className="bg-secondary/20 text-secondary border border-secondary/40 uppercase tracking-wide">
-                        {endingId}
-                      </Badge>
-                    </div>
-                  ) : null}
-                  {endingNarration ? (
-                    <p className="text-foreground leading-relaxed whitespace-pre-line">{endingNarration}</p>
-                  ) : (
-                    <p className="text-muted-foreground leading-relaxed">
-                      {text.closing(getLocalizedText(game.title, language))}
-                    </p>
-                  )}
-                </div>
+          <div className="space-y-4 text-center">
+            {endingId ? (
+              <div className="flex justify-center">
+                <Badge className="bg-accent/15 text-accent border border-accent/30 uppercase tracking-wide">
+                  {endingId}
+                </Badge>
               </div>
-            </CardContent>
-          </Card>
+            ) : null}
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground">{endingTitle}</h1>
+            <p className="text-lg text-secondary leading-relaxed whitespace-pre-line">{endingSummary}</p>
+            {endingResult ? (
+              <p className="text-foreground leading-relaxed whitespace-pre-line">{endingResult}</p>
+            ) : null}
+          </div>
 
-          <div className="flex gap-4 justify-center">
+          {achievement && (
+            <Card className="ornate-corners border-2 border-secondary/50 bg-secondary/10">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <Trophy className="h-8 w-8 text-secondary flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="text-xl font-bold text-secondary mb-2">
+                      {getLocalizedText(achievement.name, language)}
+                    </h4>
+                    <p className="text-foreground mb-2">
+                      {getLocalizedText(achievement.description, language)}
+                    </p>
+                    <Badge className="bg-secondary/20 text-secondary border border-secondary/30 capitalize">
+                      {achievement.rarity}
+                    </Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          <div className="flex flex-col md:flex-row gap-3 justify-center">
             <Button
               asChild
               variant="outline"
               className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan text-lg px-8 py-6"
             >
-              <Link href="/achievements">
+              <Link href="/achievements" data-ga-event="nav-link-click" data-ga-category="navigation" data-ga-label="/achievements">
                 <Trophy className="h-5 w-5 mr-2" />
                 {text.viewAchievements}
               </Link>
             </Button>
-            <Button onClick={handleReplay} className="bg-gradient-primary hover:shadow-glow-orange text-lg px-8 py-6">
+            <Button
+              onClick={handleReplay}
+              className="bg-gradient-primary hover:shadow-glow-orange text-lg px-8 py-6"
+              data-ga-event="restart-run"
+              data-ga-category="progress"
+              data-ga-label={slug}
+            >
               <RefreshCw className="h-5 w-5 mr-2" />
               {text.playAgain}
             </Button>
@@ -256,6 +200,9 @@ const EndGamePage = () => {
               variant="secondary"
               className="text-lg px-8 py-6"
               onClick={handleChangeCharacter}
+              data-ga-event="restart-run"
+              data-ga-category="progress"
+              data-ga-label={slug}
             >
               {text.changeCharacter}
             </Button>
