@@ -17,6 +17,7 @@ import { toast } from "@/components/ui/sonner";
 import { useLanguage } from "@/contexts/language-context";
 import { type ContactRequestType } from "@/server/ports/contact-repository";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
+import { trackInteraction } from "@/lib/analytics";
 
 const copy: Record<string, LocalizedText> = {
   title: {
@@ -107,11 +108,29 @@ const ContactPage = () => {
       form.reset();
       setRequestType("feedback");
       setFormStart(performance.now());
+      trackInteraction({
+        action: "contact-submit",
+        category: "contact",
+        label: requestType,
+        params: {
+          has_email: Boolean(payload.email),
+          has_message: Boolean(payload.message),
+          request_type: requestType,
+          language,
+          duration_ms: payload.durationMs,
+        },
+      });
     } catch (error) {
       console.error("Failed to submit contact form", error);
       setStatus("error");
       setErrorMessage(t("errorDescription"));
       toast.error(t("errorTitle"), { description: t("errorDescription") });
+      trackInteraction({
+        action: "contact-fail",
+        category: "contact",
+        label: requestType,
+        params: { language, request_type: requestType, error_reason: "submit_failed" },
+      });
     } finally {
       setTimeout(() => setStatus("idle"), 1500);
     }
@@ -240,7 +259,14 @@ const ContactPage = () => {
                 <h3 className="text-xl font-bold text-foreground mb-2">{t("sideCtaTitle")}</h3>
                 <p className="text-sm text-muted-foreground mb-4">{t("sideCtaDescription")}</p>
                 <Button asChild variant="outline" className="border-2 border-accent/50 hover:bg-accent/10">
-                  <Link href="/game">{t("sideButton")}</Link>
+                  <Link
+                    href="/game"
+                    data-ga-event="contact-side-cta"
+                    data-ga-category="cta"
+                    data-ga-label="/game"
+                  >
+                    {t("sideButton")}
+                  </Link>
                 </Button>
                 <p className="text-xs text-muted-foreground mt-3">
                   {t("sideFootnote")}

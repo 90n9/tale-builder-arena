@@ -3,38 +3,40 @@
 import Link from "next/link";
 import { Scroll } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
+import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 
 const Footer = () => {
   const { language } = useLanguage();
   const copy = {
-    th: {
-      description: "เกมเล่าเรื่องด้วยพลัง AI ที่ปล่อยให้ทุกการตัดสินใจของคุณกำหนดชะตาเรื่องราว",
-      quickLinks: "ลิงก์ด่วน",
-      home: "หน้าหลัก",
-      play: "เล่นเกม",
-      achievements: "ความสำเร็จ",
-      about: "เกี่ยวกับเรา",
-      contact: "ติดต่อเรา",
-      legal: "ข้อมูลทางกฎหมาย",
-      privacy: "นโยบายความเป็นส่วนตัว",
-      terms: "เงื่อนไขการให้บริการ",
-      copyright: "© 2025 TaleBuilder Arena. สงวนลิขสิทธิ์",
+    description: {
+      th: "เลือกเรื่องที่เตรียมไว้ สร้างตัวละคร แล้วตอบตัวเลือกเพื่อปลดล็อกตอนจบทันที เรื่องและภาพฉากเตรียมไว้ล่วงหน้าเพื่อความรวดเร็ว",
+      en: "Pick a prepared story, build your character, and branch to instant endings. Stories and scene art are prebuilt so play stays fast.",
     },
-    en: {
-      description: "An AI-powered storytelling game where every choice reshapes the journey.",
-      quickLinks: "Quick Links",
-      home: "Home",
-      play: "Play",
-      achievements: "Achievements",
-      about: "About",
-      contact: "Contact",
-      legal: "Legal",
-      privacy: "Privacy Policy",
-      terms: "Terms of Use",
-      copyright: "© 2025 TaleBuilder Arena. All rights reserved.",
-    },
-  } as const;
-  const text = language === "en" ? copy.en : copy.th;
+    quickLinks: { th: "ลิงก์ด่วน", en: "Quick Links" },
+    home: { th: "หน้าหลัก", en: "Home" },
+    play: { th: "เล่นเกม", en: "Play" },
+    achievements: { th: "ความสำเร็จ", en: "Achievements" },
+    about: { th: "เกี่ยวกับเรา", en: "About" },
+    contact: { th: "ติดต่อเรา", en: "Contact" },
+    legal: { th: "ข้อมูลทางกฎหมาย", en: "Legal" },
+    privacy: { th: "นโยบายความเป็นส่วนตัว", en: "Privacy Policy" },
+    terms: { th: "เงื่อนไขการให้บริการ", en: "Terms of Use" },
+    copyright: { th: "© 2025 TaleBuilder Arena. สงวนลิขสิทธิ์", en: "© 2025 TaleBuilder Arena. All rights reserved." },
+  } satisfies Record<
+    | "description"
+    | "quickLinks"
+    | "home"
+    | "play"
+    | "achievements"
+    | "about"
+    | "contact"
+    | "legal"
+    | "privacy"
+    | "terms"
+    | "copyright",
+    LocalizedText
+  >;
+  const t = (value: LocalizedText) => getLocalizedText(value, language);
 
   return (
     <footer className="bg-card border-t border-border mt-20">
@@ -46,52 +48,87 @@ const Footer = () => {
               <span className="font-bold text-foreground">TaleBuilder Arena</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              {text.description}
+              {t(copy.description)}
             </p>
           </div>
           
           <div>
-            <h3 className="font-semibold text-foreground mb-4">{text.quickLinks}</h3>
+            <h3 className="font-semibold text-foreground mb-4">{t(copy.quickLinks)}</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {text.home}
+                <Link
+                  href="/"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  data-ga-event="footer-link-click"
+                  data-ga-label="/"
+                >
+                  {t(copy.home)}
                 </Link>
               </li>
               <li>
-                <Link href="/game" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {text.play}
+                <Link
+                  href="/game"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  data-ga-event="footer-link-click"
+                  data-ga-label="/game"
+                >
+                  {t(copy.play)}
                 </Link>
               </li>
               <li>
-                <Link href="/achievements" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {text.achievements}
+                <Link
+                  href="/achievements"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  data-ga-event="footer-link-click"
+                  data-ga-label="/achievements"
+                >
+                  {t(copy.achievements)}
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {text.about}
+                <Link
+                  href="/about"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  data-ga-event="footer-link-click"
+                  data-ga-label="/about"
+                >
+                  {t(copy.about)}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {text.contact}
+                <Link
+                  href="/contact"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  data-ga-event="footer-link-click"
+                  data-ga-label="/contact"
+                >
+                  {t(copy.contact)}
                 </Link>
               </li>
             </ul>
           </div>
           
           <div>
-            <h3 className="font-semibold text-foreground mb-4">{text.legal}</h3>
+            <h3 className="font-semibold text-foreground mb-4">{t(copy.legal)}</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {text.privacy}
+                <Link
+                  href="/privacy-policy"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  data-ga-event="footer-link-click"
+                  data-ga-label="/privacy-policy"
+                >
+                  {t(copy.privacy)}
                 </Link>
               </li>
               <li>
-                <Link href="/terms-of-use" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  {text.terms}
+                <Link
+                  href="/terms-of-use"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  data-ga-event="footer-link-click"
+                  data-ga-label="/terms-of-use"
+                >
+                  {t(copy.terms)}
                 </Link>
               </li>
             </ul>
@@ -100,7 +137,7 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
-            {text.copyright}
+            {t(copy.copyright)}
           </p>
         </div>
       </div>

@@ -15,8 +15,10 @@ export type StoryChoice = {
 
 export type StoryScene = {
   scene_id: string;
+  type?: string;
   title: LocalizedText;
   description: LocalizedText;
+  image?: string;
   choices: StoryChoice[];
 };
 
@@ -25,6 +27,7 @@ export type StoryEnding = {
   title: LocalizedText;
   summary: LocalizedText;
   result: LocalizedText;
+  image?: string;
 };
 
 export type StoryGameContent = GameSetupContent & {

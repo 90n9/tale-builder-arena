@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
-import { Cpu, Sparkles, Book, Heart } from "lucide-react";
+import { Zap, BookOpen, UserPlus, GitBranch, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 
 const AboutPage = () => {
@@ -14,94 +14,63 @@ const AboutPage = () => {
   const copy = {
     th: {
       headerTitle: "เกี่ยวกับ TaleBuilder Arena",
-      headerDescription: "เกมเล่าเรื่องเชิงทดลองที่ผสานเวทมนตร์ของเกมกระดาน RPG เข้ากับพลังของปัญญาประดิษฐ์",
+      headerDescription: "แพลตฟอร์มเกมเรื่องเล่าแบบเลือกทาง โหลดไวด้วยเรื่องและภาพที่เตรียมไว้ล่วงหน้า ไม่ต้องรอ AI ระหว่างเล่น",
       whatIs: {
         heading: "TaleBuilder Arena คืออะไร?",
-        body: `TaleBuilder Arena คือเกมผจญภัยเชิงข้อความที่ขับเคลื่อนด้วย AI ทำหน้าที่เป็น Dungeon Master ประจำตัวคุณ 
-ไม่เหมือนเกมทั่วไปที่มีเนื้อเรื่องตายตัว TaleBuilder Arena สร้างเรื่องราวใหม่แบบเรียลไทม์ 
-ปรับตามการเลือกของคุณและสร้างการผจญภัยที่ไม่เหมือนใครทุกครั้งที่เล่น`,
+        body:
+          "TaleBuilder Arena คือแพลตฟอร์มเกมเรื่องเล่า ผู้เล่นเลือกเส้นเรื่อง สร้างตัวละคร และตัดสินใจในแต่ละฉากเพื่อไปสู่ตอนจบที่หลากหลาย ทุกเรื่องและภาพถูกสร้างเตรียมไว้ล่วงหน้า เล่นลื่น ไม่ต้องรอ AI ระหว่างเกม",
       },
-      howBuilt: {
-        heading: "สร้างขึ้นอย่างไร",
-        intro: "โปรเจกต์นี้ใช้เทคโนโลยีล้ำสมัยเพื่อสร้างประสบการณ์เล่าเรื่องที่ชวนดื่มด่ำ:",
-        tech: ["โมเดลภาษาปัญญาประดิษฐ์", "การเล่าเรื่องแบบไดนามิก", "การสร้างเนื้อหาแบบสุ่มตามขั้นตอน", "ระบบตัวเลือกผู้เล่น"],
-      },
-      experience: {
-        heading: "ประสบการณ์ที่คุณจะได้รับ",
+      highlights: {
+        heading: "จุดเด่นของ TaleBuilder Arena",
         bullets: [
-          { title: "เนื้อเรื่องพลิกแพลง", body: "ทุกการเล่นจะเล่าเรื่องไม่ซ้ำตามการตัดสินใจของคุณ" },
-          { title: "ภาพชวนดื่มด่ำ", body: "งานภาพที่สร้างด้วย AI ทำให้ทุกฉากมีชีวิต" },
-          { title: "พัฒนาตัวละคร", body: "ติดตามค่าสถานะ ช่องเก็บของ และภารกิจระหว่างการผจญภัย" },
-          { title: "ทางเลือกมีความหมาย", body: "การตัดสินใจของคุณกำหนดทั้งเนื้อเรื่องและโลกในเกม" },
+          { title: "โหลดไวทันที", body: "เรื่องและภาพพร้อมเล่น ไม่ต้องรอประมวลผล" },
+          { title: "หลายแนวให้เลือก", body: "แฟนตาซี ลึกลับ โรแมนซ์ ผจญภัย และเพิ่มเนื้อเรื่องต่อเนื่อง" },
+          { title: "สร้างตัวละครได้อิสระ", body: "กำหนดบุคลิก หน้าตา และบทบาทตามที่ต้องการ" },
+          { title: "ตอนจบหลายแบบ", body: "เลือกอย่างไร ได้ผลลัพธ์แบบนั้น กลับมาเล่นใหม่ก็ไม่เหมือนเดิม" },
+          { title: "ประสบการณ์เสถียร", body: "ทุกอย่างเตรียมไว้ล่วงหน้าเพื่อความเร็วและความต่อเนื่อง" },
         ],
       },
-      purpose: {
-        heading: "เป้าหมายของโปรเจกต์",
-        body: `TaleBuilder Arena คือการทดลองว่า AI จะยกระดับการเล่าเรื่องแบบอินเทอร์แอคทีฟได้อย่างไร 
-เรากำลังมองหาวิธีให้เนื้อเรื่องตอบสนอง เป็นส่วนตัว และดึงดูดใจมากขึ้น 
-โปรเจกต์สร้างสรรค์นี้ต้องการผลักดันขอบเขตของสิ่งที่เป็นไปได้เมื่อความคิดสร้างสรรค์ของมนุษย์ผสานกับ AI`,
+      vision: {
+        heading: "Our Vision",
+        body: "เราผสานจินตนาการกับเทคโนโลยี เพื่อให้ทุกคนสร้างและสำรวจโลกเรื่องเล่าได้ง่าย สนุก และเข้าถึงได้ทุกเวลา",
       },
-      notes: {
-        heading: "ข้อควรทราบ",
-        items: [
-          "โปรเจกต์นี้ยังอยู่ในขั้นทดลอง อาจมีพฤติกรรมหรือเนื้อหาที่คาดไม่ถึง",
-          "เนื้อหาที่สร้างด้วย AI คาดเดาไม่ได้เสมอ และคุณภาพอาจแตกต่างกัน",
-          "สถานะเกมและความคืบหน้าอาจยังไม่ถูกบันทึกข้ามรอบการเล่น",
-          "โปรเจกต์นี้มีไว้เพื่อการศึกษาและความบันเทิงเท่านั้น",
-        ],
-      },
-      ctaText: "พร้อมสัมผัสมนตร์เสน่ห์ของการเล่าเรื่องด้วย AI แล้วหรือยัง?",
+      ctaText: "พร้อมออกผจญภัยใน TaleBuilder Arena แล้วหรือยัง?",
       ctaButton: "กลับสู่การผจญภัย",
     },
     en: {
       headerTitle: "About TaleBuilder Arena",
-      headerDescription: "An experimental storytelling game blending tabletop RPG magic with AI power.",
+      headerDescription: "A story-driven game platform with pre-built stories and visuals for instant, AI-free loading during play.",
       whatIs: {
         heading: "What is TaleBuilder Arena?",
-        body: `TaleBuilder Arena is an AI-driven text adventure that acts as your personal Dungeon Master. 
-Unlike fixed-story games, it generates new narratives in real time, 
-adapting to your choices so every run feels unique.`,
+        body:
+          "TaleBuilder Arena is a story-based game platform where you pick a storyline, create a character, and make choices that branch into different endings. Every story and image is pre-generated for fast, seamless play—no AI wait times in the middle of your adventure.",
       },
-      howBuilt: {
-        heading: "How it's built",
-        intro: "We use modern technology to deliver immersive storytelling:",
-        tech: ["AI language models", "Dynamic storytelling", "Procedural content generation", "Player choice systems"],
-      },
-      experience: {
-        heading: "What you'll experience",
+      highlights: {
+        heading: "What makes TaleBuilder Arena unique",
         bullets: [
-          { title: "Adaptive stories", body: "Each playthrough unfolds differently based on your decisions." },
-          { title: "Immersive visuals", body: "AI-crafted art brings every scene to life." },
-          { title: "Character growth", body: "Track stats, inventory, and quests along your journey." },
-          { title: "Meaningful choices", body: "Your decisions shape both the story and the world." },
+          { title: "Instant loading", body: "Stories and art are ready to play—no processing delays." },
+          { title: "Many genres", body: "Fantasy, mystery, romance, adventure, and new tales arriving often." },
+          { title: "Flexible character creation", body: "Shape personality, looks, and role to fit your story." },
+          { title: "Multiple endings", body: "Your choices drive the outcome; replay to discover new paths." },
+          { title: "Stable experience", body: "Pre-built content keeps performance smooth and reliable." },
         ],
       },
-      purpose: {
-        heading: "Project goal",
-        body: `TaleBuilder Arena explores how AI can elevate interactive storytelling.
-We're looking for ways to make stories more responsive, personal, and engaging.
-This creative project pushes the boundary of what's possible when human imagination meets AI.`,
+      vision: {
+        heading: "Our Vision",
+        body: "We blend imagination with technology so anyone can build and explore story worlds easily, joyfully, and anytime.",
       },
-      notes: {
-        heading: "Notes",
-        items: [
-          "This experiment may behave unpredictably at times.",
-          "AI-generated content can vary in tone and quality.",
-          "Game state and progress may not persist between sessions yet.",
-          "Built for learning and entertainment purposes only.",
-        ],
-      },
-      ctaText: "Ready to experience AI-powered storytelling magic?",
+      ctaText: "Ready to dive into TaleBuilder Arena?",
       ctaButton: "Back to the adventure",
     },
   } as const;
 
   const text = language === "en" ? copy.en : copy.th;
-  const techStack = [
-    { icon: <Cpu className="h-5 w-5" />, label: text.howBuilt.tech[0] },
-    { icon: <Sparkles className="h-5 w-5" />, label: text.howBuilt.tech[1] },
-    { icon: <Book className="h-5 w-5" />, label: text.howBuilt.tech[2] },
-    { icon: <Heart className="h-5 w-5" />, label: text.howBuilt.tech[3] },
+  const uniquePoints = [
+    { icon: <Zap className="h-5 w-5" />, ...text.highlights.bullets[0] },
+    { icon: <BookOpen className="h-5 w-5" />, ...text.highlights.bullets[1] },
+    { icon: <UserPlus className="h-5 w-5" />, ...text.highlights.bullets[2] },
+    { icon: <GitBranch className="h-5 w-5" />, ...text.highlights.bullets[3] },
+    { icon: <Sparkles className="h-5 w-5" />, ...text.highlights.bullets[4] },
   ];
 
   return (
@@ -122,57 +91,30 @@ This creative project pushes the boundary of what's possible when human imaginat
             <CardContent className="p-8 space-y-6">
               <section>
                 <h2 className="text-2xl font-bold text-foreground mb-4">{text.whatIs.heading}</h2>
-                <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-                  {text.whatIs.body}
-                </p>
+                <p className="text-muted-foreground leading-relaxed">{text.whatIs.body}</p>
               </section>
 
               <section>
-                <h2 className="text-2xl font-bold text-foreground mb-4">{text.howBuilt.heading}</h2>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  {text.howBuilt.intro}
-                </p>
+                <h2 className="text-2xl font-bold text-foreground mb-4">{text.highlights.heading}</h2>
                 <div className="grid md:grid-cols-2 gap-4">
-                  {techStack.map((tech, index) => (
+                  {uniquePoints.map((item) => (
                     <div
-                      key={index}
-                      className="flex items-center gap-3 p-4 rounded-lg bg-muted/50 border-2 border-accent/30 hover:border-accent/50 transition-all"
+                      key={item.title}
+                      className="flex items-start gap-3 p-4 rounded-lg bg-muted/50 border-2 border-accent/30 hover:border-accent/50 transition-all"
                     >
-                      <div className="text-accent">{tech.icon}</div>
-                      <span className="text-foreground font-medium">{tech.label}</span>
+                      <div className="text-accent mt-1">{item.icon}</div>
+                      <div className="space-y-1">
+                        <p className="text-foreground font-semibold">{item.title}</p>
+                        <p className="text-muted-foreground text-sm leading-relaxed">{item.body}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
               </section>
 
               <section>
-                <h2 className="text-2xl font-bold text-foreground mb-4">{text.experience.heading}</h2>
-                <ul className="space-y-3 text-muted-foreground">
-                  {text.experience.bullets.map((item) => (
-                    <li key={item.title} className="flex gap-2">
-                      <span className="text-accent font-bold">•</span>
-                      <span>
-                        <strong className="text-foreground">{item.title}:</strong> {item.body}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-
-              <section>
-                <h2 className="text-2xl font-bold text-foreground mb-4">{text.purpose.heading}</h2>
-                <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-                  {text.purpose.body}
-                </p>
-              </section>
-
-              <section>
-                <h2 className="text-2xl font-bold text-foreground mb-4">{text.notes.heading}</h2>
-                <div className="space-y-2 text-sm text-muted-foreground">
-                  {text.notes.items.map((note) => (
-                    <p key={note}>• {note}</p>
-                  ))}
-                </div>
+                <h2 className="text-2xl font-bold text-foreground mb-4">{text.vision.heading}</h2>
+                <p className="text-muted-foreground leading-relaxed">{text.vision.body}</p>
               </section>
             </CardContent>
           </Card>

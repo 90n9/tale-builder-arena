@@ -31,6 +31,7 @@ describe("POST /api/story", () => {
     expect(body.narration).toContain("The Forgotten Steps");
     expect(body.choices).toHaveLength(2);
     expect(body.shouldEnd).toBe(false);
+    expect(body.image).toBeTruthy();
   });
 
   it("returns 400 when the game is missing", async () => {
@@ -87,6 +88,7 @@ describe("POST /api/story", () => {
     expect(body.shouldEnd).toBe(true);
     expect(body.narration).toContain("The Road Not Taken");
     expect(body.achievementId).toBe("crypt_of_the_shattered_star-ending_1");
+    expect(body.image).toBeTruthy();
   });
 
   it("returns 404 when next scene cannot be resolved", async () => {

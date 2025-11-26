@@ -6,8 +6,11 @@ import { advanceStory } from "./advance-story";
 
 const mockGameContent = {
   game_id: "mock-game",
-  metadata: { genre: "fantasy" },
-  config: { starting_attributes: { points_to_distribute: 0, base_values: {} } },
+  metadata: { genre: "fantasy", cover_image: "/assets/mock/cover.png" },
+  config: {
+    starting_attributes: { points_to_distribute: 0, base_values: {} },
+    asset_paths: { images: "/assets/mock" },
+  },
   races: [],
   classes: [],
   backgrounds: [],
@@ -17,6 +20,7 @@ const mockGameContent = {
       scene_id: "start",
       title: { th: "เริ่ม", en: "Start" },
       description: { th: "เริ่มเกม", en: "Begin the game" },
+      image: "start.png",
       choices: [
         { text: { th: "ไป A", en: "Go A" }, next: "scene_a" },
         { text: { th: "ไป จบ", en: "End", }, next: "ending_1" },
@@ -26,6 +30,7 @@ const mockGameContent = {
       scene_id: "scene_a",
       title: { th: "ฉาก เอ", en: "Scene A" },
       description: { th: "ทางเลือก", en: "Choice ahead" },
+      image: "/scene-a.png",
       choices: [
         {
           text: { th: "ต้องเป็นเมจ", en: "Mage only" },
@@ -41,6 +46,12 @@ const mockGameContent = {
       description: { th: "ไม่ผ่านเงื่อนไข", en: "Requirement not met" },
       choices: [],
     },
+    no_image: {
+      scene_id: "no_image",
+      title: { th: "ไม่มีรูป", en: "No Image" },
+      description: { th: "ใช้ภาพหน้าปก", en: "Falls back to cover" },
+      choices: [],
+    },
   },
   endings: {
     ending_1: {
@@ -48,6 +59,7 @@ const mockGameContent = {
       title: { th: "จบ", en: "End" },
       summary: { th: "สรุป", en: "Summary" },
       result: { th: "ผลลัพธ์", en: "Result" },
+      image: "ending.png",
     },
   },
 } as const;
@@ -82,6 +94,7 @@ describe("advanceStory use case", () => {
     expect(result.kind === "success" && result.body.sceneId).toBe("start");
     expect(result.kind === "success" && result.body.shouldEnd).toBe(false);
     expect(result.kind === "success" && result.body.choices).toHaveLength(2);
+    expect(result.kind === "success" && result.body.image).toBe("/assets/mock/start.png");
   });
 
   it("routes to on_fail_next when requirements are not met", () => {
@@ -144,6 +157,23 @@ describe("advanceStory use case", () => {
       expect(result.body.sceneId).toBe("ending_1");
       expect(result.body.shouldEnd).toBe(true);
       expect(result.body.achievementId).toBe("mock-game-ending_1");
+      expect(result.body.image).toBe("/assets/mock/ending.png");
+    }
+  });
+
+  it("falls back to cover image when scene image is missing", () => {
+    const result = advanceStory(
+      {
+        gameId: mockGameContent.game_id,
+        currentSceneId: "no_image",
+        language: "en",
+      },
+      { gameContent: gameGateway, i18n },
+    );
+
+    expect(result.kind).toBe("success");
+    if (result.kind === "success") {
+      expect(result.body.image).toBe("/assets/mock/cover.png");
     }
   });
 });

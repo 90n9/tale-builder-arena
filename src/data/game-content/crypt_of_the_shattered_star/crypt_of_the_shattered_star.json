@@ -15,10 +15,13 @@
       "en": "An interactive dungeon crawl where your race, class, and attributes shape your fate.",
       "th": "ดันเจี้ยนแบบโต้ตอบ ที่เผ่าพันธุ์ คลาส และค่าสเตตัสของคุณ จะกำหนดชะตากรรมของตัวละคร"
     },
-    "cover_image": "/assets/fantasy_dungeon/cover.jpg",
+    "cover_image": "/assets/games/crypt_of_the_shattered_star/cover.png",
     "estimated_play_time": "15-25 minutes",
     "author": "AI Generated",
-    "supported_languages": ["en", "th"]
+    "supported_languages": [
+      "en",
+      "th"
+    ]
   },
   "config": {
     "starting_attributes": {
@@ -32,8 +35,8 @@
       }
     },
     "asset_paths": {
-      "images": "/assets/fantasy_dungeon/images/",
-      "videos": "/assets/fantasy_dungeon/videos/"
+      "images": "/assets/games/crypt_of_the_shattered_star/",
+      "videos": "/assets/games/crypt_of_the_shattered_star/"
     },
     "ui": {
       "theme_color": "#6B4FFF",
@@ -51,7 +54,9 @@
         "en": "Adaptable and resilient.",
         "th": "ปรับตัวเก่งและทนทานต่อทุกสภาพแวดล้อม"
       },
-      "attribute_bonus": { "cha": 1 }
+      "attribute_bonus": {
+        "cha": 1
+      }
     },
     {
       "id": "elf",
@@ -63,7 +68,10 @@
         "en": "Graceful and attuned to magic.",
         "th": "สง่างามและไวต่อพลังเวทมนตร์"
       },
-      "attribute_bonus": { "agi": 1, "int": 1 }
+      "attribute_bonus": {
+        "agi": 1,
+        "int": 1
+      }
     },
     {
       "id": "dwarf",
@@ -75,7 +83,9 @@
         "en": "Stout and sturdy, born for hardship.",
         "th": "ร่างกายแกร่งและทนทาน เกิดมาเพื่อฟันฝ่าความลำบาก"
       },
-      "attribute_bonus": { "str": 1 }
+      "attribute_bonus": {
+        "str": 1
+      }
     }
   ],
   "classes": [
@@ -89,7 +99,9 @@
         "en": "Excels in physical combat.",
         "th": "เชี่ยวชาญการต่อสู้ระยะประชิดและพละกำลังมหาศาล"
       },
-      "starting_bonus": { "str": 2 }
+      "starting_bonus": {
+        "str": 2
+      }
     },
     {
       "id": "mage",
@@ -101,7 +113,9 @@
         "en": "Master of arcane power.",
         "th": "ผู้เชี่ยวชาญพลังเวทมนตร์และความรู้ลึกลับ"
       },
-      "starting_bonus": { "int": 2 }
+      "starting_bonus": {
+        "int": 2
+      }
     },
     {
       "id": "rogue",
@@ -113,7 +127,9 @@
         "en": "Silent, quick, and precise.",
         "th": "เงียบกริบ ว่องไว และลงมืออย่างแม่นยำ"
       },
-      "starting_bonus": { "agi": 2 }
+      "starting_bonus": {
+        "agi": 2
+      }
     }
   ],
   "attributes": [
@@ -164,7 +180,9 @@
         "en": "You learned to survive with nothing.",
         "th": "คุณเติบโตมาด้วยตัวเอง เรียนรู้การเอาตัวรอดโดยไม่มีใครคอยช่วยเหลือ"
       },
-      "bonus_attributes": { "agi": 1 }
+      "bonus_attributes": {
+        "agi": 1
+      }
     },
     {
       "id": "noble",
@@ -176,7 +194,9 @@
         "en": "Born into wealth and influence.",
         "th": "เกิดมาในตระกูลมั่งคั่ง มีเส้นสายและอิทธิพลอยู่รอบตัว"
       },
-      "bonus_attributes": { "cha": 2 }
+      "bonus_attributes": {
+        "cha": 2
+      }
     },
     {
       "id": "acolyte",
@@ -188,7 +208,9 @@
         "en": "You once served in a forgotten temple.",
         "th": "คุณเคยเป็นผู้รับใช้ในวิหารโบราณที่ผู้คนลืมเลือน"
       },
-      "bonus_attributes": { "int": 1 }
+      "bonus_attributes": {
+        "int": 1
+      }
     }
   ],
   "global_flags": {
@@ -207,7 +229,7 @@
         "en": "At the edge of an ancient forest, weathered stone steps descend into the earth. Torches flicker to life as you approach the entrance to the Crypt of the Shattered Star.",
         "th": "ที่ชายป่าศักดิ์สิทธิ์โบราณ บันไดหินเก่าคร่ำคร่าไล่ลงสู่ใต้ดิน คบเพลิงตามทางค่อย ๆ ลุกโชนขึ้นเมื่อคุณเข้าใกล้ทางเข้าสุสานแห่งดวงดาวแตกสลาย"
       },
-      "image": "scene_start.jpg",
+      "image": "scene_start.png",
       "image_prompt": "fantasy dungeon entrance, mossy stone steps descending underground, flickering torches, dense forest twilight",
       "choices": [
         {
@@ -237,7 +259,7 @@
         "en": "The air grows cold as the passage opens into a wide hall lined with broken statues. Three paths stretch before you: left into darkness, right toward a faint glow, and straight ahead into silence.",
         "th": "อากาศเย็นวูบลงเมื่อทางเดินเปิดออกสู่โถงกว้างรายล้อมด้วยรูปปั้นแตกหัก สามเส้นทางทอดยาวอยู่เบื้องหน้า ซ้ายสู่ความมืดมิด ขวาไปยังแสงริบหรี่ และตรงไปสู่ความเงียบงัน"
       },
-      "image": "scene_1.jpg",
+      "image": "scene_01.png",
       "image_prompt": "wide underground hall with broken statues, three branching corridors, eerie blue light in one passage",
       "choices": [
         {
@@ -274,7 +296,7 @@
         "en": "The floor stones feel unstable beneath your feet. You hear a click as a tile sinks slightly under your weight.",
         "th": "พื้นหินใต้ฝ่าเท้ารู้สึกโคลงเคลงผิดปกติ คุณได้ยินเสียงดังแกร๊กเบา ๆ เมื่อแผ่นหินแผ่นหนึ่งยุบตัวลงไปเล็กน้อย"
       },
-      "image": "scene_2.jpg",
+      "image": "scene_02.png",
       "image_prompt": "narrow stone corridor, some floor tiles slightly raised or lowered, faint glint of arrow slits in the walls",
       "choices": [
         {
@@ -284,7 +306,9 @@
           },
           "next": "scene_5",
           "requirements": {
-            "min_attributes": { "agi": 3 }
+            "min_attributes": {
+              "agi": 3
+            }
           },
           "on_fail_next": "scene_6"
         },
@@ -295,7 +319,9 @@
           },
           "next": "scene_7",
           "requirements": {
-            "min_attributes": { "str": 3 }
+            "min_attributes": {
+              "str": 3
+            }
           },
           "on_fail_next": "scene_6"
         },
@@ -319,7 +345,7 @@
         "en": "A stone door blocks the passage, covered in softly glowing runes that pulse in rhythm with your heartbeat.",
         "th": "ประตูหินบานใหญ่ขวางกั้นทางเดิน เต็มไปด้วยอักขระเรืองแสงแผ่ว ๆ ที่เต้นระรัวไปพร้อมจังหวะหัวใจของคุณ"
       },
-      "image": "scene_3.jpg",
+      "image": "scene_03.png",
       "image_prompt": "massive stone door covered in glowing blue runes, dim dungeon corridor",
       "choices": [
         {
@@ -329,8 +355,12 @@
           },
           "next": "scene_8",
           "requirements": {
-            "classes": ["mage"],
-            "min_attributes": { "int": 3 }
+            "classes": [
+              "mage"
+            ],
+            "min_attributes": {
+              "int": 3
+            }
           },
           "on_fail_next": "scene_9"
         },
@@ -341,7 +371,9 @@
           },
           "next": "scene_9",
           "requirements": {
-            "min_attributes": { "str": 3 }
+            "min_attributes": {
+              "str": 3
+            }
           },
           "on_fail_next": "scene_10"
         },
@@ -365,7 +397,7 @@
         "en": "Ancient tapestries hang in tatters along the walls. A toppled statue lies shattered on the floor, its stone eyes staring toward a cracked archway ahead.",
         "th": "ผ้าทอโบราณฉีกขาดห้อยระโยงระยางบนผนัง รูปปั้นหินที่ถูกโค่นทิ้งแตกกระจายอยู่บนพื้น ดวงตาหินของมันจ้องไปยังซุ้มประตูที่แตกเป็นรอยร้าวอยู่เบื้องหน้า"
       },
-      "image": "scene_4.jpg",
+      "image": "scene_04.png",
       "image_prompt": "dusty underground gallery with torn tapestries, broken statue, faint light through a cracked archway",
       "choices": [
         {
@@ -374,7 +406,9 @@
             "th": "ค้นหารอบ ๆ รูปปั้นที่ล้มลง เผื่อจะมีช่องลับซ่อนอยู่"
           },
           "next": "scene_11",
-          "reward_attributes": { "luk": 1 }
+          "reward_attributes": {
+            "luk": 1
+          }
         },
         {
           "text": {
@@ -403,7 +437,7 @@
         "en": "You dash forward as arrows burst from hidden slits in the walls. You narrowly avoid a deadly volley and roll to safety.",
         "th": "คุณพุ่งตัวไปข้างหน้าในจังหวะที่ลูกธนูพุ่งออกมาจากช่องลับบนผนังเฉียดผ่านร่างไปอย่างหวุดหวิด ก่อนจะกลิ้งหลบไปอยู่ในจุดปลอดภัย"
       },
-      "image": "scene_5.jpg",
+      "image": "scene_05.png",
       "image_prompt": "adventurer dodging a volley of arrows in a trapped stone hallway",
       "choices": [
         {
@@ -412,7 +446,9 @@
             "th": "ตั้งสติ หายใจลึก ๆ แล้วมุ่งหน้าต่อไปยังส่วนลึกของดันเจี้ยน"
           },
           "next": "scene_12",
-          "reward_attributes": { "agi": 1 }
+          "reward_attributes": {
+            "agi": 1
+          }
         }
       ]
     },
@@ -427,7 +463,7 @@
         "en": "Bolts and blades spring from the walls, tearing into your armor and flesh. You escape, but the pain slows your movements.",
         "th": "ลูกดอกและใบมีดเด้งพุ่งออกจากผนัง ฉีกเกราะและเนื้อหนังของคุณ คุณหนีรอดออกมาได้ แต่ความเจ็บปวดทำให้การเคลื่อนไหวเชื่องช้าลง"
       },
-      "image": "scene_6.jpg",
+      "image": "scene_06.png",
       "image_prompt": "injured adventurer stumbling through a trapped corridor, broken arrows and blood on the floor",
       "choices": [
         {
@@ -436,7 +472,9 @@
             "th": "กัดฟันฝืนเดินต่อไปทั้งที่ยังบาดเจ็บ"
           },
           "next": "scene_12",
-          "reward_attributes": { "agi": -1 }
+          "reward_attributes": {
+            "agi": -1
+          }
         },
         {
           "text": {
@@ -444,6 +482,13 @@
             "th": "ถอยกลับไปทางทางเข้า พร้อมตั้งคำถามกับตัวเองว่าการมาที่นี่คุ้มจริงหรือไม่"
           },
           "next": "scene_1"
+        },
+        {
+          "text": {
+            "en": "Ignore the pain and stumble deeper into the trapped corridor.",
+            "th": "เมินความเจ็บ แล้วฝืนโซซัดโซเซลึกเข้าไปในทางเดินกับดัก"
+          },
+          "next": "ending_2"
         }
       ]
     },
@@ -456,9 +501,9 @@
       },
       "description": {
         "en": "You wedge loose stones and bones under the pressure plate, halting the mechanism with a grinding protest from the gears below.",
-        "th": "คุณใช้ก้อนหินหลวม ๆ และเศษกระดูกค้ำยันใต้แผ่นกลไก ทำให้เฟืองด้านล่างติดขัดและหยุดทำงานพร้อมเสียงเสียดสีครูดดังสนั่น"
+        "th": "คุณใช้ก้อนหินเล็กๆ และเศษกระดูกค้ำยันใต้แผ่นกลไก ทำให้เฟืองด้านล่างติดขัดและหยุดทำงานพร้อมเสียงเสียดสีครูดดังสนั่น"
       },
-      "image": "scene_7.jpg",
+      "image": "scene_07.png",
       "image_prompt": "adventurer propping up a stone floor tile with rocks and debris in a dungeon corridor",
       "choices": [
         {
@@ -467,7 +512,9 @@
             "th": "เดินผ่านส่วนที่ปลดกลไกแล้วไปต่อ"
           },
           "next": "scene_12",
-          "reward_attributes": { "str": 1 }
+          "reward_attributes": {
+            "str": 1
+          }
         }
       ]
     },
@@ -482,7 +529,7 @@
         "en": "The runes flare as you trace their pattern, revealing a subtle weakness in the spell. With a whispered counter-phrase, the door unlocks.",
         "th": "อักขระสว่างวาบเมื่อคุณลากนิ้วตามรูปแบบเวท เผยให้เห็นจุดอ่อนเล็ก ๆ ในคาถา คุณกระซิบถ้อยคำโต้กลับเบา ๆ ประตูจึงปลดล็อกออกอย่างเชื่องช้า"
       },
-      "image": "scene_8.jpg",
+      "image": "scene_08.png",
       "image_prompt": "mage touching glowing runes on a door, magic energy dissipating",
       "choices": [
         {
@@ -491,7 +538,9 @@
             "th": "ก้าวผ่านประตูที่เปิดออกไป"
           },
           "next": "scene_13",
-          "reward_attributes": { "int": 1 }
+          "reward_attributes": {
+            "int": 1
+          }
         }
       ]
     },
@@ -506,7 +555,7 @@
         "en": "The runes flare angrily, discharging a surge of unstable magic that hurls you backward. Your mind throbs from the blast.",
         "th": "อักขระส่องแสงเจิดจ้าอย่างเกรี้ยวกราด พ่นคลื่นพลังเวทไม่เสถียรใส่คุณจนตัวปลิวกระแทกผนัง ความปวดหนึบวิ่งพล่านไปทั่วศีรษะ"
       },
-      "image": "scene_9.jpg",
+      "image": "scene_09.png",
       "image_prompt": "adventurer blasted by wild magical energy from a glowing doorway",
       "choices": [
         {
@@ -515,7 +564,9 @@
             "th": "ค่อย ๆ ตั้งสติ แล้วมองหาทางอื่นแทน"
           },
           "next": "scene_4",
-          "reward_attributes": { "int": -1 }
+          "reward_attributes": {
+            "int": -1
+          }
         }
       ]
     },
@@ -530,7 +581,7 @@
         "en": "You throw your weight against the stone, but it hardly budges. Pain lances through your shoulders as you back away.",
         "th": "คุณทุ่มแรงทั้งหมดดันประตูหิน แต่แทบไม่ขยับเลย ความเจ็บแปลบแล่นไปทั่วหัวไหล่จนต้องถอยกลับ"
       },
-      "image": "scene_10.jpg",
+      "image": "scene_10.png",
       "image_prompt": "warrior straining unsuccessfully against a massive stone door in a dungeon",
       "choices": [
         {
@@ -539,7 +590,9 @@
             "th": "ยอมรับความจริงว่าครั้งนี้แพ้ แล้วลองไปเส้นทางอื่นแทน"
           },
           "next": "scene_4",
-          "reward_attributes": { "str": -1 }
+          "reward_attributes": {
+            "str": -1
+          }
         }
       ]
     },
@@ -552,9 +605,9 @@
       },
       "description": {
         "en": "Beneath the statue's broken arm, you find a small hidden compartment containing a polished charm shaped like a star fragment.",
-        "th": "ใต้แขนหักของรูปปั้น คุณพบช่องลับเล็ก ๆ ที่ซ่อนจี้ห้อยขัดเงาเป็นรูปเศษดวงดาวเอาไว้"
+        "th": "ใต้รูปปั้นที่แขนหัก คุณพบช่องลับเล็ก ๆ ที่ซ่อนจี้ห้อยขัดเงาเป็นรูปเศษดวงดาวเอาไว้"
       },
-      "image": "scene_11.jpg",
+      "image": "scene_11.png",
       "image_prompt": "adventurer discovering a small glowing charm inside a broken stone statue",
       "choices": [
         {
@@ -563,7 +616,9 @@
             "th": "เก็บจี้เส้นนี้ติดตัวไว้ เผื่อมันจะนำโชคมาให้"
           },
           "next": "scene_12",
-          "reward_attributes": { "luk": 2 }
+          "reward_attributes": {
+            "luk": 2
+          }
         },
         {
           "text": {
@@ -585,7 +640,7 @@
         "en": "You reach a circular chamber with three exits. Faint chanting echoes from one tunnel, cold wind whispers from another, and the third smells of dust and old parchment.",
         "th": "คุณมาถึงห้องโถงทรงกลมที่มีทางออกสามทาง เสียงสวดแผ่วเบาดังมาจากอุโมงค์หนึ่ง ลมเย็นยะเยือกลอดมาจากอีกทาง ส่วนทางที่สามมีกลิ่นฝุ่นและกระดาษเก่าลอยออกมา"
       },
-      "image": "scene_12.jpg",
+      "image": "scene_12.png",
       "image_prompt": "round dungeon chamber with three dark tunnels, eerie lights and mist hinting at different paths",
       "choices": [
         {
@@ -622,7 +677,7 @@
         "en": "Beyond the runed door, a spiral staircase descends into a chamber lit by a cold, star-like glow from below.",
         "th": "หลังก้าวผ่านประตูอักขระ คุณพบบันไดเวียนทอดลึกลงไปสู่ห้องโถงที่สว่างด้วยแสงเย็นราวดวงดาวจากเบื้องล่าง"
       },
-      "image": "scene_13.jpg",
+      "image": "scene_13.png",
       "image_prompt": "stone spiral staircase descending into a chamber glowing with cold star-like light",
       "choices": [
         {
@@ -645,7 +700,7 @@
         "en": "You peer into a chamber where robed figures chant around a fragment of a shattered crystal star.",
         "th": "คุณชะโงกมองเข้าไปในห้องที่เต็มไปด้วยร่างในผ้าคลุมสีทึบ กำลังสวดมนตร์วนรอบเศษคริสตัลรูปดวงดาวที่แตกกระจาย"
       },
-      "image": "scene_14.jpg",
+      "image": "scene_14.png",
       "image_prompt": "hooded cultists chanting around a shattered glowing crystal in a dark ritual chamber",
       "choices": [
         {
@@ -655,7 +710,9 @@
           },
           "next": "scene_17",
           "requirements": {
-            "min_attributes": { "cha": 3 }
+            "min_attributes": {
+              "cha": 3
+            }
           },
           "on_fail_next": "scene_18"
         },
@@ -666,8 +723,12 @@
           },
           "next": "scene_17",
           "requirements": {
-            "classes": ["rogue"],
-            "min_attributes": { "agi": 3 }
+            "classes": [
+              "rogue"
+            ],
+            "min_attributes": {
+              "agi": 3
+            }
           },
           "on_fail_next": "scene_18"
         },
@@ -691,7 +752,7 @@
         "en": "Frost clings to the stones. At the far end, a heavy door radiates a chill that seeps into your bones.",
         "th": "น้ำค้างแข็งเกาะเต็มผิวหินทั่วทั้งห้อง สุดปลายทางมีประตูหนักอึ้งแผ่ความหนาวเย็นแทรกซึมทะลุถึงกระดูกของคุณ"
       },
-      "image": "scene_15.jpg",
+      "image": "scene_15.png",
       "image_prompt": "icy dungeon antechamber, frosted stone walls, a single door rimed with ice at the far end",
       "choices": [
         {
@@ -701,7 +762,9 @@
           },
           "next": "scene_19",
           "requirements": {
-            "min_attributes": { "str": 3 }
+            "min_attributes": {
+              "str": 3
+            }
           },
           "on_fail_next": "scene_18"
         },
@@ -712,8 +775,12 @@
           },
           "next": "scene_19",
           "requirements": {
-            "classes": ["mage"],
-            "min_attributes": { "int": 3 }
+            "classes": [
+              "mage"
+            ],
+            "min_attributes": {
+              "int": 3
+            }
           },
           "on_fail_next": "scene_18"
         },
@@ -737,7 +804,7 @@
         "en": "Rows of stone shelves hold crumbling scrolls and tablets. A central pedestal supports a half-restored map of the crypt.",
         "th": "ชั้นหินเรียงรายเต็มไปด้วยม้วนหนังสือและแผ่นศิลาที่ผุกร่อน ตรงกลางห้องมีแท่นหินวางแผนที่สุสานที่ถูกซ่อมแซมไปเพียงครึ่งหนึ่ง"
       },
-      "image": "scene_16.jpg",
+      "image": "scene_16.png",
       "image_prompt": "ancient underground archive, stone shelves with scrolls and tablets, glowing map on a central pedestal",
       "choices": [
         {
@@ -746,7 +813,9 @@
             "th": "ศึกษาตัวแผนที่เพื่อหาทางที่ปลอดภัยกว่าสู่ใจกลางสุสาน"
           },
           "next": "scene_19",
-          "reward_attributes": { "int": 1 }
+          "reward_attributes": {
+            "int": 1
+          }
         },
         {
           "text": {
@@ -754,7 +823,9 @@
             "th": "ค้นหาข้อมูลและตำนานที่เกี่ยวข้องกับดวงดาวแตกสลาย"
           },
           "next": "scene_17",
-          "reward_attributes": { "int": 1 }
+          "reward_attributes": {
+            "int": 1
+          }
         }
       ]
     },
@@ -769,7 +840,7 @@
         "en": "With surprise and hastily gathered allies or knowledge, you disrupt the cultists’ ritual. The fragment’s light flares wildly.",
         "th": "ด้วยความได้เปรียบจากการจู่โจมและพันธมิตรที่รวมตัวอย่างฉุกละหุก หรือด้วยความรู้ที่คุณสะสมมา คุณสามารถทำลายพิธีของลัทธิมืดได้ แสงจากเศษดวงดาวพุ่งพล่านอย่างควบคุมไม่อยู่"
       },
-      "image": "scene_17.jpg",
+      "image": "scene_17.png",
       "image_prompt": "adventurer and a few freed captives disrupting a dark ritual around a glowing crystal fragment",
       "choices": [
         {
@@ -779,7 +850,9 @@
           },
           "next": "ending_4",
           "requirements": {
-            "min_attributes": { "int": 3 }
+            "min_attributes": {
+              "int": 3
+            }
           },
           "on_fail_next": "ending_5"
         },
@@ -790,7 +863,9 @@
           },
           "next": "ending_4",
           "requirements": {
-            "min_attributes": { "str": 3 }
+            "min_attributes": {
+              "str": 3
+            }
           },
           "on_fail_next": "ending_6"
         }
@@ -807,7 +882,7 @@
         "en": "Your attack goes poorly. The cultists’ magic lashes out, and the chamber shakes as unstable power builds.",
         "th": "การบุกของคุณผิดแผนอย่างรุนแรง เวทมนตร์ของลัทธิมืดพุ่งเข้าใส่ ห้องทั้งห้องสั่นสะเทือนเมื่อพลังที่ไม่เสถียรถูกปลุกเร้า"
       },
-      "image": "scene_18.jpg",
+      "image": "scene_18.png",
       "image_prompt": "adventurer overwhelmed by robed cultists and wild magical energy in a shaking chamber",
       "choices": [
         {
@@ -830,7 +905,7 @@
         "en": "You emerge into the central sanctum, where the largest fragment of the Shattered Star hovers above a stone dais, crackling with cold starlight.",
         "th": "คุณก้าวเข้าสู่ห้องวิหารกลางของสุสาน ที่ซึ่งเศษดวงดาวชิ้นใหญ่ที่สุดลอยอยู่เหนือแท่นหิน เปล่งประกายแสงเย็นยะเยือกดุจแสงดาว"
       },
-      "image": "scene_19.jpg",
+      "image": "scene_19.png",
       "image_prompt": "large glowing crystal shard hovering over a stone dais in a grand underground chamber",
       "choices": [
         {
@@ -840,7 +915,10 @@
           },
           "next": "ending_5",
           "requirements": {
-            "min_attributes": { "int": 3, "cha": 2 }
+            "min_attributes": {
+              "int": 3,
+              "cha": 2
+            }
           },
           "on_fail_next": "ending_6"
         },
@@ -851,7 +929,9 @@
           },
           "next": "ending_4",
           "requirements": {
-            "min_attributes": { "str": 3 }
+            "min_attributes": {
+              "str": 3
+            }
           },
           "on_fail_next": "ending_6"
         },
@@ -880,7 +960,7 @@
         "en": "You survive without scars or stories to tell.",
         "th": "คุณรอดชีวิตมาได้โดยไร้บาดแผล... และไร้เรื่องเล่าในตำนาน"
       },
-      "image": "ending_1.jpg",
+      "image": "ending_1.png",
       "image_prompt": "adventurer walking away from a dungeon entrance at sunrise, peaceful village in the distance",
       "conditions": {
         "min_attributes": {},
@@ -901,7 +981,7 @@
         "en": "Your name becomes a whispered warning to future explorers.",
         "th": "ชื่อของคุณกลายเป็นคำเตือนที่ถูกกระซิบถึงในหมู่นักผจญภัยรุ่นต่อไป"
       },
-      "image": "ending_2.jpg",
+      "image": "ending_2.png",
       "image_prompt": "abandoned adventurer gear and bones in a dark dungeon corridor",
       "conditions": {
         "min_attributes": {},
@@ -922,7 +1002,7 @@
         "en": "The world remains safe, though few will ever know of your quiet heroism.",
         "th": "โลกยังคงปลอดภัย แม้จะมีเพียงไม่กี่คนที่รู้ถึงวีรกรรมอันเงียบงันของคุณ"
       },
-      "image": "ending_3.jpg",
+      "image": "ending_3.png",
       "image_prompt": "adventurer sealing a dungeon entrance with rubble as light breaks through the trees",
       "conditions": {
         "min_attributes": {},
@@ -943,7 +1023,7 @@
         "en": "Songs will be sung of the one who bested the Shattered Star.",
         "th": "บทเพลงจะถูกขับร้องถึงผู้ที่พิชิตดวงดาวแตกสลายได้"
       },
-      "image": "ending_4.jpg",
+      "image": "ending_4.png",
       "image_prompt": "heroic adventurer standing over a shattered or dimmed crystal, light streaming into the crypt",
       "conditions": {
         "min_attributes": {},
@@ -964,7 +1044,7 @@
         "en": "You gain vast knowledge at the cost of a simple life.",
         "th": "คุณได้รับความรู้มหาศาล แลกกับชีวิตที่ไม่อาจเรียบง่ายได้อีกต่อไป"
       },
-      "image": "ending_5.jpg",
+      "image": "ending_5.png",
       "image_prompt": "adventurer touching a glowing crystal, surrounded by swirling constellations and arcane symbols",
       "conditions": {
         "min_attributes": {
@@ -987,7 +1067,7 @@
         "en": "You survive, knowing the Shattered Star’s pieces are now scattered—and that your journey is only the beginning.",
         "th": "คุณรอดชีวิตมาได้ โดยรู้ดีว่าเศษดวงดาวแตกสลายได้กระจายไปแล้ว... และการผจญภัยของคุณเพิ่งจะเริ่มต้นเท่านั้น"
       },
-      "image": "ending_6.jpg",
+      "image": "ending_6.png",
       "image_prompt": "adventurer running from a collapsing dungeon, shards of glowing crystal flying into the night sky",
       "conditions": {
         "min_attributes": {},

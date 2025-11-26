@@ -5,123 +5,244 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Sparkles, MessageSquare, BarChart3, Image, Play, Zap, BookOpen, Trophy } from "lucide-react";
+import { Sparkles, MessageSquare, Image, Zap, BookOpen, Trophy } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
+import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 
 const Index = () => {
   const { language } = useLanguage();
   const heroImageSrc = "/assets/hero-illustration.jpg";
-  const copy = {
-    th: {
-      hero: {
-        tagline: "เรื่องราวของคุณ ทางเลือกของคุณ",
-        description:
-          "ออกเดินทางผจญภัยสุดยิ่งใหญ่ภายใต้การนำของ AI Dungeon Master ทุกการตัดสินใจจะกำหนดโชคชะตา ในประสบการณ์ RPG เชิงข้อความที่ชวนดื่มด่ำ",
-        primaryCta: "เริ่มการผจญภัย",
-        secondaryCta: "ชมตัวอย่าง",
+  const content = {
+    hero: {
+      tagline: {
+        th: "เลือกเรื่องราว สร้างตัวละคร แล้วเริ่มเล่นทันที",
+        en: "Pick a story, build a hero, play instantly",
       },
-      features: {
-        heading: "ฟีเจอร์เด่น",
-        description: "ขับเคลื่อนด้วยเทคโนโลยี AI ล้ำสมัยเพื่อมอบประสบการณ์การเล่าเรื่องที่เหนือชั้น",
-        cards: [
-          { title: "AI Dungeon Master", description: "สัมผัสการเล่าเรื่องอันลื่นไหลด้วย AI ขั้นสูงที่ปรับตามทุกการตัดสินใจของคุณ" },
-          { title: "เกมทางเลือก", description: "ทุกการเลือกมีผลสำคัญ เนื้อเรื่องจะแตกแขนงไม่เหมือนใครตามเส้นทางที่คุณตัดสินใจ" },
-          { title: "ระบบความสำเร็จ", description: "ปลดล็อกถ้วยรางวัลพิเศษจากฉากจบหลากหลายแนวและเส้นทาง" },
-          { title: "สถานะตัวละครแบบเรียลไทม์", description: "ติดตาม HP มานา ทอง และไอเทมต่างๆ ของคุณขณะออกผจญภัย" },
-          { title: "ภาพประกอบฉาก", description: "ดื่มด่ำกับงานภาพที่สร้างด้วย AI ที่ปลุกทุกฉากให้มีชีวิต" },
-        ],
+      description: {
+        th: "เลือกเรื่องที่เตรียมไว้ล่วงหน้า สร้างตัวละคร แล้วตอบตัวเลือกในแต่ละฉากเพื่อปลดล็อกตอนจบที่ต่างกัน เนื้อเรื่องและภาพถูกสร้างไว้แล้วจึงโหลดรวดเร็วไม่ต้องรอ AI",
+        en: "Choose a prepared storyline, build your character, and drive each scene with your decisions to unlock different endings. Every beat and scene image is pre-generated, so the game stays fast with zero AI wait time.",
       },
-      steps: {
-        heading: "วิธีเริ่มเล่น",
-        description: "เพียง 3 ขั้นตอนก็เริ่มผจญภัยได้ทันที",
-        items: [
-          { title: "เริ่มภารกิจ", description: "คลิก 'เริ่มการผจญภัย' เพื่อออกเดินทาง" },
-          { title: "อ่านแล้วตัดสินใจ", description: "ติดตามเรื่องราวแล้วเลือกเส้นทางที่ต้องการ" },
-          { title: "สร้างเรื่องของคุณ", description: "ให้ทางเลือกของคุณสร้างการผจญภัยที่ไม่ซ้ำใคร" },
-        ],
+      primaryCta: {
+        th: "เริ่มเล่นทันที",
+        en: "Play instantly",
       },
-      immersion: {
-        heading: "การเล่นสุดดื่มด่ำ",
-        description: "อินเทอร์เฟซเรียบง่าย เข้าใจทันที ออกแบบมาเพื่อเล่าเรื่องโดยเฉพาะ",
-        imageTitle: "งานภาพเล่าเรื่อง",
-        imageDescription: "ทุกฉากมีชีวิตด้วยภาพจาก AI เสริมบรรยากาศให้การผจญภัยของคุณสมบูรณ์ขึ้น",
-        storySample:
-          "\"คุณยืนอยู่หน้าทางเข้าดันเจี้ยนโบราณ อากาศหนาหนักไปด้วยความลี้ลับ ผลึกเรืองแสงสะท้อนแสงตามผนังทางเดินหิน เสียงกระซิบแผ่วเบาดังมาจากเบื้องลึก...\"",
-        storyTitle: "เนื้อเรื่องเข้มข้น",
-        storyDescription: "เรื่องราวน่าติดตามที่ตอบสนองต่อการเลือกของคุณ สร้างการผจญภัยไม่ซ้ำใครทุกครั้ง",
-      },
-      finalCta: {
-        heading: "พร้อมออกเดินทางหรือยัง?",
-        description: "การผจญภัยของคุณกำลังรออยู่ ก้าวสู่โลกที่ทุกการเลือกมีความหมาย และทุกเรื่องราวไม่เหมือนใคร",
-        button: "เล่นทันที",
+      secondaryCta: {
+        th: "ดูวิธีการทำงาน",
+        en: "See how it works",
       },
     },
-    en: {
-      hero: {
-        tagline: "Your story, your choices",
-        description:
-          "Set out on an epic adventure guided by an AI Dungeon Master. Every decision shapes your fate in a deeply immersive text RPG.",
-        primaryCta: "Start adventure",
-        secondaryCta: "See preview",
+    features: {
+      heading: {
+        th: "พร้อมเล่นและตอบสนองไว",
+        en: "Built for instant play",
       },
-      features: {
-        heading: "Key features",
-        description: "Powered by advanced AI to deliver richer, more reactive storytelling.",
-        cards: [
-          { title: "AI Dungeon Master", description: "Seamless storytelling from adaptive AI that responds to every decision." },
-          { title: "Branching choices", description: "Every choice matters with narratives that split and stay unique to your path." },
-          { title: "Achievements", description: "Unlock special trophies from diverse endings and routes." },
-          { title: "Live character stats", description: "Track HP, mana, gold, and gear as you venture forward." },
-          { title: "Scene art", description: "Immerse yourself with AI-crafted visuals that bring each encounter to life." },
-        ],
+      description: {
+        th: "ทุกฉากและภาพถูกเตรียมไว้ล่วงหน้า เกมจึงตอบสนองทันทีแม้คุณเปลี่ยนเส้นทาง",
+        en: "Scenes and art are prepared ahead of time, so play stays responsive even as you branch the story.",
       },
-      steps: {
-        heading: "How to begin",
-        description: "Just three steps to start exploring.",
-        items: [
-          { title: "Begin the quest", description: "Click 'Start Adventure' to set off." },
-          { title: "Read and decide", description: "Follow the story and choose your path." },
-          { title: "Forge your tale", description: "Let your choices craft a unique adventure." },
-        ],
+      cards: [
+        {
+          icon: <BookOpen className="h-8 w-8 text-primary" />,
+          title: {
+            th: "เลือกเรื่องที่เตรียมไว้",
+            en: "Pick a prepared story",
+          },
+          description: {
+            th: "เลือกเรื่องราวที่ทีมสร้างไว้พร้อมธีม จุดตัดสินใจ และตอนจบหลายแบบ",
+            en: "Start from crafted adventures with set themes, decision points, and multiple endings.",
+          },
+        },
+        {
+          icon: <Sparkles className="h-8 w-8 text-secondary" />,
+          title: {
+            th: "ปรับแต่งตัวละคร",
+            en: "Shape your character",
+          },
+          description: {
+            th: "ตั้งชื่อ บทบาท และสไตล์ก่อนเริ่มฉากแรกเพื่อให้เรื่องราวเป็นของคุณ",
+            en: "Name your hero, choose a role, and set the vibe before the first scene begins.",
+          },
+        },
+        {
+          icon: <MessageSquare className="h-8 w-8 text-primary" />,
+          title: {
+            th: "เลือกแล้วมีผลทันที",
+            en: "Choices change every scene",
+          },
+          description: {
+            th: "ตัวเลือกในแต่ละฉากกำหนดฉากถัดไปและทรัพยากรที่คุณใช้",
+            en: "Each response guides the next scene and how your resources shift.",
+          },
+        },
+        {
+          icon: <Trophy className="h-8 w-8 text-secondary" />,
+          title: {
+            th: "ตอนจบและถ้วยรางวัล",
+            en: "Endings and trophies",
+          },
+          description: {
+            th: "เส้นทางที่เลือกกำหนดตอนจบและรางวัลที่ปลดล็อกได้",
+            en: "Your path determines which endings and trophies you unlock.",
+          },
+        },
+        {
+          icon: <Zap className="h-8 w-8 text-primary" />,
+          title: {
+            th: "โหลดไว ไม่ต้องรอ AI",
+            en: "Instant load, no AI wait",
+          },
+          description: {
+            th: "เนื้อเรื่องและภาพฉากถูกเตรียมไว้ล่วงหน้าจึงแสดงผลได้ทันทีเมื่อเปลี่ยนทางเลือก",
+            en: "Story beats and scene art are prebuilt so new branches load immediately without AI delays.",
+          },
+        },
+      ],
+    },
+    steps: {
+      heading: {
+        th: "วิธีเริ่มเล่น",
+        en: "How to begin",
       },
-      immersion: {
-        heading: "Immersive play",
-        description: "A clean, intuitive interface built for storytelling.",
-        imageTitle: "Narrative visuals",
-        imageDescription: "AI-generated art brings every scene to life and deepens the mood.",
-        storySample:
-          "\"You stand at the mouth of an ancient dungeon, air thick with secrets. Glowing crystals line the stone walls as whispers drift up from the depths...\"",
-        storyTitle: "Layered narrative",
-        storyDescription: "A reactive storyline that reshapes itself around your choices, every run feeling new.",
+      description: {
+        th: "ทำตามขั้นตอนสั้นๆ แล้วเริ่มเห็นทางเลือกและตอนจบทันที",
+        en: "Follow these quick steps to start seeing branches and endings right away.",
       },
-      finalCta: {
-        heading: "Ready to head out?",
-        description: "Your adventure is waiting. Step into a world where every choice matters and no journey is the same.",
-        button: "Play now",
+      items: [
+        {
+          icon: <BookOpen className="h-6 w-6" />,
+          title: {
+            th: "เลือกเรื่อง",
+            en: "Pick a story",
+          },
+          description: {
+            th: "หยิบเรื่องที่เตรียมไว้พร้อมฉากและตอนจบหลากหลาย",
+            en: "Grab a prepared adventure with defined scenes and multiple endings.",
+          },
+        },
+        {
+          icon: <Sparkles className="h-6 w-6" />,
+          title: {
+            th: "สร้างตัวละคร",
+            en: "Create your character",
+          },
+          description: {
+            th: "ตั้งชื่อ บทบาท และลักษณะเพื่อเป็นตัวเอกของเรื่อง",
+            en: "Set the name, role, and flavor that make the hero yours.",
+          },
+        },
+        {
+          icon: <MessageSquare className="h-6 w-6" />,
+          title: {
+            th: "ตัดสินใจในแต่ละฉาก",
+            en: "Decide every scene",
+          },
+          description: {
+            th: "อ่านฉากที่เตรียมไว้แล้วเลือกการตอบสนองที่ต้องการ",
+            en: "Read the prepared scene and choose the response you want.",
+          },
+        },
+        {
+          icon: <Trophy className="h-6 w-6" />,
+          title: {
+            th: "ดูผลลัพธ์ทันที",
+            en: "See instant outcomes",
+          },
+          description: {
+            th: "เห็นฉากถัดไปและตอนจบตามเส้นทางที่คุณเลือกทันทีโดยไม่ต้องรอ",
+            en: "Jump straight into the next scene and ending your path unlocks with no waiting.",
+          },
+        },
+      ],
+    },
+    immersion: {
+      heading: {
+        th: "ฉากพร้อมเล่นและภาพชัด",
+        en: "Ready-to-play scenes & art",
+      },
+      description: {
+        th: "เนื้อเรื่องและภาพทุกฉากสร้างไว้ล่วงหน้าเพื่อให้โหลดไวขณะคุณเลือกเส้นทาง",
+        en: "Every scene and illustration is pre-built so the story keeps flowing as you branch.",
+      },
+      imageTitle: {
+        th: "ภาพประกอบฉากที่เตรียมไว้",
+        en: "Prebuilt scene art",
+      },
+      imageDescription: {
+        th: "ภาพทุกฉากสร้างไว้ก่อนแล้วด้วย AI เพื่อให้แสดงผลทันทีและยังคุมโทนเรื่อง",
+        en: "Each scene illustration is generated ahead of time, keeping tone consistent and loads instant.",
+      },
+      storySample: {
+        th: "\"คุณเลือกเรื่อง 'ตราประทับแห่งทะเลทราย' และตัวละครของคุณยกคบเพลิงเข้าสู่วิหาร ทุกตัวเลือกกำหนดว่าคุณจะปกป้องวัตถุโบราณหรือฝ่าไปต่อ สัญญาณของตอนจบที่ต่างกันเริ่มปรากฏจากแสงวูบไหวของผนังโบราณ...\"",
+        en: "\"You pick the story 'Seal of the Dunes' and your hero raises a torch inside the temple. Each choice reveals whether you guard the relic or press forward—hints of different endings flicker across the ancient walls...\"",
+      },
+      storyTitle: {
+        th: "บทพร้อมแตกแขนง",
+        en: "Prepared branching chapters",
+      },
+      storyDescription: {
+        th: "บทสนทนาและทางเลือกถูกเขียนไว้ล่วงหน้าเพื่อให้โหลดไว แต่ยังเปิดทางเลือกให้คุณเปลี่ยนตอนจบได้",
+        en: "Dialogues and decisions are authored ahead of time for speed while still letting you steer the ending.",
       },
     },
-  } as const;
+    finalCta: {
+      heading: {
+        th: "พร้อมเลือกเส้นทางของคุณ?",
+        en: "Ready to choose your path?",
+      },
+      description: {
+        th: "เลือกเรื่อง สร้างตัวละคร แล้วเริ่มเล่นทันทีด้วยฉากและภาพที่เตรียมไว้ล่วงหน้า",
+        en: "Pick a story, create your character, and play instantly with scenes and art prepared in advance.",
+      },
+      button: {
+        th: "เริ่มเล่นเลย",
+        en: "Play instantly",
+      },
+    },
+  } satisfies {
+    hero: {
+      tagline: LocalizedText;
+      description: LocalizedText;
+      primaryCta: LocalizedText;
+      secondaryCta: LocalizedText;
+    };
+    features: {
+      heading: LocalizedText;
+      description: LocalizedText;
+      cards: Array<{ title: LocalizedText; description: LocalizedText; icon: JSX.Element }>;
+    };
+    steps: {
+      heading: LocalizedText;
+      description: LocalizedText;
+      items: Array<{ title: LocalizedText; description: LocalizedText; icon: JSX.Element }>;
+    };
+    immersion: {
+      heading: LocalizedText;
+      description: LocalizedText;
+      imageTitle: LocalizedText;
+      imageDescription: LocalizedText;
+      storySample: LocalizedText;
+      storyTitle: LocalizedText;
+      storyDescription: LocalizedText;
+    };
+    finalCta: {
+      heading: LocalizedText;
+      description: LocalizedText;
+      button: LocalizedText;
+    };
+  };
 
-  const text = language === "en" ? copy.en : copy.th;
+  const t = (value: LocalizedText) => getLocalizedText(value, language);
 
-  const featureItems = [
-    { icon: <Sparkles className="h-8 w-8 text-primary" /> },
-    { icon: <MessageSquare className="h-8 w-8 text-secondary" /> },
-    { icon: <Trophy className="h-8 w-8 text-primary" /> },
-    { icon: <BarChart3 className="h-8 w-8 text-secondary" /> },
-    { icon: <Image className="h-8 w-8 text-primary" /> },
-  ].map((item, index) => ({
-    ...item,
-    ...text.features.cards[index],
+  const featureItems = content.features.cards.map((card) => ({
+    ...card,
+    title: t(card.title),
+    description: t(card.description),
   }));
 
-  const stepItems = [
-    { icon: <Play className="h-6 w-6" /> },
-    { icon: <BookOpen className="h-6 w-6" /> },
-    { icon: <Zap className="h-6 w-6" /> },
-  ].map((item, index) => ({
+  const stepItems = content.steps.items.map((item) => ({
     ...item,
-    ...text.steps.items[index],
+    title: t(item.title),
+    description: t(item.description),
   }));
 
   return (
@@ -154,13 +275,13 @@ const Index = () => {
             <div className="mb-8">
               <div className="inline-block bg-card/80 backdrop-blur-sm border-2 border-accent/30 rounded px-6 py-3">
                 <p className="text-xl md:text-2xl text-accent font-semibold uppercase tracking-wider">
-                  {text.hero.tagline}
+                  {t(content.hero.tagline)}
                 </p>
               </div>
             </div>
             
             <p className="text-xl md:text-2xl text-foreground/90 mb-12 leading-relaxed drop-shadow-[0_0_20px_rgba(0,0,0,0.8)] max-w-3xl mx-auto">
-              {text.hero.description}
+              {t(content.hero.description)}
             </p>
             
             <div className="flex flex-wrap gap-6 justify-center">
@@ -169,7 +290,14 @@ const Index = () => {
                 size="lg"
                 className="bg-gradient-primary hover:shadow-glow-orange transition-all text-lg font-semibold px-10 py-7 text-primary-foreground border-2 border-secondary/50"
               >
-                <Link href="/game">{text.hero.primaryCta}</Link>
+                <Link
+                  href="/game"
+                  data-ga-event="hero-cta-click"
+                  data-ga-category="cta"
+                  data-ga-label="/game"
+                >
+                  {t(content.hero.primaryCta)}
+                </Link>
               </Button>
               <Button
                 asChild
@@ -177,7 +305,14 @@ const Index = () => {
                 variant="outline"
                 className="border-2 border-accent/50 text-accent hover:bg-accent/10 hover:shadow-glow-cyan transition-all text-lg px-10 py-7 backdrop-blur-sm bg-background/30"
               >
-                <Link href="/about">{text.hero.secondaryCta}</Link>
+                <Link
+                  href="/about"
+                  data-ga-event="hero-cta-click"
+                  data-ga-category="cta"
+                  data-ga-label="/about"
+                >
+                  {t(content.hero.secondaryCta)}
+                </Link>
               </Button>
             </div>
           </div>
@@ -198,10 +333,10 @@ const Index = () => {
           <div className="text-center mb-20">
             <div className="section-divider mb-12" />
             <h2 className="text-5xl font-bold mb-6 text-foreground uppercase tracking-wide">
-              {text.features.heading}
+              {t(content.features.heading)}
             </h2>
             <p className="text-muted-foreground text-xl max-w-2xl mx-auto">
-              {text.features.description}
+              {t(content.features.description)}
             </p>
           </div>
           
@@ -236,17 +371,17 @@ const Index = () => {
           <div className="text-center mb-20">
             <div className="section-divider mb-12" />
             <h2 className="text-5xl font-bold mb-6 text-foreground uppercase tracking-wide">
-              {text.steps.heading}
+              {t(content.steps.heading)}
             </h2>
             <p className="text-muted-foreground text-xl">
-              {text.steps.description}
+              {t(content.steps.description)}
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-12 max-w-6xl mx-auto">
             {stepItems.map((step, index) => (
               <div key={step.title} className="relative">
-                <div className="text-center">
+                <div className="relative z-10 text-center">
                   <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground shadow-glow-orange border-2 border-secondary/30">
                     {step.icon}
                   </div>
@@ -258,7 +393,7 @@ const Index = () => {
                   </p>
                 </div>
                 {index < stepItems.length - 1 && (
-                  <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gradient-to-r from-accent via-accent/50 to-transparent" />
+                  <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gradient-to-r from-accent via-accent/50 to-transparent z-0" />
                 )}
               </div>
             ))}
@@ -273,10 +408,10 @@ const Index = () => {
           <div className="text-center mb-20">
             <div className="section-divider mb-12" />
             <h2 className="text-5xl font-bold mb-6 text-foreground uppercase tracking-wide">
-              {text.immersion.heading}
+              {t(content.immersion.heading)}
             </h2>
             <p className="text-muted-foreground text-xl">
-              {text.immersion.description}
+              {t(content.immersion.description)}
             </p>
           </div>
           
@@ -289,21 +424,21 @@ const Index = () => {
                       <div className="absolute inset-0 bg-gradient-cyan opacity-10 group-hover:opacity-20 transition-opacity" />
                       <Image className="h-16 w-16 text-accent/50 relative z-10" />
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">{text.immersion.imageTitle}</h3>
+                    <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">{t(content.immersion.imageTitle)}</h3>
                     <p className="text-muted-foreground text-lg leading-relaxed">
-                      {text.immersion.imageDescription}
+                      {t(content.immersion.imageDescription)}
                     </p>
                   </div>
                   
                   <div className="space-y-6">
                     <div className="h-64 bg-muted/30 rounded-lg p-6 overflow-auto border border-border/30 backdrop-blur-sm">
                       <p className="text-foreground italic text-lg leading-relaxed">
-                        {text.immersion.storySample}
+                        {t(content.immersion.storySample)}
                       </p>
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">{text.immersion.storyTitle}</h3>
+                    <h3 className="text-2xl font-bold text-foreground uppercase tracking-wide">{t(content.immersion.storyTitle)}</h3>
                     <p className="text-muted-foreground text-lg leading-relaxed">
-                      {text.immersion.storyDescription}
+                      {t(content.immersion.storyDescription)}
                     </p>
                   </div>
                 </div>
@@ -319,17 +454,24 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="section-divider mb-12" />
           <h2 className="text-5xl md:text-6xl font-bold mb-8 text-foreground uppercase tracking-wide">
-            {text.finalCta.heading}
+            {t(content.finalCta.heading)}
           </h2>
           <p className="text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-            {text.finalCta.description}
+            {t(content.finalCta.description)}
           </p>
           <Button
             asChild
             size="lg"
             className="bg-gradient-primary hover:shadow-glow-orange transition-all text-xl font-bold px-12 py-8 text-primary-foreground border-2 border-secondary/50 uppercase tracking-wider"
           >
-            <Link href="/game">{text.finalCta.button}</Link>
+            <Link
+              href="/game"
+              data-ga-event="hero-cta-click"
+              data-ga-category="cta"
+              data-ga-label="/game"
+            >
+              {t(content.finalCta.button)}
+            </Link>
           </Button>
         </div>
       </section>

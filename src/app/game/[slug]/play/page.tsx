@@ -9,13 +9,13 @@ import Navbar from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { randomAchievementForGenre, findAchievementById } from "@/data/achievements";
 import { findGameBySlug } from "@/data/games";
 import { findGameSetupById } from "@/data/game-content";
 import { useLanguage } from "@/contexts/language-context";
 import { getCharacterStorageKey, getEndSummaryStorageKey, type AdventureStats, type AdventureSummary, type CharacterSelection } from "@/lib/game-config";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
+import { trackInteraction } from "@/lib/analytics";
 
 type StoryResponse = {
   turn: number;
@@ -24,6 +24,10 @@ type StoryResponse = {
   choices: { id: string; text: string }[];
   shouldEnd: boolean;
   achievementId?: string | null;
+  image?: string | null;
+  endingTitle?: string | null;
+  endingSummary?: string | null;
+  endingResult?: string | null;
 };
 
 type ChoiceItem = {
@@ -107,6 +111,7 @@ const GamePlayPage = () => {
   const [narration, setNarration] = useState<string>("");
   const [choices, setChoices] = useState<Array<ChoiceItem>>([]);
   const [currentSceneId, setCurrentSceneId] = useState<string | null>(null);
+  const [sceneImage, setSceneImage] = useState<string | null>(null);
   const lastLanguageRef = useRef(language);
   const attributeSummaries = useMemo(() => {
     if (!gameSetup || !character) return [];
@@ -181,6 +186,7 @@ const GamePlayPage = () => {
         });
         setChoices(normalizedChoices);
         setCurrentSceneId(data.sceneId ?? null);
+        setSceneImage(data.image ?? null);
 
         if (data.shouldEnd) {
           const achievement =
@@ -191,9 +197,16 @@ const GamePlayPage = () => {
           if (achievement) {
             const savedAchievements = localStorage.getItem("questWeaverAchievements");
             const earnedIds = savedAchievements ? JSON.parse(savedAchievements) : [];
-            if (!earnedIds.includes(achievement.id)) {
+            const isNewUnlock = !earnedIds.includes(achievement.id);
+            if (isNewUnlock) {
               earnedIds.push(achievement.id);
               localStorage.setItem("questWeaverAchievements", JSON.stringify(earnedIds));
+              trackInteraction({
+                action: "achievement-unlocked",
+                category: "progress",
+                label: achievement.id,
+                params: { achievement_id: achievement.id, game_slug: slug, language, turn: data.turn },
+              });
             }
           }
 
@@ -204,9 +217,25 @@ const GamePlayPage = () => {
             achievementId: achievement?.id ?? null,
             endingSceneId: data.sceneId ?? null,
             endingNarration: data.narration ?? null,
+            endingImage: data.image ?? null,
+            endingTitle: data.endingTitle ?? null,
+            endingSummary: data.endingSummary ?? null,
+            endingResult: data.endingResult ?? null,
           };
 
           sessionStorage.setItem(getEndSummaryStorageKey(slug), JSON.stringify(summary));
+          trackInteraction({
+            action: "scene-end",
+            category: "gameplay",
+            label: summary.endingSceneId ?? undefined,
+            params: {
+              game_slug: slug,
+              ending_id: summary.endingSceneId,
+              achievement_id: summary.achievementId ?? undefined,
+              turn: data.turn,
+              language,
+            },
+          });
           router.push(`/game/${slug}/end`);
           return;
         }
@@ -276,20 +305,45 @@ const GamePlayPage = () => {
   }, [game, router, slug]);
 
   const handleChoice = (choice: ChoiceItem) => {
+    trackInteraction({
+      action: "scene-choice",
+      category: "gameplay",
+      label: slug,
+      params: {
+        game_slug: slug,
+        scene_id: currentSceneId ?? undefined,
+        choice_id: choice.targetId,
+        turn,
+        language,
+      },
+    });
     void loadScene({ id: choice.targetId, text: choice.text });
   };
 
   const handleRestartStory = () => {
+    trackInteraction({
+      action: "restart-run",
+      category: "progress",
+      label: slug,
+      params: { game_slug: slug, method: "restart-story", language },
+    });
     setTurn(1);
     setNarration("");
     setChoices([]);
     setCurrentSceneId(null);
+    setSceneImage(null);
     setIsLoading(false);
     sessionStorage.removeItem(getEndSummaryStorageKey(slug));
     void loadScene(undefined, { sceneId: null, turnOverride: 1 });
   };
 
   const handleStartOver = () => {
+    trackInteraction({
+      action: "restart-run",
+      category: "progress",
+      label: slug,
+      params: { game_slug: slug, method: "reset-character", language },
+    });
     const characterKey = getCharacterStorageKey(slug);
     const summaryKey = getEndSummaryStorageKey(slug);
     sessionStorage.removeItem(characterKey);
@@ -298,6 +352,7 @@ const GamePlayPage = () => {
     setNarration("");
     setChoices([]);
     setCurrentSceneId(null);
+    setSceneImage(null);
     setIsLoading(false);
     setCharacter(null);
     router.push(`/game/${slug}`);
@@ -326,6 +381,7 @@ const GamePlayPage = () => {
       : character.background || "";
     const highlights = game.highlights.map((highlight) => getLocalizedText(highlight, language));
     const coverSrc = game.coverImage || gamePlaceholderSrc;
+    const sceneImageSrc = sceneImage || gamePlaceholderSrc;
     const maxAttributeValue = attributeSummaries.reduce((max, attribute) => {
       return Math.max(max, attribute.value);
     }, 1);
@@ -424,6 +480,9 @@ const GamePlayPage = () => {
                           variant="outline"
                           onClick={handleStartOver}
                           className="w-full border-destructive text-destructive hover:border-destructive hover:shadow-glow-orange"
+                          data-ga-event="restart-run"
+                          data-ga-category="progress"
+                          data-ga-label={slug}
                         >
                           <RefreshCw className="h-4 w-4 mr-2" />
                           {text.startOver}
@@ -446,7 +505,7 @@ const GamePlayPage = () => {
                         </div>
                       ) : (
                         <Image
-                          src={gamePlaceholderSrc}
+                          src={sceneImageSrc}
                           alt={text.currentSceneAlt}
                           fill
                           priority
@@ -474,22 +533,20 @@ const GamePlayPage = () => {
                         {getLocalizedText(game.genreLabel, language)}
                       </Badge>
                     </div>
-                    <ScrollArea className="h-[320px] pr-4">
-                      <p className="text-foreground leading-relaxed whitespace-pre-line">{narration}</p>
-                    </ScrollArea>
+                    <p className="text-foreground leading-relaxed whitespace-pre-line">{narration}</p>
                   </CardContent>
                 </Card>
 
                 <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
                   <CardContent className="p-6 space-y-4">
                     <h2 className="text-xl font-semibold text-foreground">{text.whatNext}</h2>
-                    <div className="grid md:grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-3">
                       {choices.map((choice, index) => (
                         <Button
                           key={choice.id}
                           onClick={() => handleChoice(choice)}
                           disabled={isLoading}
-                          className="h-auto py-4 text-left justify-start bg-card hover:bg-muted border-2 border-accent/50 text-foreground hover:border-accent hover:shadow-glow-cyan transition-all"
+                          className="w-full h-auto py-4 text-left justify-start bg-card hover:bg-muted border-2 border-accent/50 text-foreground hover:border-accent hover:shadow-glow-cyan transition-all whitespace-normal"
                           variant="outline"
                         >
                           <span className="text-accent font-bold mr-3">{index + 1}.</span>

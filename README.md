@@ -5,6 +5,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 ## Requirements
 - Node 18.18+ (Next.js 15) and npm.
 - For contact form persistence: Postgres 15+ (Docker recipe included) and a `DATABASE_URL` env var.
+- For analytics: `NEXT_PUBLIC_GA_MEASUREMENT_ID` (Google Analytics 4) in `.env.local`.
 
 ## Run It
 - Install deps: `npm install`
@@ -32,6 +33,10 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 - Styling: Tailwind tokens/config in `tailwind.config.ts`; global styles in `src/app/globals.css`. See `docs/design-system.md` for design tokens and patterns.
 - Game content schema and authoring steps: `docs/create-new-game.md`
 - Assets: large hero/scene images now live in `public/assets` and are referenced via `/assets/...`; keep component-bundled art (e.g., small SVGs) in `src/assets`. Public files that should be served verbatim belong in `public/`.
+
+## Analytics
+- GA4 loads when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set; page views are reported on every route change.
+- Add `data-ga-event` (plus optional `data-ga-category` and `data-ga-label`) to interactive elements to emit interaction events without custom wiring.
 
 ## API Contract
 - Setup data per game: `GET /api/game/[slug]/setup?race={id}&class={id}` returns races, classes, attributes, base attributes (including race/class bonuses), and points to distribute. Attribute bonuses are not exposed in the payload.

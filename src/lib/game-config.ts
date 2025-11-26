@@ -46,6 +46,10 @@ export type AdventureSummary = {
   achievementId?: string | null;
   endingSceneId?: string | null;
   endingNarration?: string | null;
+  endingImage?: string | null;
+  endingTitle?: string | null;
+  endingSummary?: string | null;
+  endingResult?: string | null;
 };
 
 export const genres = [

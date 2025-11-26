@@ -25,7 +25,10 @@ export async function POST(request: Request) {
     case "scene_not_found":
       return NextResponse.json({ message: "Scene not found" }, { status: 404 });
     case "success":
-      return NextResponse.json(result.body);
+      return NextResponse.json({
+        ...result.body,
+        image: result.body.image ?? null,
+      });
     default:
       return NextResponse.json({ message: "Unable to progress story" }, { status: 500 });
   }
