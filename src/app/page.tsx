@@ -524,7 +524,7 @@ const Index = () => {
                   <div className="p-3 rounded-full bg-primary/15 border border-primary/40 text-primary">
                     <Heart className="h-6 w-6 fill-destructive text-destructive" />
                   </div>
-                  <p className="text-sm uppercase tracking-[0.3em] text-accent">{t(content.donation.heading)}</p>
+                  <p className="text-sm uppercase tracking-[0.3em] text-accent">{t(content.donation.eyebrow)}</p>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground uppercase tracking-wide">
                   {t(content.donation.heading)}
