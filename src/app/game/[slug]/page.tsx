@@ -455,7 +455,7 @@ const GameDetailPage = () => {
               <Card className="border-2 border-accent/40 bg-gradient-card shadow-card">
                 <CardContent className="p-6 space-y-4">
                   <div className="flex items-center gap-3">
-                    <Clock3 className="h-5 w-5 text-secondary" />
+                    <Star className="h-5 w-5 text-secondary fill-accent" />
                     <div>
                       <p className="text-lg font-semibold text-foreground">{text.ratingTitle}</p>
                       <p className="text-sm text-muted-foreground">{text.ratingSubtitle}</p>
