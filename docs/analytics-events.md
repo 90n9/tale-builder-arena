@@ -19,6 +19,7 @@ Use these events to track pageviews and key interactions. Implement via the GA h
 | `scene-choice` | Player selects a choice in a scene | Call `trackInteraction` with `action: "scene-choice"` | `game_slug`, `scene_id`, `choice_id`, `turn` |
 | `scene-end` | Story reaches an ending | Call `trackInteraction` when `shouldEnd` true | `game_slug`, `ending_id`, `achievement_id?` |
 | `restart-run` | Player restarts a run | `data-ga-event="restart-run"` | `game_slug` |
+| `ko-fi-click` | User clicks Ko-fi support link | `data-ga-event="ko-fi-click"` `data-ga-category="donation"` `data-ga-label="{placement}"` | `placement` |
 | `achievement-unlocked` | Achievement emitted | Call `trackInteraction` where achievements are granted | `achievement_id`, `game_slug` |
 | `achievement-share` | Share/copy achievement | `data-ga-event="achievement-share"` `data-ga-label="{achievement_id}"` | `achievement_id`, `method` |
 | `achievements-view` | User opens achievements page | Add `data-ga-event="achievements-view"` to page root | `count_unlocked` |

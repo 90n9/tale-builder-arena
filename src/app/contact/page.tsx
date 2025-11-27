@@ -18,6 +18,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { type ContactRequestType } from "@/server/ports/contact-repository";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { trackInteraction } from "@/lib/analytics";
+import { SecondaryActionButton } from "@/components/ActionButtons";
 
 const copy: Record<string, LocalizedText> = {
   title: {
@@ -258,7 +259,7 @@ const ContactPage = () => {
               <div className="text-center lg:text-left bg-gradient-card rounded-lg border border-border p-6">
                 <h3 className="text-xl font-bold text-foreground mb-2">{t("sideCtaTitle")}</h3>
                 <p className="text-sm text-muted-foreground mb-4">{t("sideCtaDescription")}</p>
-                <Button asChild variant="outline" className="border-2 border-accent/50 hover:bg-accent/10">
+                <SecondaryActionButton asChild>
                   <Link
                     href="/game"
                     data-ga-event="contact-side-cta"
@@ -267,7 +268,7 @@ const ContactPage = () => {
                   >
                     {t("sideButton")}
                   </Link>
-                </Button>
+                </SecondaryActionButton>
                 <p className="text-xs text-muted-foreground mt-3">
                   {t("sideFootnote")}
                 </p>

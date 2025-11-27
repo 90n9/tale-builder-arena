@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Sparkles, Image, Zap, GitBranch, Flame, Compass, Heart } from "lucide-react";
+import { Image, Zap, Heart, Server, Wrench, PenTool, Timer, GitBranch, Flame, Sparkles, Coffee, CircleHelp } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
+import { PrimaryActionButton, SecondaryActionButton } from "@/components/ActionButtons";
+import { KO_FI_URL } from "@/lib/external-links";
 
 const Index = () => {
   const { language } = useLanguage();
@@ -19,8 +20,8 @@ const Index = () => {
         en: "Choose your fate. Shape your story.",
       },
       subhead: {
-        th: "ทุกทางเลือกพลิกเรื่องราวได้ทันที เรื่องและภาพพร้อมเล่น ไม่ต้องรอดาวน์โหลด ชะตาอยู่ในมือคุณ",
-        en: "Every decision shifts the story in the moment. Ready-to-play tales and art mean no downloads, no waiting—your destiny is in your hands.",
+        th: "ทุกทางเลือกพลิกเรื่องราวได้ทันที ชะตาอยู่ในมือคุณ",
+        en: "Every decision shifts the story in the moment. No waiting—your destiny is in your hands.",
       },
       primaryCta: {
         th: "เริ่มเรื่องเลย",
@@ -42,6 +43,7 @@ const Index = () => {
       },
       pillars: [
         {
+          icon: <Zap className="h-7 w-7 text-primary" />,
           title: {
             th: "ทุกทางเลือกมีน้ำหนัก",
             en: "Every choice carries weight",
@@ -52,6 +54,7 @@ const Index = () => {
           },
         },
         {
+          icon: <Image className="h-7 w-7 text-secondary" />,
           title: {
             th: "เล่นได้ทันที ไม่ต้องรอ",
             en: "Jump in instantly",
@@ -63,26 +66,10 @@ const Index = () => {
         },
       ],
     },
-    showcase: {
-      heading: {
-        th: "ภาพและอารมณ์ที่กำลังรอคุณ",
-        en: "Scenes and moods waiting for you",
-      },
-      description: {
-        th: "ศิลป์และฉากตัวอย่างที่บอกโทนโลก เล่าเรื่องผ่านแสง สี และเงาที่คุณจะได้สัมผัส",
-        en: "Art and scene glimpses that set the world’s tone—told through light, color, and shadow you’ll step into.",
-      },
-      gallery: [
-        { title: { th: "ค่ำคืนที่วิหารทราย", en: "Night at the Desert Temple" } },
-        { title: { th: "เงาในคฤหาสน์เก่า", en: "Shadows of the Old Manor" } },
-        { title: { th: "ลมหายใจแห่งป่าเรืองแสง", en: "Breath of the Luminous Forest" } },
-        { title: { th: "หอคอยลับลอยฟ้า", en: "Skyborne Hidden Spire" } },
-      ],
-    },
     stories: {
       heading: {
-        th: "ตัวอย่างเรื่องที่เล่นได้ทันที",
-        en: "Sample stories you can play now",
+        th: "เลือกเรื่องแล้วเล่นเลย",
+        en: "Pick your story, play now",
       },
       items: [
         {
@@ -210,6 +197,28 @@ const Index = () => {
         },
       ],
     },
+    donation: {
+      eyebrow: {
+        th: "สนับสนุนโปรเจกต์อินดี้",
+        en: "Support the indie project",
+      },
+      heading: {
+        th: "สนับสนุน TaleBuilder Arena",
+        en: "Support TaleBuilder Arena",
+      },
+      description: {
+        th: "โปรเจกต์อินดี้ที่เปิดให้เล่นฟรี รอดได้ด้วยแรงสนับสนุนจากคุณ — ทุกจำนวนช่วยให้เราสร้างเนื้อหาใหม่และดูแลเซิร์ฟเวอร์ต่อเนื่อง",
+        en: "This free indie project runs on community support—every bit helps us add new stories and keep the servers running.",
+      },
+      bullets: [
+        { icon: <Server className="h-6 w-6 text-primary" />, text: { th: "ค่าโฮสติ้งและบำรุงระบบ", en: "Hosting and upkeep" } },
+        { icon: <Wrench className="h-6 w-6 text-secondary" />, text: { th: "ฟีเจอร์ใหม่และปรับปรุง UI/UX", en: "New features and UI/UX polish" } },
+        { icon: <PenTool className="h-6 w-6 text-primary" />, text: { th: "สร้างเนื้อเรื่องและภาพประกอบฉาก", en: "Story content and scene art" } },
+        { icon: <Timer className="h-6 w-6 text-secondary" />, text: { th: "เวลาและแรงงานของผู้พัฒนาเดี่ยว", en: "Solo dev time and effort" } },
+      ],
+      primaryCta: { th: "ไปหน้าสนับสนุน", en: "Go to donate page" },
+      secondaryCta: { th: "เปิด Ko-fi", en: "Open Ko-fi" },
+    },
     finalCta: {
       heading: {
         th: "พร้อมหรือยัง ที่จะเขียนบทของคุณเอง?",
@@ -234,12 +243,7 @@ const Index = () => {
     promise: {
       heading: LocalizedText;
       description: LocalizedText;
-      pillars: Array<{ title: LocalizedText; description: LocalizedText }>;
-    };
-    showcase: {
-      heading: LocalizedText;
-      description: LocalizedText;
-      gallery: Array<{ title: LocalizedText }>;
+      pillars: Array<{ title: LocalizedText; description: LocalizedText; icon: JSX.Element }>;
     };
     stories: {
       heading: LocalizedText;
@@ -257,6 +261,14 @@ const Index = () => {
       heading: LocalizedText;
       items: Array<{ question: LocalizedText; answer: LocalizedText }>;
     };
+    donation: {
+      eyebrow: LocalizedText;
+      heading: LocalizedText;
+      description: LocalizedText;
+      bullets: Array<{ text: LocalizedText; icon: JSX.Element }>;
+      primaryCta: LocalizedText;
+      secondaryCta: LocalizedText;
+    };
     finalCta: {
       heading: LocalizedText;
       description: LocalizedText;
@@ -272,10 +284,6 @@ const Index = () => {
     description: t(pillar.description),
   }));
 
-  const showcaseItems = content.showcase.gallery.map((item) => ({
-    title: t(item.title),
-  }));
-
   const storyItems = content.stories.items.map((story) => ({
     ...story,
     title: t(story.title),
@@ -288,7 +296,6 @@ const Index = () => {
     title: t(item.title),
     description: t(item.description),
   }));
-
   const quotes = content.socialProof.quotes.map((quote) => ({
     ...quote,
     role: t(quote.role),
@@ -299,6 +306,10 @@ const Index = () => {
     ...item,
     question: t(item.question),
     answer: t(item.answer),
+  }));
+  const donationItems = content.donation.bullets.map((item) => ({
+    ...item,
+    text: t(item.text),
   }));
 
   return (
@@ -324,21 +335,20 @@ const Index = () => {
               {t(content.hero.subhead)}
             </p>
             <div className="flex flex-wrap gap-6 justify-center">
-              <Button
+              <PrimaryActionButton
                 asChild
                 size="lg"
-                className="bg-gradient-primary hover:shadow-glow-orange transition-all text-lg font-semibold px-10 py-7 text-primary-foreground border-2 border-secondary/50"
+                className="text-lg font-semibold px-10 py-7"
               >
-                <Link href="/game">{t(content.hero.primaryCta)}</Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-2 border-accent/50 text-accent hover:bg-accent/10 hover:shadow-glow-cyan transition-all text-lg px-10 py-7 backdrop-blur-sm bg-background/30"
-              >
-                <Link href="#stories">{t(content.hero.secondaryCta)}</Link>
-              </Button>
+                <Link
+                  href="/game"
+                  data-ga-event="hero-cta-click"
+                  data-ga-category="cta"
+                  data-ga-label="/game"
+                >
+                  {t(content.hero.primaryCta)}
+                </Link>
+              </PrimaryActionButton>
             </div>
           </div>
         </div>
@@ -351,11 +361,10 @@ const Index = () => {
       </section>
 
       {/* Promise Section */}
-      <section className="py-24 relative">
+      <section className="pt-16 pb-20 relative">
         <div className="absolute inset-0 bg-gradient-card opacity-50" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+          <div className="text-center mb-12 space-y-6">
             <h2 className="text-5xl font-bold text-foreground">{t(content.promise.heading)}</h2>
             <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
               {t(content.promise.description)}
@@ -377,42 +386,11 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Showcase Section */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
-            <h2 className="text-5xl font-bold text-foreground">{t(content.showcase.heading)}</h2>
-            <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
-              {t(content.showcase.description)}
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {showcaseItems.map((item, idx) => (
-              <div
-                key={item.title}
-                className="relative h-56 rounded-xl overflow-hidden border-2 border-border/40 bg-gradient-card"
-              >
-                <div className="absolute inset-0 bg-gradient-cyan opacity-10" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Image className="h-14 w-14 text-accent/50" />
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-background/70 backdrop-blur-sm border-t border-border/40">
-                  <p className="text-foreground font-semibold">{item.title}</p>
-                  <p className="text-muted-foreground text-sm">#{idx + 1}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Sample Stories Section */}
-      <section id="stories" className="py-24 relative">
+      <section id="stories" className="pt-16 pb-20 relative">
         <div className="absolute inset-0 bg-gradient-card opacity-50" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+          <div className="text-center mb-12 space-y-6">
             <h2 className="text-5xl font-bold text-foreground">{t(content.stories.heading)}</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -427,12 +405,9 @@ const Index = () => {
                     <p className="font-semibold">{story.title}</p>
                   </div>
                   <p className="text-foreground text-lg leading-relaxed">{story.hook}</p>
-                  <Button
-                    asChild
-                    className="bg-gradient-primary text-primary-foreground hover:shadow-glow-orange transition-all"
-                  >
+                  <PrimaryActionButton asChild>
                     <Link href="/game">{story.cta}</Link>
-                  </Button>
+                  </PrimaryActionButton>
                 </CardContent>
               </Card>
             ))}
@@ -441,10 +416,9 @@ const Index = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-24 relative">
+      <section className="pt-16 pb-20 relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+          <div className="text-center mb-12 space-y-6">
             <h2 className="text-5xl font-bold text-foreground">{t(content.benefits.heading)}</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -470,7 +444,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-card opacity-40" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+            <div className="section-divider my-8" />
             <h2 className="text-5xl font-bold text-foreground">{t(content.socialProof.heading)}</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -493,18 +467,20 @@ const Index = () => {
       </section> */}
 
       {/* FAQ */}
-      <section className="py-24 relative">
+      <section className="pt-16 pb-20 relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+          <div className="text-center mb-12 space-y-6">
             <h2 className="text-5xl font-bold text-foreground">{t(content.faq.heading)}</h2>
           </div>
           <div className="max-w-4xl mx-auto space-y-4">
             {faqItems.map((item) => (
-              <Card key={item.question} className="border-2 border-border/50 bg-gradient-card backdrop-blur-sm">
+              <Card
+                key={item.question}
+                className="border-2 border-border/50 bg-gradient-card backdrop-blur-sm ornate-corners hover:border-accent/60 transition-all"
+              >
                 <CardContent className="p-6 space-y-2">
                   <p className="text-foreground font-semibold text-lg flex items-center gap-3">
-                    <Compass className="h-5 w-5 text-accent" />
+                    <CircleHelp className="h-5 w-5 text-accent" />
                     {item.question}
                   </p>
                   <p className="text-muted-foreground leading-relaxed">{item.answer}</p>
@@ -516,20 +492,19 @@ const Index = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 relative">
+      <section className="pt-20 pb-24 relative">
         <div className="absolute inset-0 bg-gradient-hero opacity-30" />
         <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="section-divider mb-12" />
           <h2 className="text-5xl md:text-6xl font-bold mb-8 text-foreground">
             {t(content.finalCta.heading)}
           </h2>
-          <p className="text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
             {t(content.finalCta.description)}
           </p>
-          <Button
+          <PrimaryActionButton
             asChild
             size="lg"
-            className="bg-gradient-primary hover:shadow-glow-orange transition-all text-xl font-bold px-12 py-8 text-primary-foreground border-2 border-secondary/50"
+            className="text-xl font-bold px-12 py-8 uppercase tracking-wider"
           >
             <Link
               href="/game"
@@ -539,8 +514,71 @@ const Index = () => {
             >
               {t(content.finalCta.button)}
             </Link>
-          </Button>
+          </PrimaryActionButton>
         </div>
+      </section>
+
+      {/* Donation Section */}
+      <section className="container mx-auto px-4 pb-28">
+        <Card className="relative ornate-corners bg-gradient-card border-2 border-border/70 shadow-epic overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-overlay pointer-events-none" />
+          <CardContent className="relative p-10 md:p-12">
+            <div className="flex flex-col lg:flex-row gap-10 lg:items-center">
+              <div className="space-y-4 max-w-2xl">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 rounded-full bg-primary/15 border border-primary/40 text-primary">
+                    <Heart className="h-6 w-6 fill-destructive text-destructive" />
+                  </div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-accent">{t(content.donation.eyebrow)}</p>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground uppercase tracking-wide">
+                  {t(content.donation.heading)}
+                </h2>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  {t(content.donation.description)}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <PrimaryActionButton
+                    asChild
+                    size="lg"
+                    className="font-semibold"
+                  >
+                    <Link href="/donate">
+                      {t(content.donation.primaryCta)}
+                    </Link>
+                  </PrimaryActionButton>
+                  <SecondaryActionButton asChild size="lg">
+                    <a
+                      href={KO_FI_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      data-ga-event="ko-fi-click"
+                      data-ga-category="donation"
+                      data-ga-label="landing-donation"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Coffee className="h-4 w-4" />
+                        <span>{t(content.donation.secondaryCta)}</span>
+                      </div>
+                    </a>
+                  </SecondaryActionButton>
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4 flex-1">
+                {donationItems.map((item) => (
+                  <div
+                    key={item.text}
+                    className="p-4 rounded-lg border border-border/60 bg-background/60 backdrop-blur-sm hover:border-accent/60 transition-all flex items-start gap-3 ornate-corners"
+                  >
+                    <div className="mt-1">{item.icon}</div>
+                    <p className="text-foreground leading-relaxed">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       <Footer />

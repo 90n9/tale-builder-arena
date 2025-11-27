@@ -123,10 +123,10 @@ const AboutPage = () => {
 
   const text = language === "en" ? copy.en : copy.th;
   const uniquePoints = [
-    { icon: <Zap className="h-5 w-5" />, ...text.values.bullets[0] },
-    { icon: <BookOpen className="h-5 w-5" />, ...text.values.bullets[1] },
-    { icon: <GitBranch className="h-5 w-5" />, ...text.values.bullets[2] },
-    { icon: <UserPlus className="h-5 w-5" />, ...text.values.bullets[3] },
+    { icon: <Zap className="h-5 w-5 text-primary" />, ...text.values.bullets[0] },
+    { icon: <BookOpen className="h-5 w-5 text-secondary" />, ...text.values.bullets[1] },
+    { icon: <GitBranch className="h-5 w-5 text-primary" />, ...text.values.bullets[2] },
+    { icon: <UserPlus className="h-5 w-5 text-secondary" />, ...text.values.bullets[3] },
   ];
 
   return (
@@ -171,7 +171,7 @@ const AboutPage = () => {
                   {uniquePoints.map((item) => (
                     <div
                       key={item.title}
-                      className="flex items-start gap-3 p-4 rounded-lg bg-muted/50 border-2 border-accent/30 hover:border-accent/50 transition-all"
+                      className="flex items-start gap-3 p-4 rounded-lg border-2 border-border/60 bg-background/60 backdrop-blur-sm hover:border-accent/60 transition-all ornate-corners"
                     >
                       <div className="text-accent mt-1">{item.icon}</div>
                       <div className="space-y-1">
@@ -186,11 +186,11 @@ const AboutPage = () => {
               <section className="space-y-4">
                 <h2 className="text-2xl font-bold text-foreground">{text.missionVision.heading}</h2>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-lg bg-muted/50 border-2 border-accent/30">
+                  <div className="p-4 rounded-lg border-2 border-border/60 bg-background/60 backdrop-blur-sm ornate-corners">
                     <p className="text-foreground font-semibold mb-2">{text.missionVision.missionTitle}</p>
                     <p className="text-muted-foreground leading-relaxed">{text.missionVision.missionBody}</p>
                   </div>
-                  <div className="p-4 rounded-lg bg-muted/50 border-2 border-accent/30">
+                  <div className="p-4 rounded-lg border-2 border-border/60 bg-background/60 backdrop-blur-sm ornate-corners">
                     <p className="text-foreground font-semibold mb-2">{text.missionVision.visionTitle}</p>
                     <p className="text-muted-foreground leading-relaxed">{text.missionVision.visionBody}</p>
                   </div>

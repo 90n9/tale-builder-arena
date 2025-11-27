@@ -5,10 +5,11 @@ import Link from "next/link";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Menu, Scroll } from "lucide-react";
+import { Heart, Menu, Scroll } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { PrimaryActionButton } from "@/components/ActionButtons";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,18 +18,21 @@ const Navbar = () => {
   const labels = {
     th: {
       achievements: "ความสำเร็จ",
+      donate: "สนับสนุน",
       start: "เริ่มการผจญภัย",
       menu: "เมนู",
     },
     en: {
       achievements: "Achievements",
+      donate: "Donate",
       start: "Start Adventure",
       menu: "Menu",
     },
   } as const;
   const text = language === "en" ? labels.en : labels.th;
 
-  const navLinks: Array<{ href: Route; label: string }> = [
+  const navLinks: Array<{ href: Route; label: string; icon?: JSX.Element }> = [
+    { href: "/donate", label: text.donate, icon: <Heart className="h-4 w-4 text-destructive fill-destructive" /> },
     { href: "/achievements", label: text.achievements },
   ];
 
@@ -50,18 +54,19 @@ const Navbar = () => {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium uppercase tracking-wider transition-colors hover:text-accent ${
+              className={`flex items-center gap-2 text-sm font-medium uppercase tracking-wider transition-colors hover:text-accent ${
                 isActive(link.href) ? "text-accent" : "text-muted-foreground"
               }`}
               data-ga-event="nav-link-click"
               data-ga-category="navigation"
               data-ga-label={link.href}
             >
-              {link.label}
+              <span>{link.label}</span>
+              {link.icon ? <span className="text-accent">{link.icon}</span> : null}
             </Link>
           ))}
           <LanguageToggle />
-          <Button asChild className="bg-gradient-primary hover:shadow-glow-orange transition-all text-sm font-semibold uppercase text-primary-foreground border border-secondary/50">
+          <PrimaryActionButton asChild className="text-sm font-semibold uppercase px-4">
             <Link
               href="/game"
               data-ga-event="nav-link-click"
@@ -70,14 +75,14 @@ const Navbar = () => {
             >
               {text.start}
             </Link>
-          </Button>
+          </PrimaryActionButton>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          <Button
+          <PrimaryActionButton
             asChild
             size="sm"
-            className="bg-gradient-primary hover:shadow-glow-orange transition-all text-xs font-semibold uppercase text-primary-foreground border border-secondary/50 px-3"
+            className="text-xs font-semibold uppercase px-3"
           >
             <Link
               href="/game"
@@ -87,7 +92,7 @@ const Navbar = () => {
             >
               {text.start}
             </Link>
-          </Button>
+          </PrimaryActionButton>
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild>
               <Button
@@ -120,7 +125,7 @@ const Navbar = () => {
                     <SheetClose asChild key={link.href}>
                       <Link
                         href={link.href}
-                        className={`block rounded-md px-3 py-2 text-base font-semibold uppercase tracking-wide transition-colors hover:text-accent hover:bg-accent/5 ${
+                        className={`flex items-center gap-2 rounded-md px-3 py-2 text-base font-semibold uppercase tracking-wide transition-colors hover:text-accent hover:bg-accent/5 ${
                           isActive(link.href) ? "text-accent" : "text-muted-foreground"
                         }`}
                         onClick={handleCloseMenu}
@@ -128,15 +133,16 @@ const Navbar = () => {
                         data-ga-category="navigation"
                         data-ga-label={link.href}
                       >
-                        {link.label}
+                        <span>{link.label}</span>
+                        {link.icon ? <span className="text-accent">{link.icon}</span> : null}
                       </Link>
                     </SheetClose>
                   ))}
                 </div>
                 <SheetClose asChild>
-                  <Button
+                  <PrimaryActionButton
                     asChild
-                    className="w-full bg-gradient-primary hover:shadow-glow-orange text-sm font-semibold uppercase text-primary-foreground border border-secondary/50"
+                    className="w-full text-sm font-semibold uppercase"
                     onClick={handleCloseMenu}
                   >
                     <Link
@@ -147,7 +153,7 @@ const Navbar = () => {
                     >
                       {text.start}
                     </Link>
-                  </Button>
+                  </PrimaryActionButton>
                 </SheetClose>
               </div>
             </SheetContent>
