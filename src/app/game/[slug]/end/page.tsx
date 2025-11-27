@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Loader2, RefreshCw, Sparkles, Trophy } from "lucide-react";
+import { Compass, Loader2, RefreshCw, Sparkles, Trophy } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { findAchievementById, type Achievement } from "@/data/achievements";
 import { findGameBySlug } from "@/data/games";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText } from "@/lib/i18n";
-import { getEndSummaryStorageKey, type AdventureSummary } from "@/lib/game-config";
+import { getCharacterStorageKey, getEndSummaryStorageKey, type AdventureSummary } from "@/lib/game-config";
 
 const EndGamePage = () => {
   const params = useParams<{ slug: string }>();
@@ -38,7 +38,7 @@ const EndGamePage = () => {
         `คุณก้าวผ่านบททดสอบจาก ${title} และกลับออกมาพร้อมประสบการณ์ล้ำค่า พร้อมจะออกผจญภัยอีกครั้งหรือไม่?`,
       viewAchievements: "ดูความสำเร็จทั้งหมด",
       playAgain: "เล่นอีกครั้ง",
-      changeCharacter: "เปลี่ยนตัวละคร",
+      playAnotherGame: "เล่นเกมอื่น",
     },
     en: {
       loading: "Fetching your adventure recap...",
@@ -56,7 +56,7 @@ const EndGamePage = () => {
         `You cleared ${title} and returned with hard-earned experience. Ready to dive back in?`,
       viewAchievements: "View all achievements",
       playAgain: "Play again",
-      changeCharacter: "Change character",
+      playAnotherGame: "Play another game",
     },
   } as const;
   const text = language === "en" ? copy.en : copy.th;
@@ -88,12 +88,12 @@ const EndGamePage = () => {
 
   const handleReplay = () => {
     sessionStorage.removeItem(getEndSummaryStorageKey(slug));
+    sessionStorage.removeItem(getCharacterStorageKey(slug));
     router.push(`/game/${slug}/play`);
   };
 
-  const handleChangeCharacter = () => {
-    sessionStorage.removeItem(getEndSummaryStorageKey(slug));
-    router.push(`/game/${slug}`);
+  const handlePlayAnotherGame = () => {
+    router.push("/game");
   };
 
   if (isLoading || !summary || !game) {
@@ -131,7 +131,7 @@ const EndGamePage = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-background pt-16 pb-12 px-4">
+      <div className="min-h-screen bg-background pt-24 pb-12 px-4">
         <div className="container mx-auto max-w-4xl space-y-8">
           <div className="overflow-hidden rounded-3xl border-2 border-border shadow-card bg-muted/20">
             <div className="relative w-full aspect-[16/9]">
@@ -199,12 +199,13 @@ const EndGamePage = () => {
             <Button
               variant="secondary"
               className="text-lg px-8 py-6"
-              onClick={handleChangeCharacter}
-              data-ga-event="restart-run"
-              data-ga-category="progress"
-              data-ga-label={slug}
+              onClick={handlePlayAnotherGame}
+              data-ga-event="choose-another-game"
+              data-ga-category="navigation"
+              data-ga-label="game-list"
             >
-              {text.changeCharacter}
+              <Compass className="h-5 w-5 mr-2" />
+              {text.playAnotherGame}
             </Button>
           </div>
         </div>
