@@ -14,7 +14,7 @@ export function PageHeader({ title, description, eyebrow, icon }: PageHeaderProp
   return (
     <div className="text-center space-y-4">
       {eyebrow ? (
-        <p className="text-xs uppercase tracking-[0.35em] text-accent">{eyebrow}</p>
+        <p className="text-xs tracking-[0.35em] text-accent">{eyebrow}</p>
       ) : null}
 
       <div className="flex flex-col items-center gap-3">
@@ -23,7 +23,7 @@ export function PageHeader({ title, description, eyebrow, icon }: PageHeaderProp
             {icon}
           </div>
         ) : null}
-        <h1 className="text-5xl md:text-6xl font-bold text-foreground uppercase tracking-wide">{title}</h1>
+        <h1 className="text-5xl md:text-6xl font-bold text-foreground tracking-wide">{title}</h1>
       </div>
 
       {description ? (
