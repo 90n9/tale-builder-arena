@@ -31,7 +31,7 @@ Design references are derived from `src/app/globals.css`, `tailwind.config.ts`, 
 - **Buttons (`<Button>` from `src/components/ui/button.tsx`):**
   - Primary action = solid orange (secondary token) with subtle glow. Use `PrimaryActionButton` (`src/components/ActionButtons.tsx`) for main CTAs (hero, submit, modal primary).
   - Secondary action = blue outline/transparent fill. Use `SecondaryActionButton` for supporting CTAs or navigation.
-  - Avoid ad-hoc borders/gradients; if a new style is needed, add a wrapper in `ActionButtons.tsx` and document when to use it.
+  - Prefer the action components over raw `<Button>` to keep styling consistent. Avoid ad-hoc borders/gradients; if a new style is needed, add a wrapper in `ActionButtons.tsx` and document when to use it.
   - Base variants remain: `default` (orange), `destructive`, `outline` (blue border), `secondary`, `ghost`, `link`. Sizes: `sm`, `default`, `lg`, `icon`.
 - **Cards:** Base from `src/components/ui/card`. Apply `bg-gradient-card`, `shadow-card`, `border-2 border-border/50`, and `backdrop-blur-sm` for premium surfaces. Hover states often use `hover:border-accent` and `hover:shadow-glow-cyan`.
 - **Badges & Chips:** Use `Badge` with `bg-accent/20 text-accent border border-accent/30` when indicating current selections (e.g., genre/race/class).

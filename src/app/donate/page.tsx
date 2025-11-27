@@ -149,14 +149,6 @@ const DonatePage = () => {
                     </Link>
                   </SecondaryActionButton>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <Badge className="bg-accent/15 text-accent border border-accent/40 uppercase tracking-wide">
-                    {t("soloBadge")}
-                  </Badge>
-                  <Badge className="bg-secondary/20 text-secondary-foreground border border-secondary/40 uppercase tracking-wide">
-                    {t("communityBadge")}
-                  </Badge>
-                </div>
               </div>
 
               <Card className="ornate-corners bg-gradient-card border-2 border-border/70 shadow-epic backdrop-blur-md">
@@ -177,16 +169,9 @@ const DonatePage = () => {
                   <blockquote className="border-l-4 border-accent/60 pl-4 italic text-foreground">
                     {t("quote")}
                   </blockquote>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <PrimaryActionButton asChild>
-                      <a href={koFiUrl} target="_blank" rel="noreferrer">
-                        {t("heroPrimaryCta")}
-                      </a>
-                    </PrimaryActionButton>
-                    <Badge className="bg-background/60 border border-border/60 text-muted-foreground">
-                      {t("donationBody")}
-                    </Badge>
-                  </div>
+                  <Badge className="bg-background border border-border text-foreground">
+                    {t("donationBody")}
+                  </Badge>
                 </CardContent>
               </Card>
             </div>
@@ -194,65 +179,35 @@ const DonatePage = () => {
         </section>
 
         <section className="container mx-auto px-4 py-16">
-          <div className="grid lg:grid-cols-2 gap-8 items-start">
-            <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
-              <CardContent className="p-8 space-y-6">
-                <div className="space-y-2">
-                  <p className="text-sm uppercase tracking-[0.3em] text-accent">{t("donationHeading")}</p>
-                  <h3 className="text-3xl font-bold">{t("donationBody")}</h3>
+          <div className="space-y-10 max-w-5xl mx-auto">
+            <div className="space-y-6 max-w-5xl mx-auto">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-full bg-primary/15 border border-primary/40 text-primary">
+                  <Coffee className="h-6 w-6" />
                 </div>
-                <p className="text-muted-foreground leading-relaxed">{t("suggestedAmounts")}</p>
-                <div className="flex flex-wrap gap-3">
-                  <Badge className="bg-primary/15 text-primary border border-primary/40 px-4 py-2 text-sm">
-                    30
-                  </Badge>
-                  <Badge className="bg-primary/15 text-primary border border-primary/40 px-4 py-2 text-sm">
-                    60
-                  </Badge>
-                  <Badge className="bg-primary/15 text-primary border border-primary/40 px-4 py-2 text-sm">
-                    100
-                  </Badge>
-                  <Badge className="bg-accent/15 text-accent border border-accent/40 px-4 py-2 text-sm">
-                    {t("suggestedLabel")}
-                  </Badge>
+                <div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-accent">{t("impactHeading")}</p>
+                  <h3 className="text-2xl font-bold text-foreground">{t("impactDescription")}</h3>
                 </div>
-                <p className="text-sm text-muted-foreground">{t("suggestedNote")}</p>
-                <PrimaryActionButton asChild size="lg" className="w-full font-semibold">
-                  <a href={koFiUrl} target="_blank" rel="noreferrer">
-                    {t("heroPrimaryCta")}
-                  </a>
-                </PrimaryActionButton>
-              </CardContent>
-            </Card>
-
-            <Card className="ornate-corners border-2 border-border bg-background/60 shadow-card backdrop-blur-md">
-              <CardContent className="p-8 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <p className="text-sm uppercase tracking-[0.3em] text-accent">{t("impactHeading")}</p>
-                    <h3 className="text-2xl font-bold text-foreground">{t("impactDescription")}</h3>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                {impactItems.map((item) => (
+                  <div
+                    key={item.label.th}
+                    className="p-4 rounded-lg border border-border/60 bg-muted/20 hover:border-accent/60 transition-all flex items-start gap-3 ornate-corners"
+                  >
+                    <div className="mt-1">{item.icon}</div>
+                    <p className="text-foreground leading-relaxed">
+                      {getLocalizedText(item.label, language)}
+                    </p>
                   </div>
-                  <Coffee className="h-8 w-8 text-secondary" />
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4 pt-2">
-                  {impactItems.map((item) => (
-                    <div
-                      key={item.label.th}
-                      className="p-4 rounded-lg border-2 border-border/60 bg-muted/30 hover:border-accent/60 transition-all flex items-start gap-3"
-                    >
-                      <div className="mt-1">{item.icon}</div>
-                      <p className="text-foreground leading-relaxed">
-                        {getLocalizedText(item.label, language)}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="container mx-auto px-4 py-12">
+        <section className="container mx-auto px-4 py-16">
           <Card className="relative ornate-corners bg-gradient-card border-2 border-border/70 shadow-epic overflow-hidden">
             <div className="absolute inset-0 bg-gradient-overlay pointer-events-none" />
             <CardContent className="relative p-10 md:p-12 text-center space-y-6">
@@ -260,18 +215,26 @@ const DonatePage = () => {
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 {t("thanksBody")}
               </p>
+              <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto">{t("suggestedAmounts")}</p>
               <div className="flex flex-wrap justify-center gap-3">
                 <PrimaryActionButton asChild size="lg" className="font-semibold">
                   <a href={koFiUrl} target="_blank" rel="noreferrer">
-                    {t("heroPrimaryCta")}
+                    <div className="flex items-center gap-2">
+                      <Coffee className="h-5 w-5" />
+                      <span>{t("heroPrimaryCta")}</span>
+                    </div>
                   </a>
                 </PrimaryActionButton>
                 <SecondaryActionButton asChild size="lg">
                   <Link href="/">
-                    {t("backHome")}
+                    <div className="flex items-center gap-2">
+                      <ArrowLeft className="h-5 w-5" />
+                      <span>{t("backHome")}</span>
+                    </div>
                   </Link>
                 </SecondaryActionButton>
               </div>
+              <p className="text-sm text-muted-foreground">{t("suggestedNote")}</p>
             </CardContent>
           </Card>
         </section>

@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Sparkles, MessageSquare, Image, Zap, BookOpen, Trophy, Heart, Server, Wrench, PenTool, Timer } from "lucide-react";
-import { Sparkles, Image, Zap, GitBranch, Flame, Compass, Heart } from "lucide-react";
+import { MessageSquare, Image, Zap, BookOpen, Trophy, Heart, Server, Wrench, PenTool, Timer, GitBranch, Flame, Sparkles, Coffee, CircleHelp } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { PrimaryActionButton, SecondaryActionButton } from "@/components/ActionButtons";
@@ -44,6 +43,7 @@ const Index = () => {
       },
       pillars: [
         {
+          icon: <Zap className="h-7 w-7 text-primary" />,
           title: {
             th: "ทุกทางเลือกมีน้ำหนัก",
             en: "Every choice carries weight",
@@ -54,6 +54,7 @@ const Index = () => {
           },
         },
         {
+          icon: <Image className="h-7 w-7 text-secondary" />,
           title: {
             th: "เล่นได้ทันที ไม่ต้องรอ",
             en: "Jump in instantly",
@@ -65,26 +66,10 @@ const Index = () => {
         },
       ],
     },
-    showcase: {
-      heading: {
-        th: "ภาพและอารมณ์ที่กำลังรอคุณ",
-        en: "Scenes and moods waiting for you",
-      },
-      description: {
-        th: "ศิลป์และฉากตัวอย่างที่บอกโทนโลก เล่าเรื่องผ่านแสง สี และเงาที่คุณจะได้สัมผัส",
-        en: "Art and scene glimpses that set the world’s tone—told through light, color, and shadow you’ll step into.",
-      },
-      gallery: [
-        { title: { th: "ค่ำคืนที่วิหารทราย", en: "Night at the Desert Temple" } },
-        { title: { th: "เงาในคฤหาสน์เก่า", en: "Shadows of the Old Manor" } },
-        { title: { th: "ลมหายใจแห่งป่าเรืองแสง", en: "Breath of the Luminous Forest" } },
-        { title: { th: "หอคอยลับลอยฟ้า", en: "Skyborne Hidden Spire" } },
-      ],
-    },
     stories: {
       heading: {
-        th: "ตัวอย่างเรื่องที่เล่นได้ทันที",
-        en: "Sample stories you can play now",
+        th: "เลือกเรื่องแล้วเล่นเลย",
+        en: "Pick your story, play now",
       },
       items: [
         {
@@ -254,12 +239,7 @@ const Index = () => {
     promise: {
       heading: LocalizedText;
       description: LocalizedText;
-      pillars: Array<{ title: LocalizedText; description: LocalizedText }>;
-    };
-    showcase: {
-      heading: LocalizedText;
-      description: LocalizedText;
-      gallery: Array<{ title: LocalizedText }>;
+      pillars: Array<{ title: LocalizedText; description: LocalizedText; icon: JSX.Element }>;
     };
     stories: {
       heading: LocalizedText;
@@ -297,10 +277,6 @@ const Index = () => {
     ...pillar,
     title: t(pillar.title),
     description: t(pillar.description),
-  }));
-
-  const showcaseItems = content.showcase.gallery.map((item) => ({
-    title: t(item.title),
   }));
 
   const storyItems = content.stories.items.map((story) => ({
@@ -382,11 +358,10 @@ const Index = () => {
       </section>
 
       {/* Promise Section */}
-      <section className="py-24 relative">
+      <section className="pt-16 pb-20 relative">
         <div className="absolute inset-0 bg-gradient-card opacity-50" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+          <div className="text-center mb-12 space-y-6">
             <h2 className="text-5xl font-bold text-foreground">{t(content.promise.heading)}</h2>
             <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
               {t(content.promise.description)}
@@ -408,42 +383,11 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Showcase Section */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
-            <h2 className="text-5xl font-bold text-foreground">{t(content.showcase.heading)}</h2>
-            <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
-              {t(content.showcase.description)}
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {showcaseItems.map((item, idx) => (
-              <div
-                key={item.title}
-                className="relative h-56 rounded-xl overflow-hidden border-2 border-border/40 bg-gradient-card"
-              >
-                <div className="absolute inset-0 bg-gradient-cyan opacity-10" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Image className="h-14 w-14 text-accent/50" />
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-background/70 backdrop-blur-sm border-t border-border/40">
-                  <p className="text-foreground font-semibold">{item.title}</p>
-                  <p className="text-muted-foreground text-sm">#{idx + 1}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Sample Stories Section */}
-      <section id="stories" className="py-24 relative">
+      <section id="stories" className="pt-16 pb-20 relative">
         <div className="absolute inset-0 bg-gradient-card opacity-50" />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+          <div className="text-center mb-12 space-y-6">
             <h2 className="text-5xl font-bold text-foreground">{t(content.stories.heading)}</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -458,12 +402,9 @@ const Index = () => {
                     <p className="font-semibold">{story.title}</p>
                   </div>
                   <p className="text-foreground text-lg leading-relaxed">{story.hook}</p>
-                  <Button
-                    asChild
-                    className="bg-gradient-primary text-primary-foreground hover:shadow-glow-orange transition-all"
-                  >
+                  <PrimaryActionButton asChild>
                     <Link href="/game">{story.cta}</Link>
-                  </Button>
+                  </PrimaryActionButton>
                 </CardContent>
               </Card>
             ))}
@@ -472,10 +413,9 @@ const Index = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-24 relative">
+      <section className="pt-16 pb-20 relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+          <div className="text-center mb-12 space-y-6">
             <h2 className="text-5xl font-bold text-foreground">{t(content.benefits.heading)}</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -501,7 +441,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-card opacity-40" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+            <div className="section-divider my-8" />
             <h2 className="text-5xl font-bold text-foreground">{t(content.socialProof.heading)}</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -524,18 +464,20 @@ const Index = () => {
       </section> */}
 
       {/* FAQ */}
-      <section className="py-24 relative">
+      <section className="pt-16 pb-20 relative">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16 space-y-6">
-            <div className="section-divider mb-10" />
+          <div className="text-center mb-12 space-y-6">
             <h2 className="text-5xl font-bold text-foreground">{t(content.faq.heading)}</h2>
           </div>
           <div className="max-w-4xl mx-auto space-y-4">
             {faqItems.map((item) => (
-              <Card key={item.question} className="border-2 border-border/50 bg-gradient-card backdrop-blur-sm">
+              <Card
+                key={item.question}
+                className="border-2 border-border/50 bg-gradient-card backdrop-blur-sm ornate-corners hover:border-accent/60 transition-all"
+              >
                 <CardContent className="p-6 space-y-2">
                   <p className="text-foreground font-semibold text-lg flex items-center gap-3">
-                    <Compass className="h-5 w-5 text-accent" />
+                    <CircleHelp className="h-5 w-5 text-accent" />
                     {item.question}
                   </p>
                   <p className="text-muted-foreground leading-relaxed">{item.answer}</p>
@@ -547,14 +489,13 @@ const Index = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 relative">
+      <section className="pt-20 pb-24 relative">
         <div className="absolute inset-0 bg-gradient-hero opacity-30" />
         <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="section-divider mb-12" />
           <h2 className="text-5xl md:text-6xl font-bold mb-8 text-foreground">
             {t(content.finalCta.heading)}
           </h2>
-          <p className="text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
             {t(content.finalCta.description)}
           </p>
           <PrimaryActionButton
@@ -605,7 +546,10 @@ const Index = () => {
                   </PrimaryActionButton>
                   <SecondaryActionButton asChild size="lg">
                     <a href={koFiUrl} target="_blank" rel="noreferrer">
-                      {t(content.donation.secondaryCta)}
+                      <div className="flex items-center gap-2">
+                        <Coffee className="h-4 w-4" />
+                        <span>{t(content.donation.secondaryCta)}</span>
+                      </div>
                     </a>
                   </SecondaryActionButton>
                 </div>
@@ -615,7 +559,7 @@ const Index = () => {
                 {donationItems.map((item) => (
                   <div
                     key={item.text}
-                    className="p-4 rounded-lg border-2 border-border/60 bg-background/60 backdrop-blur-sm hover:border-accent/60 transition-all flex items-start gap-3"
+                    className="p-4 rounded-lg border border-border/60 bg-background/60 backdrop-blur-sm hover:border-accent/60 transition-all flex items-start gap-3 ornate-corners"
                   >
                     <div className="mt-1">{item.icon}</div>
                     <p className="text-foreground leading-relaxed">{item.text}</p>

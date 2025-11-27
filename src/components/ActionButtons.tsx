@@ -25,7 +25,7 @@ export const SecondaryActionButton = forwardRef<HTMLButtonElement, ActionButtonP
       ref={ref}
       variant="outline"
       className={cn(
-        "font-semibold",
+        "font-semibold border-accent/60 text-foreground hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan transition-all",
         className,
       )}
       {...props}
