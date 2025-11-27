@@ -17,13 +17,11 @@ const Navbar = () => {
   const { language } = useLanguage();
   const labels = {
     th: {
-      achievements: "ความสำเร็จ",
       donate: "สนับสนุน",
       start: "เริ่มการผจญภัย",
       menu: "เมนู",
     },
     en: {
-      achievements: "Achievements",
       donate: "Donate",
       start: "Start Adventure",
       menu: "Menu",
@@ -33,7 +31,6 @@ const Navbar = () => {
 
   const navLinks: Array<{ href: Route; label: string; icon?: JSX.Element }> = [
     { href: "/donate", label: text.donate, icon: <Heart className="h-4 w-4 text-destructive fill-destructive" /> },
-    { href: "/achievements", label: text.achievements },
   ];
 
   const isActive = (path: string) => pathname === path || pathname.startsWith(`${path}/`);

@@ -13,9 +13,7 @@ const Footer = () => {
       en: "Pick a story, build a hero, and play instantly with smooth, ready-to-go content and visuals.",
     },
     quickLinks: { th: "ลิงก์ด่วน", en: "Quick Links" },
-    home: { th: "หน้าหลัก", en: "Home" },
-    play: { th: "เล่นเกม", en: "Play" },
-    achievements: { th: "ความสำเร็จ", en: "Achievements" },
+    play: { th: "เกม", en: "Games" },
     donate: { th: "สนับสนุน", en: "Donate" },
     about: { th: "เกี่ยวกับเรา", en: "About" },
     contact: { th: "ติดต่อเรา", en: "Contact" },
@@ -26,9 +24,7 @@ const Footer = () => {
   } satisfies Record<
     | "description"
     | "quickLinks"
-    | "home"
     | "play"
-    | "achievements"
     | "donate"
     | "about"
     | "contact"
@@ -59,32 +55,12 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  data-ga-event="footer-link-click"
-                  data-ga-label="/"
-                >
-                  {t(copy.home)}
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/game"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   data-ga-event="footer-link-click"
                   data-ga-label="/game"
                 >
                   {t(copy.play)}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/achievements"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  data-ga-event="footer-link-click"
-                  data-ga-label="/achievements"
-                >
-                  {t(copy.achievements)}
                 </Link>
               </li>
               <li>

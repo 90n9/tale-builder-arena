@@ -36,7 +36,7 @@ const EndGamePage = () => {
       yourStory: "เรื่องเล่าของคุณ",
       closing: (title: string) =>
         `คุณก้าวผ่านบททดสอบจาก ${title} และกลับออกมาพร้อมประสบการณ์ล้ำค่า พร้อมจะออกผจญภัยอีกครั้งหรือไม่?`,
-      viewAchievements: "ดูความสำเร็จทั้งหมด",
+      viewAchievements: "ดูความสำเร็จ",
       playAgain: "เล่นอีกครั้ง",
       playAnotherGame: "เล่นเกมอื่น",
     },
@@ -54,7 +54,7 @@ const EndGamePage = () => {
       yourStory: "Your tale",
       closing: (title: string) =>
         `You cleared ${title} and returned with hard-earned experience. Ready to dive back in?`,
-      viewAchievements: "View all achievements",
+      viewAchievements: "View achievements",
       playAgain: "Play again",
       playAnotherGame: "Play another game",
     },
@@ -181,7 +181,12 @@ const EndGamePage = () => {
               variant="outline"
               className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan text-lg px-8 py-6"
             >
-              <Link href="/achievements" data-ga-event="nav-link-click" data-ga-category="navigation" data-ga-label="/achievements">
+              <Link
+                href={`/game/${slug}#achievements`}
+                data-ga-event="nav-link-click"
+                data-ga-category="navigation"
+                data-ga-label={`/game/${slug}`}
+              >
                 <Trophy className="h-5 w-5 mr-2" />
                 {text.viewAchievements}
               </Link>
