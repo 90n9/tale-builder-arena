@@ -1,17 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Sparkles, MessageSquare, Image, Zap, BookOpen, Trophy } from "lucide-react";
+import { Sparkles, MessageSquare, Image, Zap, BookOpen, Trophy, Heart, Server, Wrench, PenTool, Timer } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
+import { PrimaryActionButton, SecondaryActionButton } from "@/components/ActionButtons";
 
 const Index = () => {
   const { language } = useLanguage();
   const heroImageSrc = "/assets/hero-illustration.jpg";
+  const koFiUrl = "https://ko-fi.com/talebuilder";
   const content = {
     hero: {
       tagline: {
@@ -19,8 +20,8 @@ const Index = () => {
         en: "Pick a story, build a hero, play instantly",
       },
       description: {
-        th: "เลือกเรื่องที่เตรียมไว้ล่วงหน้า สร้างตัวละคร แล้วตอบตัวเลือกในแต่ละฉากเพื่อปลดล็อกตอนจบที่ต่างกัน เนื้อเรื่องและภาพถูกสร้างไว้แล้วจึงโหลดรวดเร็วไม่ต้องรอ AI",
-        en: "Choose a prepared storyline, build your character, and drive each scene with your decisions to unlock different endings. Every beat and scene image is pre-generated, so the game stays fast with zero AI wait time.",
+        th: "เลือกเรื่องที่เตรียมไว้ล่วงหน้า สร้างตัวละคร แล้วตอบตัวเลือกในแต่ละฉากเพื่อปลดล็อกตอนจบที่ต่างกัน เล่นลื่นไหลไม่สะดุด",
+        en: "Choose a prepared storyline, build your character, and drive each scene with your decisions to unlock different endings—fast, smooth play with no slowdowns.",
       },
       primaryCta: {
         th: "เริ่มเล่นทันที",
@@ -184,6 +185,24 @@ const Index = () => {
         en: "Dialogues and decisions are authored ahead of time for speed while still letting you steer the ending.",
       },
     },
+    donation: {
+      heading: {
+        th: "สนับสนุน TaleBuilder Arena",
+        en: "Support TaleBuilder Arena",
+      },
+      description: {
+        th: "โปรเจกต์อินดี้ที่เปิดให้เล่นฟรี รอดได้ด้วยแรงสนับสนุนจากคุณ — ทุกจำนวนช่วยให้เราสร้างเนื้อหาใหม่และดูแลเซิร์ฟเวอร์ต่อเนื่อง",
+        en: "This free indie project runs on community support—every bit helps us add new stories and keep the servers running.",
+      },
+      bullets: [
+        { icon: <Server className="h-6 w-6 text-primary" />, text: { th: "ค่าโฮสติ้งและบำรุงระบบ", en: "Hosting and upkeep" } },
+        { icon: <Wrench className="h-6 w-6 text-secondary" />, text: { th: "ฟีเจอร์ใหม่และปรับปรุง UI/UX", en: "New features and UI/UX polish" } },
+        { icon: <PenTool className="h-6 w-6 text-primary" />, text: { th: "สร้างเนื้อเรื่องและภาพประกอบฉาก", en: "Story content and scene art" } },
+        { icon: <Timer className="h-6 w-6 text-secondary" />, text: { th: "เวลาและแรงงานของผู้พัฒนาเดี่ยว", en: "Solo dev time and effort" } },
+      ],
+      primaryCta: { th: "ไปหน้าสนับสนุน", en: "Go to donate page" },
+      secondaryCta: { th: "เปิด Ko-fi", en: "Open Ko-fi" },
+    },
     finalCta: {
       heading: {
         th: "พร้อมเลือกเส้นทางของคุณ?",
@@ -224,6 +243,13 @@ const Index = () => {
       storyTitle: LocalizedText;
       storyDescription: LocalizedText;
     };
+    donation: {
+      heading: LocalizedText;
+      description: LocalizedText;
+      bullets: Array<{ text: LocalizedText; icon: JSX.Element }>;
+      primaryCta: LocalizedText;
+      secondaryCta: LocalizedText;
+    };
     finalCta: {
       heading: LocalizedText;
       description: LocalizedText;
@@ -243,6 +269,11 @@ const Index = () => {
     ...item,
     title: t(item.title),
     description: t(item.description),
+  }));
+
+  const donationItems = content.donation.bullets.map((item) => ({
+    ...item,
+    text: t(item.text),
   }));
 
   return (
@@ -285,10 +316,10 @@ const Index = () => {
             </p>
             
             <div className="flex flex-wrap gap-6 justify-center">
-              <Button
+              <PrimaryActionButton
                 asChild
                 size="lg"
-                className="bg-gradient-primary hover:shadow-glow-orange transition-all text-lg font-semibold px-10 py-7 text-primary-foreground border-2 border-secondary/50"
+                className="text-lg font-semibold px-10 py-7"
               >
                 <Link
                   href="/game"
@@ -298,22 +329,7 @@ const Index = () => {
                 >
                   {t(content.hero.primaryCta)}
                 </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-2 border-accent/50 text-accent hover:bg-accent/10 hover:shadow-glow-cyan transition-all text-lg px-10 py-7 backdrop-blur-sm bg-background/30"
-              >
-                <Link
-                  href="/about"
-                  data-ga-event="hero-cta-click"
-                  data-ga-category="cta"
-                  data-ga-label="/about"
-                >
-                  {t(content.hero.secondaryCta)}
-                </Link>
-              </Button>
+              </PrimaryActionButton>
             </div>
           </div>
         </div>
@@ -459,10 +475,10 @@ const Index = () => {
           <p className="text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
             {t(content.finalCta.description)}
           </p>
-          <Button
+          <PrimaryActionButton
             asChild
             size="lg"
-            className="bg-gradient-primary hover:shadow-glow-orange transition-all text-xl font-bold px-12 py-8 text-primary-foreground border-2 border-secondary/50 uppercase tracking-wider"
+            className="text-xl font-bold px-12 py-8 uppercase tracking-wider"
           >
             <Link
               href="/game"
@@ -472,8 +488,61 @@ const Index = () => {
             >
               {t(content.finalCta.button)}
             </Link>
-          </Button>
+          </PrimaryActionButton>
         </div>
+      </section>
+
+      {/* Donation Section */}
+      <section className="container mx-auto px-4 pb-28">
+        <Card className="relative ornate-corners bg-gradient-card border-2 border-border/70 shadow-epic overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-overlay pointer-events-none" />
+          <CardContent className="relative p-10 md:p-12">
+            <div className="flex flex-col lg:flex-row gap-10 lg:items-center">
+              <div className="space-y-4 max-w-2xl">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 rounded-full bg-primary/15 border border-primary/40 text-primary">
+                    <Heart className="h-6 w-6 fill-destructive text-destructive" />
+                  </div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-accent">{t(content.donation.heading)}</p>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground uppercase tracking-wide">
+                  {t(content.donation.heading)}
+                </h2>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  {t(content.donation.description)}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <PrimaryActionButton
+                    asChild
+                    size="lg"
+                    className="font-semibold"
+                  >
+                    <Link href="/donate">
+                      {t(content.donation.primaryCta)}
+                    </Link>
+                  </PrimaryActionButton>
+                  <SecondaryActionButton asChild size="lg">
+                    <a href={koFiUrl} target="_blank" rel="noreferrer">
+                      {t(content.donation.secondaryCta)}
+                    </a>
+                  </SecondaryActionButton>
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4 flex-1">
+                {donationItems.map((item) => (
+                  <div
+                    key={item.text}
+                    className="p-4 rounded-lg border-2 border-border/60 bg-background/60 backdrop-blur-sm hover:border-accent/60 transition-all flex items-start gap-3"
+                  >
+                    <div className="mt-1">{item.icon}</div>
+                    <p className="text-foreground leading-relaxed">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       <Footer />

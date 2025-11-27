@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Scroll } from "lucide-react";
+import { Heart, Scroll } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 
@@ -9,13 +9,14 @@ const Footer = () => {
   const { language } = useLanguage();
   const copy = {
     description: {
-      th: "เลือกเรื่องที่เตรียมไว้ สร้างตัวละคร แล้วตอบตัวเลือกเพื่อปลดล็อกตอนจบทันที เรื่องและภาพฉากเตรียมไว้ล่วงหน้าเพื่อความรวดเร็ว",
-      en: "Pick a prepared story, build your character, and branch to instant endings. Stories and scene art are prebuilt so play stays fast.",
+      th: "เลือกเรื่องราว สร้างตัวละคร แล้วเริ่มเล่นทันที เกมไหลลื่นพร้อมเนื้อหาและภาพที่เตรียมไว้แล้ว",
+      en: "Pick a story, build a hero, and play instantly with smooth, ready-to-go content and visuals.",
     },
     quickLinks: { th: "ลิงก์ด่วน", en: "Quick Links" },
     home: { th: "หน้าหลัก", en: "Home" },
     play: { th: "เล่นเกม", en: "Play" },
     achievements: { th: "ความสำเร็จ", en: "Achievements" },
+    donate: { th: "สนับสนุน", en: "Donate" },
     about: { th: "เกี่ยวกับเรา", en: "About" },
     contact: { th: "ติดต่อเรา", en: "Contact" },
     legal: { th: "ข้อมูลทางกฎหมาย", en: "Legal" },
@@ -28,6 +29,7 @@ const Footer = () => {
     | "home"
     | "play"
     | "achievements"
+    | "donate"
     | "about"
     | "contact"
     | "legal"
@@ -83,6 +85,17 @@ const Footer = () => {
                   data-ga-label="/achievements"
                 >
                   {t(copy.achievements)}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/donate"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                  data-ga-event="footer-link-click"
+                  data-ga-label="/donate"
+                >
+                  {t(copy.donate)}
+                  <Heart className="h-4 w-4 text-destructive fill-destructive" />
                 </Link>
               </li>
               <li>
