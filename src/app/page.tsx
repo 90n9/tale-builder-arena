@@ -291,7 +291,6 @@ const Index = () => {
     title: t(item.title),
     description: t(item.description),
   }));
-        
   const quotes = content.socialProof.quotes.map((quote) => ({
     ...quote,
     role: t(quote.role),
