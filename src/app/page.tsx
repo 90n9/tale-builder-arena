@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { MessageSquare, Image, Zap, BookOpen, Trophy, Heart, Server, Wrench, PenTool, Timer, GitBranch, Flame, Sparkles, Coffee, CircleHelp } from "lucide-react";
+import { Image, Zap, Heart, Server, Wrench, PenTool, Timer, GitBranch, Flame, Sparkles, Coffee, CircleHelp } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { PrimaryActionButton, SecondaryActionButton } from "@/components/ActionButtons";
