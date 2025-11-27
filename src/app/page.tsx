@@ -8,11 +8,11 @@ import { MessageSquare, Image, Zap, BookOpen, Trophy, Heart, Server, Wrench, Pen
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { PrimaryActionButton, SecondaryActionButton } from "@/components/ActionButtons";
+import { KO_FI_URL } from "@/lib/external-links";
 
 const Index = () => {
   const { language } = useLanguage();
   const heroImageSrc = "/assets/hero-illustration.jpg";
-  const koFiUrl = "https://ko-fi.com/talebuilder";
   const content = {
     hero: {
       headline: {
@@ -545,7 +545,14 @@ const Index = () => {
                     </Link>
                   </PrimaryActionButton>
                   <SecondaryActionButton asChild size="lg">
-                    <a href={koFiUrl} target="_blank" rel="noreferrer">
+                    <a
+                      href={KO_FI_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      data-ga-event="ko-fi-click"
+                      data-ga-category="donation"
+                      data-ga-label="landing-donation"
+                    >
                       <div className="flex items-center gap-2">
                         <Coffee className="h-4 w-4" />
                         <span>{t(content.donation.secondaryCta)}</span>

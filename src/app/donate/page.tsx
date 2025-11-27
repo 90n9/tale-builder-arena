@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { PrimaryActionButton, SecondaryActionButton } from "@/components/ActionButtons";
+import { KO_FI_URL } from "@/lib/external-links";
 
 const copy = {
   heroEyebrow: { th: "สนับสนุนโปรเจกต์อินดี้", en: "Support the indie project" },
@@ -96,8 +97,6 @@ const copy = {
   LocalizedText
 >;
 
-const koFiUrl = "https://ko-fi.com/talebuilder";
-
 const DonatePage = () => {
   const { language } = useLanguage();
   const t = <K extends keyof typeof copy>(key: K) => getLocalizedText(copy[key], language);
@@ -133,7 +132,14 @@ const DonatePage = () => {
                 </p>
                 <div className="flex flex-wrap items-center gap-4">
                   <PrimaryActionButton asChild size="lg" className="text-base">
-                    <a href={koFiUrl} target="_blank" rel="noreferrer">
+                    <a
+                      href={KO_FI_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      data-ga-event="ko-fi-click"
+                      data-ga-category="donation"
+                      data-ga-label="donate-hero"
+                    >
                       <div className="flex items-center gap-2">
                         <Coffee className="h-5 w-5" />
                         <span>{t("heroPrimaryCta")}</span>
@@ -218,7 +224,14 @@ const DonatePage = () => {
               <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto">{t("suggestedAmounts")}</p>
               <div className="flex flex-wrap justify-center gap-3">
                 <PrimaryActionButton asChild size="lg" className="font-semibold">
-                  <a href={koFiUrl} target="_blank" rel="noreferrer">
+                  <a
+                    href={KO_FI_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-ga-event="ko-fi-click"
+                    data-ga-category="donation"
+                    data-ga-label="donate-footer"
+                  >
                     <div className="flex items-center gap-2">
                       <Coffee className="h-5 w-5" />
                       <span>{t("heroPrimaryCta")}</span>
