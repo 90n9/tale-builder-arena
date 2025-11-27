@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Compass, Map, RefreshCw, Sparkles } from "lucide-react";
+import { ArrowRight, Compass, RefreshCw, Sparkles } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,8 +22,7 @@ const GameListPage = () => {
       badge: "เลือกสนามผจญภัย",
       title: "เลือกเรื่องราวที่อยากเล่น",
       subtitle: "แต่ละแคมเปญถูกสร้างขึ้นให้มีโทนและความยากต่างกัน เลือกโลกที่ถูกใจแล้วไปตั้งค่าตัวละครก่อนออกเดินทาง",
-      tone: "โทน:",
-      setup: "ตั้งค่าการผจญภัย",
+      setup: "ดูรายละเอียด",
       continue: "เล่นต่อจากเดิม",
       startOver: "เริ่มใหม่",
     },
@@ -31,8 +30,7 @@ const GameListPage = () => {
       badge: "Choose your arena",
       title: "Pick a story to play",
       subtitle: "Each campaign has its own tone and challenge. Choose your world, then set your character before heading out.",
-      tone: "Tone:",
-      setup: "Set up adventure",
+      setup: "View details",
       continue: "Continue your journey",
       startOver: "Start over",
     },
@@ -69,7 +67,7 @@ const GameListPage = () => {
       ...prev,
       [slug]: { hasCharacter: false, hasSummary: false },
     }));
-    router.push(`/game/${slug}`);
+    router.push(`/game/${slug}/init`);
   };
 
   return (
@@ -79,7 +77,6 @@ const GameListPage = () => {
       <section className="pt-20 pb-16 px-4">
         <div className="container mx-auto max-w-6xl space-y-10">
           <div className="text-center space-y-4">
-            <div className="section-divider mb-8" />
             <p className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent border border-accent/30 uppercase tracking-wide text-sm">
               <Compass className="h-4 w-4" />
               {text.badge}
@@ -88,6 +85,7 @@ const GameListPage = () => {
             <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
               {text.subtitle}
             </p>
+            <div className="section-divider mb-8" />
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -113,10 +111,6 @@ const GameListPage = () => {
                       <Badge className="bg-accent/20 text-accent border border-accent/30">
                         {getLocalizedText(game.genreLabel, language)}
                       </Badge>
-                      <span className="text-sm text-muted-foreground flex items-center gap-2">
-                        <Map className="h-4 w-4 text-secondary" />
-                        {getLocalizedText(game.length, language)}
-                      </span>
                     </div>
 
                     <div className="space-y-2">
@@ -142,9 +136,6 @@ const GameListPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                      <p className="text-sm text-muted-foreground">
-                        {text.tone} <span className="text-foreground">{getLocalizedText(game.tone, language)}</span>
-                      </p>
                       {hasInProgress ? (
                         <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 w-full">
                           <Button

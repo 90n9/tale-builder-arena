@@ -1,227 +1,183 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Compass, Flame, Loader2, Minus, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, Compass, MessageSquare, Star, Trophy, Users, Clock3 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { ALL_ACHIEVEMENTS, type Achievement } from "@/data/achievements";
 import { findGameBySlug } from "@/data/games";
 import { useLanguage } from "@/contexts/language-context";
+import { getCharacterStorageKey, getEndSummaryStorageKey } from "@/lib/game-config";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
-import { createEmptyCharacter, getCharacterStorageKey, type CharacterSelection } from "@/lib/game-config";
-import { trackInteraction } from "@/lib/analytics";
 
-type CharacterCreationStep = "race" | "class" | "background" | "attributes";
+const gamePlaceholderSrc = "/assets/game-scene-placeholder.jpg";
 
-const getNextStep = (current: CharacterSelection): CharacterCreationStep => {
-  if (!current.race) return "race";
-  if (!current.class) return "class";
-  if (!current.background) return "background";
-  return "attributes";
+type MockComment = {
+  id: string;
+  author: string;
+  role: LocalizedText;
+  content: LocalizedText;
+  rating: number;
+  timeAgo: LocalizedText;
 };
 
-type SetupRace = { id: string; name: LocalizedText; description: LocalizedText };
-type SetupClass = { id: string; name: LocalizedText; description: LocalizedText };
-type SetupBackground = { id: string; name: LocalizedText; description: LocalizedText };
-type SetupAttribute = { id: string; name: LocalizedText };
-
-type SetupApiResponse = {
-  gameId: string;
-  races: SetupRace[];
-  classes: SetupClass[];
-  backgrounds: SetupBackground[];
-  attributes: SetupAttribute[];
-  baseAttributes: Record<string, number>;
-  pointsToDistribute: number;
+type MockRatingStat = {
+  id: string;
+  label: LocalizedText;
+  value: number;
 };
 
-const GameSetupPage = () => {
+const mockComments: MockComment[] = [
+  {
+    id: "c1",
+    author: "พลอย",
+    role: { th: "DM มือใหม่", en: "New DM" },
+    rating: 4.8,
+    content: {
+      th: "เล่าเนื้อเรื่องลื่นมาก มีจังหวะลุ้นแบบต่อเนื่อง เหมาะให้เพื่อนลองเล่นรอบแรกก่อนเริ่มแคมเปญใหญ่",
+      en: "Story beats flow well with constant tension. Great as a first run before a longer campaign.",
+    },
+    timeAgo: { th: "2 วันที่แล้ว", en: "2 days ago" },
+  },
+  {
+    id: "c2",
+    author: "Mark",
+    role: { th: "ผู้เล่นสายสำรวจ", en: "Explorer" },
+    rating: 4.6,
+    content: {
+      th: "ชอบที่มีหลายเส้นทางและโบนัสค่าสเตตัสระหว่างฉาก ทำให้รู้สึกว่าการตัดสินใจส่งผลจริงๆ",
+      en: "Loved the branching paths and mid-scene stat rewards. Choices actually change the run.",
+    },
+    timeAgo: { th: "1 สัปดาห์ที่แล้ว", en: "1 week ago" },
+  },
+  {
+    id: "c3",
+    author: "อิ่มอุ่น",
+    role: { th: "เล่นกับกลุ่มเพื่อน", en: "Party runner" },
+    rating: 4.9,
+    content: {
+      th: "บรรยากาศอาร์ตเวิร์กและโทนเรื่องดีมาก ระบบค่าสถานะไม่ซับซ้อน เล่นกับเพื่อนใหม่ได้เลย",
+      en: "Art vibe and tone are great. Attribute setup is simple enough to onboard new friends fast.",
+    },
+    timeAgo: { th: "เมื่อวาน", en: "yesterday" },
+  },
+];
+
+const mockRatingStats: MockRatingStat[] = [
+  { id: "pacing", label: { th: "จังหวะเล่าเรื่อง", en: "Story pacing" }, value: 4.8 },
+  { id: "challenge", label: { th: "ความท้าทาย", en: "Challenge" }, value: 4.4 },
+  { id: "mood", label: { th: "บรรยากาศ", en: "Atmosphere" }, value: 4.7 },
+];
+
+const GameDetailPage = () => {
   const params = useParams<{ slug: string }>();
   const slug = (params?.slug ?? "").toString();
   const router = useRouter();
   const game = useMemo(() => findGameBySlug(slug), [slug]);
   const { language } = useLanguage();
+  const [hasCharacter, setHasCharacter] = useState(false);
+  const [hasSummary, setHasSummary] = useState(false);
+  const [comments, setComments] = useState(mockComments);
+  const [newCommentName, setNewCommentName] = useState("");
+  const [newCommentMessage, setNewCommentMessage] = useState("");
+  const [ratingValue, setRatingValue] = useState<number>(4.5);
+  const [ratingNote, setRatingNote] = useState("");
+  const [ratingSubmitted, setRatingSubmitted] = useState(false);
   const copy = {
     th: {
-      tone: "โทน:",
-      length: "ความยาว:",
-      backToStories: "กลับไปเลือกเรื่องอื่น",
-      chooseRaceTitle: "เลือกเผ่าพันธุ์",
-      chooseRaceSubtitle: "ตั้งรากฐานเชื้อสายให้เข้ากับโทนของเรื่อง",
-      backToGameList: "กลับไปเลือกรายการเกม",
-      chooseClassTitle: "เลือกสายอาชีพ",
-      chooseClassSubtitle: "จับคู่กับทีมของคุณเพื่อรับมือสถานการณ์ของเรื่องนี้",
-      backToRace: "กลับไปเลือกเผ่าพันธุ์",
-      chooseBackgroundTitle: "เลือกเส้นทางชีวิต",
-      chooseBackgroundSubtitle: "เติมสีสันอดีตของตัวละครเพื่อปลดล็อกจุดแข็งเฉพาะ",
-      backToClassList: "กลับไปเลือกสายอาชีพ",
-      attributesTitle: "ปรับค่าสถานะ",
-      attributesSubtitle: "บาลานซ์ความแข็งแกร่งเพื่อเตรียมรับมือเหตุการณ์เฉพาะของเรื่องนี้",
-      pointsUsed: "ใช้แต้มแล้ว",
-      backToClass: "กลับไปเลือกสายอาชีพ",
-      loadingAttributes: "กำลังโหลดค่าสถานะ...",
-      loadingOptions: "กำลังโหลดตัวเลือก...",
-      pointsLeft: "แต้มที่เหลือ",
-      start: "เริ่มการผจญภัย",
+      backToList: "กลับไปเลือกเกม",
+      setupCta: "ตั้งค่าตัวละคร",
+      resumeCta: "เล่นต่อ",
+      startAdventure: "เริ่มการผจญภัย",
+      achievementsTitle: "ปลดล็อกความสำเร็จของเรื่องนี้",
+      achievementsSubtitle: "ดูฉากจบและถ้วยรางวัลที่ปลดล็อกได้ในเส้นเรื่องนี้",
+      achievementsEmpty: "ยังไม่มีข้อมูลความสำเร็จสำหรับเกมนี้",
+      achievementUnlocked: "ปลดล็อกแล้ว (ข้อมูลจำลอง)",
+      achievementLocked: "ยังไม่ปลดล็อก",
+      ratingTitle: "คะแนนความพึงพอใจ (จำลอง)",
+      ratingSubtitle: "ข้อมูลรีวิวตัวอย่างเพื่อจัดวางหน้ารายละเอียดเกม",
+      commentsTitle: "ความคิดเห็นจากผู้เล่น (จำลอง)",
+      recommendCopy: "ผู้เล่นเลือกเล่นซ้ำ",
+      ratingAverage: "ค่าเฉลี่ย",
+      ratingSamples: "เรตติ้งตัวอย่าง",
+      commentFormTitle: "เพิ่มความคิดเห็นของคุณ",
+      commentNameLabel: "ชื่อเล่น",
+      commentMessageLabel: "ข้อความ",
+      commentSubmit: "ส่งความคิดเห็น",
+      ratingFormTitle: "ให้คะแนนเกมนี้",
+      ratingValueLabel: "คะแนน (1-5)",
+      ratingNoteLabel: "เพิ่มเติม (ไม่บังคับ)",
+      ratingSubmit: "ส่งคะแนนจำลอง",
+      ratingSubmitted: "บันทึกคะแนนจำลองแล้ว",
     },
     en: {
-      tone: "Tone:",
-      length: "Length:",
-      backToStories: "Back to other stories",
-      chooseRaceTitle: "Choose your race",
-      chooseRaceSubtitle: "Set your lineage to match the tone of this tale.",
-      backToGameList: "Back to game list",
-      chooseClassTitle: "Choose your class",
-      chooseClassSubtitle: "Pair with your party to tackle this scenario.",
-      backToRace: "Back to race selection",
-      chooseBackgroundTitle: "Choose a backstory",
-      chooseBackgroundSubtitle: "Give your hero a past that unlocks unique strengths.",
-      backToClassList: "Back to class selection",
-      attributesTitle: "Distribute attributes",
-      attributesSubtitle: "Balance your strengths for this story's challenges.",
-      pointsUsed: "Points used",
-      backToClass: "Back to class selection",
-      loadingAttributes: "Loading attributes...",
-      loadingOptions: "Loading options...",
-      pointsLeft: "Points left",
-      start: "Start adventure",
+      backToList: "Back to games",
+      setupCta: "Set up character",
+      resumeCta: "Continue",
+      startAdventure: "Start adventure",
+      achievementsTitle: "Unlock endings for this tale",
+      achievementsSubtitle: "Browse the endings and trophies available for this storyline.",
+      achievementsEmpty: "No achievements found for this game yet",
+      achievementUnlocked: "Unlocked (mock data)",
+      achievementLocked: "Locked",
+      ratingTitle: "Player sentiment (mock)",
+      ratingSubtitle: "Sample review data to shape the detail layout.",
+      commentsTitle: "Player comments (mock)",
+      recommendCopy: "players replayed this run",
+      ratingAverage: "Average",
+      ratingSamples: "sample ratings",
+      commentFormTitle: "Add your comment",
+      commentNameLabel: "Nickname",
+      commentMessageLabel: "Message",
+      commentSubmit: "Submit comment",
+      ratingFormTitle: "Rate this game",
+      ratingValueLabel: "Score (1-5)",
+      ratingNoteLabel: "Optional note",
+      ratingSubmit: "Submit rating (mock)",
+      ratingSubmitted: "Mock rating saved",
     },
   } as const;
   const text = language === "en" ? copy.en : copy.th;
-  const [step, setStep] = useState<CharacterCreationStep>("race");
-  const [setupData, setSetupData] = useState<SetupApiResponse | null>(null);
-  const [isLoadingSetup, setIsLoadingSetup] = useState(false);
-  const [setupError, setSetupError] = useState<LocalizedText | null>(null);
-  const [character, setCharacter] = useState<CharacterSelection>(() => ({
-    ...createEmptyCharacter(),
-    genre: game?.genre ?? "",
-  }));
-
-  const selectedRaceLabel =
-    setupData?.races.find((race) => race.id === character.race)?.name ?? character.raceName ?? null;
-  const selectedClassLabel =
-    setupData?.classes.find((cls) => cls.id === character.class)?.name ?? character.className ?? null;
-  const selectedBackgroundLabel =
-    setupData?.backgrounds.find((bg) => bg.id === character.background)?.name ??
-    character.backgroundName ??
-    null;
-
-  const totalAttributePoints = Object.values(character.attributes ?? {}).reduce((a, b) => a + b, 0);
-  const baseAttributeTotal = setupData ? Object.values(setupData.baseAttributes).reduce((a, b) => a + b, 0) : 0;
-  const maxAttributePoints = baseAttributeTotal + (setupData?.pointsToDistribute ?? 0);
-  const pointsRemaining = maxAttributePoints - totalAttributePoints;
-  const canStart =
-    Boolean(character.race && character.class && character.background) &&
-    Boolean(setupData) &&
-    totalAttributePoints <= maxAttributePoints &&
-    !isLoadingSetup;
-
-  const handleAdjustAttribute = (attributeId: string, delta: number) => {
-    if (!setupData) return;
-
-    setCharacter((prev) => {
-      const baseValue = setupData.baseAttributes?.[attributeId] ?? 0;
-      const currentValue = prev.attributes?.[attributeId] ?? baseValue;
-      const attributeCap = baseValue + (setupData.pointsToDistribute ?? 0);
-      const proposed = Math.min(attributeCap, Math.max(baseValue, currentValue + delta));
-
-      if (proposed === currentValue) return prev;
-
-      const nextAttributes = { ...prev.attributes, [attributeId]: proposed };
-      const nextTotal = Object.values(nextAttributes).reduce((a, b) => a + b, 0);
-
-      if (nextTotal > maxAttributePoints) {
-        return prev;
-      }
-
-      return { ...prev, attributes: nextAttributes };
-    });
+  const rarityLabels: Record<Achievement["rarity"], LocalizedText> = {
+    legendary: { th: "ตำนาน", en: "Legendary" },
+    epic: { th: "มหากาพย์", en: "Epic" },
+    rare: { th: "หายาก", en: "Rare" },
+    common: { th: "ทั่วไป", en: "Common" },
   };
 
-  const fetchSetupData = async (options: {
-    raceId?: string;
-    classId?: string;
-    useAttributes?: CharacterSelection["attributes"];
-    raceName?: LocalizedText;
-    className?: LocalizedText;
-    backgroundId?: string;
-    backgroundName?: LocalizedText;
-  } = {}) => {
-    if (!game) return;
-    setIsLoadingSetup(true);
-    setSetupError(null);
+  const achievementsForGame = useMemo(
+    () => ALL_ACHIEVEMENTS.filter((achievement) => achievement.gameId === slug),
+    [slug],
+  );
 
-    try {
-      const params = new URLSearchParams();
-      const raceQuery = options.raceId ?? character.race;
-      const classQuery = options.classId ?? character.class;
-      const backgroundQuery = options.backgroundId ?? character.background;
-
-      if (raceQuery) params.set("race", raceQuery);
-      if (classQuery) params.set("class", classQuery);
-      if (backgroundQuery) params.set("background", backgroundQuery);
-      const query = params.toString();
-
-      const response = await fetch(`/api/game/${slug}/setup${query ? `?${query}` : ""}`);
-      if (!response.ok) {
-        throw new Error("Unable to load setup data");
-      }
-
-      const data = (await response.json()) as SetupApiResponse;
-      setSetupData(data);
-
-      const baseAttributes = data.baseAttributes ?? {};
-      const attributes = data.attributes.reduce<Record<string, number>>((acc, attr) => {
-        const baseValue = baseAttributes[attr.id] ?? 0;
-        const savedValue = options.useAttributes?.[attr.id];
-        acc[attr.id] = Math.max(baseValue, savedValue ?? baseValue);
-        return acc;
-      }, {});
-
-      const raceId = options.raceId ?? character.race ?? "";
-      const classId = options.classId ?? character.class ?? "";
-      const backgroundId = options.backgroundId ?? character.background ?? "";
-
-      const raceName =
-        data.races.find((race) => race.id === raceId)?.name ?? options.raceName ?? character.raceName;
-      const className =
-        data.classes.find((cls) => cls.id === classId)?.name ?? options.className ?? character.className;
-      const backgroundName =
-        data.backgrounds.find((bg) => bg.id === backgroundId)?.name ??
-        options.backgroundName ??
-        character.backgroundName;
-
-      const nextCharacter: CharacterSelection = {
-        genre: game.genre,
-        race: raceId,
-        class: classId,
-        background: backgroundId,
-        raceName,
-        className,
-        backgroundName,
-        attributes,
-      };
-
-      setCharacter(nextCharacter);
-      setStep(getNextStep(nextCharacter));
-    } catch (error) {
-      console.error(error);
-      setSetupError({
-        th: "ไม่สามารถโหลดการตั้งค่าตัวละครได้",
-        en: "Unable to load character setup",
-      });
-    } finally {
-      setIsLoadingSetup(false);
-    }
+  const handleSubmitComment = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!newCommentMessage.trim()) return;
+    const id = `new-${Date.now()}`;
+    const name = newCommentName.trim() || (language === "en" ? "Guest" : "ผู้มาเยือน");
+    const nextComment: MockComment = {
+      id,
+      author: name,
+      role: { th: "ส่งจากฟอร์ม", en: "Submitted via form" },
+      content: { th: newCommentMessage, en: newCommentMessage },
+      rating: ratingValue || 4.5,
+      timeAgo: { th: "เพิ่งส่ง", en: "Just now" },
+    };
+    setComments((prev) => [nextComment, ...prev]);
+    setNewCommentMessage("");
+    setNewCommentName("");
   };
 
-  useEffect(() => {
-    if (game && character.genre !== game.genre) {
-      setCharacter((prev) => ({ ...prev, genre: game.genre }));
-    }
-  }, [character.genre, game]);
+  const handleSubmitRating = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setRatingSubmitted(true);
+    setTimeout(() => setRatingSubmitted(false), 2500);
+  };
 
   useEffect(() => {
     if (!game) {
@@ -229,435 +185,346 @@ const GameSetupPage = () => {
       return;
     }
 
-    const saved = sessionStorage.getItem(getCharacterStorageKey(slug));
-    let parsed: Partial<CharacterSelection> | null = null;
-    if (saved) {
-      try {
-        parsed = JSON.parse(saved) as Partial<CharacterSelection>;
-      } catch (error) {
-        console.error("Unable to load saved character", error);
-      }
-    }
-
-    fetchSetupData({
-      raceId: parsed?.race,
-      classId: parsed?.class,
-      useAttributes: parsed?.attributes,
-      raceName: parsed?.raceName,
-      className: parsed?.className,
-      backgroundId: parsed?.background,
-      backgroundName: parsed?.backgroundName,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const characterKey = getCharacterStorageKey(slug);
+    const summaryKey = getEndSummaryStorageKey(slug);
+    setHasCharacter(Boolean(sessionStorage.getItem(characterKey)));
+    setHasSummary(Boolean(sessionStorage.getItem(summaryKey)));
   }, [game, router, slug]);
-
-  const handleSelectRace = (race: string) => {
-    fetchSetupData({
-      raceId: race,
-      classId: character.class || undefined,
-      backgroundId: character.background || undefined,
-    });
-    setStep("class");
-  };
-
-  const handleSelectClass = (className: string) => {
-    fetchSetupData({
-      raceId: character.race || undefined,
-      classId: className,
-      backgroundId: character.background || undefined,
-    });
-    setStep("background");
-  };
-
-  const handleSelectBackground = (backgroundId: string) => {
-    fetchSetupData({
-      raceId: character.race || undefined,
-      classId: character.class || undefined,
-      backgroundId,
-    });
-    setStep("attributes");
-  };
-
-  const handleStartGame = () => {
-    if (!game) return;
-    const raceName = setupData?.races.find((race) => race.id === character.race)?.name ?? character.raceName;
-    const className =
-      setupData?.classes.find((cls) => cls.id === character.class)?.name ?? character.className;
-    const backgroundName =
-      setupData?.backgrounds.find((bg) => bg.id === character.background)?.name ?? character.backgroundName;
-    const payload: CharacterSelection = { ...character, raceName, className, backgroundName };
-    sessionStorage.setItem(getCharacterStorageKey(slug), JSON.stringify(payload));
-    trackInteraction({
-      action: "game-start",
-      category: "gameplay",
-      label: slug,
-      params: {
-        game_slug: slug,
-        race_id: character.race,
-        class_id: character.class,
-        background_id: character.background,
-        language,
-      },
-    });
-    router.push(`/game/${slug}/play`);
-  };
 
   if (!game) {
     return null;
   }
 
+  const coverSrc = game.coverImage || gamePlaceholderSrc;
+  const hasOngoingRun = hasCharacter && !hasSummary;
+  const primaryCtaLabel = hasOngoingRun ? text.resumeCta : text.startAdventure;
+  const primaryCtaHref: `/game/${string}` = hasOngoingRun ? `/game/${slug}/play` : `/game/${slug}/init`;
+
+  const unlockedAchievementIds = new Set(
+    achievementsForGame.slice(0, 2).map((achievement) => achievement.id),
+  );
+
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="min-h-screen bg-background pt-20 pb-10 px-4">
-        <div className="container mx-auto max-w-5xl space-y-10">
-          <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
-            <CardContent className="p-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="space-y-2">
-                <Badge className="bg-accent/20 text-accent border border-accent/30">
-                  {getLocalizedText(game.genreLabel, language)}
-                </Badge>
-                <h1 className="text-4xl font-bold text-foreground uppercase tracking-wide">
-                  {getLocalizedText(game.title, language)}
-                </h1>
-                <p className="text-secondary font-semibold">{getLocalizedText(game.tagline, language)}</p>
-                <p className="text-muted-foreground max-w-3xl leading-relaxed">
-                  {getLocalizedText(game.description, language)}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {game.highlights.map((highlight) => (
-                    <Badge
-                      key={highlight.th}
-                      variant="secondary"
-                      className="bg-accent/15 text-accent border border-accent/30"
-                    >
-                      <Flame className="h-3 w-3 mr-1 text-accent" />
-                      {getLocalizedText(highlight, language)}
-                    </Badge>
-                  ))}
+
+      <div className="pt-20 pb-16 px-4">
+        <div className="container mx-auto max-w-6xl space-y-8">
+          <div className="flex items-center justify-between gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push("/game")}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              {text.backToList}
+            </Button>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Compass className="h-4 w-4 text-secondary" />
+              <span>{getLocalizedText(game.genreLabel, language)}</span>
+            </div>
+          </div>
+
+          <Card className="relative overflow-hidden ornate-corners border-2 border-border bg-card/40 shadow-card">
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${coverSrc})` }}
+              aria-hidden
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/85 to-background/60" aria-hidden />
+            <CardContent className="relative z-10 p-8 md:p-10 space-y-6">
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                <div className="space-y-3">
+                  <Badge className="bg-accent/20 text-accent border border-accent/30">
+                    {getLocalizedText(game.genreLabel, language)}
+                  </Badge>
+                  <h1 className="text-4xl md:text-5xl font-bold text-foreground uppercase tracking-wide">
+                    {getLocalizedText(game.title, language)}
+                  </h1>
+                  <p className="text-secondary font-semibold text-lg">
+                    {getLocalizedText(game.tagline, language)}
+                  </p>
+                  <p className="text-muted-foreground max-w-3xl leading-relaxed">
+                    {getLocalizedText(game.description, language)}
+                  </p>
                 </div>
-              </div>
-              <div className="text-left md:text-right space-y-2">
-                <p className="text-sm text-muted-foreground flex items-center gap-2 md:justify-end">
-                  <Compass className="h-4 w-4 text-secondary" />
-                  {text.tone} <span className="text-foreground">{getLocalizedText(game.tone, language)}</span>
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {text.length} {getLocalizedText(game.length, language)}
-                </p>
-                <Button
-                  variant="outline"
-                  onClick={() => router.push("/game")}
-                  className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
-                >
-                  {text.backToStories}
-                </Button>
+
+                <div className="w-full md:w-auto md:min-w-[260px] space-y-4">
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      onClick={() => router.push(primaryCtaHref)}
+                      className="w-full bg-gradient-primary hover:shadow-glow-orange"
+                    >
+                      {primaryCtaLabel}
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {(step === "race" || !setupData) && (
-            <div className="space-y-8">
-              {isLoadingSetup && !setupData && (
-                <div className="flex items-center justify-center gap-2 text-muted-foreground">
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  <span>{text.loadingOptions}</span>
+          <div className="space-y-10">
+            <Card className="border-2 border-accent/40 bg-card/70 shadow-card">
+              <CardContent className="p-6 space-y-4">
+                <div className="flex items-center gap-2">
+                  <Star className="h-5 w-5 text-accent" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">{text.ratingTitle}</p>
+                    <p className="text-sm text-muted-foreground">{text.ratingSubtitle}</p>
+                  </div>
+                </div>
+                <div className="flex items-end gap-3">
+                  <span className="text-4xl font-bold text-foreground">4.7</span>
+                  <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">{text.recommendCopy}</p>
+                    <div className="flex items-center gap-1 text-sm text-secondary">
+                      <Users className="h-4 w-4" />
+                      <span>120</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  {mockRatingStats.map((stat) => (
+                    <div key={stat.id} className="space-y-1">
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>{getLocalizedText(stat.label, language)}</span>
+                        <span className="text-foreground font-semibold">{stat.value.toFixed(1)}</span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-primary"
+                          style={{ width: `${(stat.value / 5) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <div id="achievements" className="space-y-4 scroll-mt-24">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-foreground">{text.achievementsTitle}</h2>
+                <p className="text-muted-foreground">{text.achievementsSubtitle}</p>
+              </div>
+              {achievementsForGame.length === 0 ? (
+                <Card className="border-dashed border-2 border-border/50 bg-card/50">
+                  <CardContent className="p-6 text-center text-muted-foreground">
+                    {text.achievementsEmpty}
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid md:grid-cols-2 gap-4">
+                  {achievementsForGame.map((achievement) => {
+                    const isUnlocked = unlockedAchievementIds.has(achievement.id);
+                    return (
+                      <Card
+                        key={achievement.id}
+                        className={`border-2 ${
+                          isUnlocked ? "border-accent/50 bg-gradient-card" : "border-border bg-card/40"
+                        } shadow-card`}
+                      >
+                        <CardContent className="p-5 space-y-3">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-3 rounded-lg ${isUnlocked ? "bg-accent/20" : "bg-muted/60"}`}>
+                              <Trophy className={isUnlocked ? "h-6 w-6 text-accent" : "h-6 w-6 text-muted-foreground"} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm text-muted-foreground">
+                                {getLocalizedText(achievement.genreLabel, language)}
+                              </p>
+                              <h3 className="text-lg font-semibold text-foreground truncate">
+                                {getLocalizedText(achievement.name, language)}
+                              </h3>
+                            </div>
+                          </div>
+                          <p className="text-muted-foreground text-sm leading-relaxed">
+                            {getLocalizedText(achievement.description, language)}
+                          </p>
+                          <div className="flex items-center justify-between text-sm">
+                            <Badge
+                              variant="outline"
+                              className={
+                                achievement.rarity === "legendary"
+                                  ? "text-secondary border-secondary/60"
+                                  : achievement.rarity === "epic"
+                                  ? "text-purple-400 border-purple-400/60"
+                                  : achievement.rarity === "rare"
+                                  ? "text-accent border-accent/50"
+                                  : "text-muted-foreground border-muted-foreground/50"
+                              }
+                            >
+                              {getLocalizedText(rarityLabels[achievement.rarity], language)}
+                            </Badge>
+                            <span className="text-muted-foreground">
+                              {isUnlocked ? text.achievementUnlocked : text.achievementLocked}
+                            </span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               )}
-              {setupError && !isLoadingSetup && !setupData && (
-                <p className="text-destructive text-center">{getLocalizedText(setupError, language)}</p>
-              )}
-              {step === "race" && setupData && (
-                <>
-                  <div className="text-center space-y-3">
-                    <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(game.genreLabel, language)}
-                    </Badge>
-                    <h2 className="text-5xl font-bold text-foreground">{text.chooseRaceTitle}</h2>
-                    <p className="text-muted-foreground text-lg">{text.chooseRaceSubtitle}</p>
+            </div>
+
+            <div className="grid lg:grid-cols-[1.1fr,0.9fr] gap-6">
+              <Card className="ornate-corners border-2 border-border bg-card/70 shadow-card">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="h-5 w-5 text-accent" />
+                    <div>
+                      <p className="text-lg font-semibold text-foreground">{text.commentsTitle}</p>
+                      <p className="text-sm text-muted-foreground">{text.ratingSubtitle}</p>
+                    </div>
                   </div>
-
-                  {setupError && (
-                    <p className="text-destructive text-center">{getLocalizedText(setupError, language)}</p>
-                  )}
-
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {setupData.races.map((race) => (
-                      <Card
-                        key={race.id}
-                        className="ornate-corners border-2 border-border bg-gradient-card shadow-card cursor-pointer transition-all hover:border-accent hover:shadow-glow-cyan"
-                        onClick={() => handleSelectRace(race.id)}
-                      >
-                        <CardContent className="p-6 text-center space-y-2">
-                          <h3 className="text-2xl font-bold text-foreground">{getLocalizedText(race.name, language)}</h3>
-                          <p className="text-muted-foreground">{getLocalizedText(race.description, language)}</p>
+                  <form onSubmit={handleSubmitComment} className="space-y-3 bg-background/80 rounded-lg border border-border/50 p-4">
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-sm text-muted-foreground" htmlFor="comment-name">
+                          {text.commentNameLabel}
+                        </label>
+                        <Input
+                          id="comment-name"
+                          value={newCommentName}
+                          onChange={(e) => setNewCommentName(e.target.value)}
+                          placeholder={language === "en" ? "Your name" : "ชื่อของคุณ"}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-sm text-muted-foreground" htmlFor="comment-rating">
+                          {text.ratingValueLabel}
+                        </label>
+                        <Input
+                          id="comment-rating"
+                          type="number"
+                          step="0.1"
+                          min="1"
+                          max="5"
+                          value={ratingValue}
+                          onChange={(e) => setRatingValue(Number(e.target.value) || 0)}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-sm text-muted-foreground" htmlFor="comment-message">
+                        {text.commentMessageLabel}
+                      </label>
+                      <Textarea
+                        id="comment-message"
+                        value={newCommentMessage}
+                        onChange={(e) => setNewCommentMessage(e.target.value)}
+                        placeholder={language === "en" ? "Share your quick thoughts" : "เล่าความเห็นของคุณ"}
+                        rows={3}
+                      />
+                    </div>
+                    <div className="flex justify-end">
+                      <Button type="submit" className="bg-gradient-primary hover:shadow-glow-orange">
+                        {text.commentSubmit}
+                      </Button>
+                    </div>
+                  </form>
+                  <div className="space-y-4">
+                    {comments.map((comment) => (
+                      <Card key={comment.id} className="border border-border/60 bg-background/60">
+                        <CardContent className="p-4 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-foreground font-semibold">{comment.author}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {getLocalizedText(comment.role, language)} • {getLocalizedText(comment.timeAgo, language)}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-1 text-accent">
+                              <Star className="h-4 w-4 fill-accent" />
+                              <span className="text-sm font-semibold">{comment.rating.toFixed(1)}</span>
+                            </div>
+                          </div>
+                          <p className="text-muted-foreground leading-relaxed">
+                            {getLocalizedText(comment.content, language)}
+                          </p>
                         </CardContent>
                       </Card>
                     ))}
                   </div>
-
-                  <div className="text-center">
-                    <Button
-                      variant="outline"
-                      onClick={() => router.push("/game")}
-                      className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
-                    >
-                      <ArrowLeft className="h-4 w-4 mr-2" />
-                      {text.backToGameList}
-                    </Button>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-          {step === "class" && (
-            <div className="space-y-8">
-              <div className="text-center space-y-3">
-                <div className="flex gap-2 justify-center">
-                  <Badge className="bg-accent/20 text-accent border border-accent/30">
-                    {getLocalizedText(game.genreLabel, language)}
-                  </Badge>
-                  {selectedRaceLabel && (
-                    <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedRaceLabel, language)}
-                    </Badge>
-                  )}
-                </div>
-                <h2 className="text-5xl font-bold text-foreground">{text.chooseClassTitle}</h2>
-                <p className="text-muted-foreground text-lg">{text.chooseClassSubtitle}</p>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {setupData?.classes.map((cls) => (
-                  <Card
-                    key={cls.id}
-                    className="ornate-corners border-2 border-border bg-gradient-card shadow-card cursor-pointer transition-all hover:border-accent hover:shadow-glow-cyan"
-                    onClick={() => handleSelectClass(cls.id)}
-                  >
-                    <CardContent className="p-6 text-center space-y-2">
-                      <h3 className="text-2xl font-bold text-foreground">{getLocalizedText(cls.name, language)}</h3>
-                      <p className="text-muted-foreground">{getLocalizedText(cls.description, language)}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="text-center">
-                <Button
-                  variant="outline"
-                  onClick={() => setStep("race")}
-                  className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  {text.backToRace}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {step === "background" && (
-            <div className="space-y-8">
-              <div className="text-center space-y-3">
-                <div className="flex gap-2 justify-center">
-                  <Badge className="bg-accent/20 text-accent border border-accent/30">
-                    {getLocalizedText(game.genreLabel, language)}
-                  </Badge>
-                  {selectedRaceLabel && (
-                    <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedRaceLabel, language)}
-                    </Badge>
-                  )}
-                  {selectedClassLabel && (
-                    <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedClassLabel, language)}
-                    </Badge>
-                  )}
-                </div>
-                <h2 className="text-5xl font-bold text-foreground">{text.chooseBackgroundTitle}</h2>
-                <p className="text-muted-foreground text-lg">{text.chooseBackgroundSubtitle}</p>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {setupData?.backgrounds.map((background) => (
-                  <Card
-                    key={background.id}
-                    className="ornate-corners border-2 border-border bg-gradient-card shadow-card cursor-pointer transition-all hover:border-accent hover:shadow-glow-cyan"
-                    onClick={() => handleSelectBackground(background.id)}
-                  >
-                    <CardContent className="p-6 text-center space-y-2">
-                      <h3 className="text-2xl font-bold text-foreground">
-                        {getLocalizedText(background.name, language)}
-                      </h3>
-                      <p className="text-muted-foreground">
-                        {getLocalizedText(background.description, language)}
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="text-center">
-                <Button
-                  variant="outline"
-                  onClick={() => setStep("class")}
-                  className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  {text.backToClassList}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {step === "attributes" && (
-            <div className="space-y-8">
-              <div className="text-center space-y-3">
-                <div className="flex gap-2 justify-center">
-                  <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
-                  {selectedRaceLabel && (
-                    <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedRaceLabel, language)}
-                    </Badge>
-                  )}
-                  {selectedClassLabel && (
-                    <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedClassLabel, language)}
-                    </Badge>
-                  )}
-                  {selectedBackgroundLabel && (
-                    <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedBackgroundLabel, language)}
-                    </Badge>
-                  )}
-                </div>
-                <h2 className="text-5xl font-bold text-foreground">{text.attributesTitle}</h2>
-                <p className="text-muted-foreground text-lg">{text.attributesSubtitle}</p>
-                <div className="flex justify-center">
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-accent/40 bg-background/60 shadow-inner">
-                    <div className="h-2 w-2 rounded-full bg-gradient-primary" />
-                    <span className="text-sm text-muted-foreground uppercase tracking-wide">
-                      {text.pointsLeft}
-                    </span>
-                    <span className="text-lg font-semibold text-foreground">
-                      {Math.max(pointsRemaining, 0)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
-                <CardContent className="p-8">
-                  {setupError && (
-                    <p className="text-destructive mb-4 text-center">
-                      {getLocalizedText(setupError, language)}
-                    </p>
-                  )}
-                  {isLoadingSetup && !setupData ? (
-                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                      <span>{text.loadingAttributes}</span>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {setupData?.attributes.map((attribute) => {
-                        const baseValue = setupData.baseAttributes?.[attribute.id] ?? 0;
-                        const value = character.attributes?.[attribute.id] ?? baseValue;
-                        const attributeMax = baseValue + (setupData?.pointsToDistribute ?? 0);
-                        const safeMax = Math.max(attributeMax, 1);
-                        const remaining = Math.max(pointsRemaining, 0);
-                        const barPercent = Math.min(100, Math.max(0, (value / safeMax) * 100));
-                        const baseMarker = Math.min(100, Math.max(0, (baseValue / safeMax) * 100));
-                        const additionalPercent = Math.max(0, barPercent - baseMarker);
-                        const canDecrement = value > baseValue;
-                        const canIncrement = remaining > 0 && value < attributeMax;
-                        return (
-                          <div
-                            key={attribute.id}
-                            className="rounded-lg bg-background/40 shadow-inner p-3 space-y-2"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="text-left min-w-[120px]">
-                                <p className="text-sm uppercase text-foreground tracking-wide">
-                                  {getLocalizedText(attribute.name, language) ?? attribute.id}
-                                </p>
-                                <p className="text-xs text-secondary">
-                                  {language === "en" ? "Base" : "ฐาน"}: {baseValue}
-                                </p>
-                              </div>
-                              <div className="flex-1 space-y-1">
-                                <div className="relative h-2.5 rounded-full bg-muted/70 overflow-hidden">
-                                  <div
-                                    className="absolute inset-y-0 left-0 bg-accent transition-all"
-                                    style={{ width: `${baseMarker}%` }}
-                                  />
-                                  <div
-                                    className="absolute inset-y-0"
-                                    style={{ left: `${baseMarker}%`, width: `${additionalPercent}%` }}
-                                  >
-                                    <div className="h-full w-full bg-gradient-primary" />
-                                  </div>
-                                </div>
-                                <p className="text-xs text-muted-foreground">
-                                  {language === "en" ? "Current" : "ปัจจุบัน"}:{" "}
-                                  <span className="text-foreground font-semibold">{value}</span>
-                                </p>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Button
-                                  variant="outline"
-                                  size="icon"
-                                  className="h-8 w-8"
-                                  disabled={!canDecrement}
-                                  onClick={() => handleAdjustAttribute(attribute.id, -1)}
-                                >
-                                  <Minus className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="icon"
-                                  className="h-8 w-8"
-                                  disabled={!canIncrement}
-                                  onClick={() => handleAdjustAttribute(attribute.id, 1)}
-                                >
-                                  <Plus className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
                 </CardContent>
               </Card>
 
-              <div className="flex gap-4 justify-center">
-                <Button
-                  variant="outline"
-                  onClick={() => setStep("class")}
-                  className="border-2 border-accent/50 hover:border-accent hover:bg-accent/10 hover:shadow-glow-cyan"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  {text.backToClass}
-                </Button>
-                <Button
-                  onClick={handleStartGame}
-                  disabled={!canStart}
-                  className="bg-gradient-primary hover:shadow-glow-orange"
-                  data-ga-event="game-start"
-                  data-ga-category="gameplay"
-                  data-ga-label={slug}
-                >
-                  {text.start}
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                </Button>
-              </div>
+              <Card className="border-2 border-accent/40 bg-gradient-card shadow-card">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <Star className="h-5 w-5 text-secondary fill-accent" />
+                    <div>
+                      <p className="text-lg font-semibold text-foreground">{text.ratingTitle}</p>
+                      <p className="text-sm text-muted-foreground">{text.ratingSubtitle}</p>
+                    </div>
+                  </div>
+                  <form onSubmit={handleSubmitRating} className="space-y-3 bg-background/60 rounded-lg border border-border/40 p-4">
+                    <div className="space-y-1">
+                      <label className="text-sm text-muted-foreground" htmlFor="rating-value">
+                        {text.ratingValueLabel}
+                      </label>
+                      <Input
+                        id="rating-value"
+                        type="number"
+                        min="1"
+                        max="5"
+                        step="0.1"
+                        value={ratingValue}
+                        onChange={(e) => setRatingValue(Number(e.target.value) || 0)}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-sm text-muted-foreground" htmlFor="rating-note">
+                        {text.ratingNoteLabel}
+                      </label>
+                      <Textarea
+                        id="rating-note"
+                        rows={3}
+                        value={ratingNote}
+                        onChange={(e) => setRatingNote(e.target.value)}
+                        placeholder={language === "en" ? "Share a quick note" : "เขียนเพิ่มเติม (ไม่บังคับ)"}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      {ratingSubmitted && (
+                        <span className="text-xs text-secondary">{text.ratingSubmitted}</span>
+                      )}
+                      <Button type="submit" variant="outline" className="border-accent/60">
+                        {text.ratingSubmit}
+                      </Button>
+                    </div>
+                  </form>
+                  <div className="flex items-end gap-2">
+                    <span className="text-5xl font-bold text-foreground leading-none">4.7</span>
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted-foreground">{text.ratingAverage}</p>
+                      <p className="text-sm text-muted-foreground">128 {text.ratingSamples}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    {[5, 4, 3, 2, 1].map((stars, index) => {
+                      const width = Math.max(20, 80 - index * 12);
+                      return (
+                        <div key={stars} className="flex items-center gap-3 text-sm text-muted-foreground">
+                          <span className="w-6 text-right">{stars}★</span>
+                          <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                            <div className="h-full bg-accent" style={{ width: `${width}%` }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          )}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default GameSetupPage;
+export default GameDetailPage;

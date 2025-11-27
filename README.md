@@ -26,8 +26,8 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 
 ## Project Layout
 - App router views live in `src/app`:
-  - `/` landing, `/game` catalog, `/game/[slug]` setup, `/game/[slug]/play` turn-based scene, `/game/[slug]/end` summary
-  - `/achievements`, `/about`, `/contact`, `/privacy-policy`, `/terms-of-use`, and `not-found`
+  - `/` landing, `/game` catalog, `/game/[slug]` game detail (achievements, comments, ratings), `/game/[slug]/init` character setup, `/game/[slug]/play` turn-based scene, `/game/[slug]/end` summary
+- `/about`, `/contact`, `/privacy-policy`, `/terms-of-use`, and `not-found`
 - UI: shared components in `src/components` (navbar/footer plus shadcn-styled primitives under `src/components/ui`); reusable hooks in `src/hooks`; utilities in `src/lib`; data in `src/data`.
 - Backend/clean architecture: server-only code lives in `src/server` (ports, use cases per API route, and infra adapters). API handlers in `src/app/api/**` should stay as thin adapters that call the relevant use case.
 - Styling: Tailwind tokens/config in `tailwind.config.ts`; global styles in `src/app/globals.css`. See `docs/design-system.md` for design tokens and patterns.
@@ -45,7 +45,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 
 ## State & Persistence
 - Character selection and end-of-run summaries are stored in `sessionStorage` per story slug using keys from `src/lib/game-config.ts` (`taleBuilderCharacter:{slug}`, `taleBuilderEndSummary:{slug}`).
-- Earned achievements persist in `localStorage` under `questWeaverAchievements` and are displayed on `/achievements`.
+- Earned achievements persist in `localStorage` under `questWeaverAchievements` and show up per game detail.
 - Clear browser storage to reset progress; starting a new character also resets the per-story session data.
 
 ## Styling & Assets

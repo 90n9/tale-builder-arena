@@ -274,7 +274,7 @@ const GamePlayPage = () => {
 
     const saved = sessionStorage.getItem(getCharacterStorageKey(slug));
     if (!saved) {
-      router.replace(`/game/${slug}`);
+      router.replace(`/game/${slug}/init`);
       setIsInitializing(false);
       return;
     }
@@ -282,7 +282,7 @@ const GamePlayPage = () => {
     try {
       const parsed = JSON.parse(saved) as Partial<CharacterSelection>;
       if (!parsed.race || !parsed.class || !parsed.background) {
-        router.replace(`/game/${slug}`);
+        router.replace(`/game/${slug}/init`);
         return;
       }
 
@@ -298,7 +298,7 @@ const GamePlayPage = () => {
       });
     } catch (error) {
       console.error("Unable to load character", error);
-      router.replace(`/game/${slug}`);
+      router.replace(`/game/${slug}/init`);
     } finally {
       setIsInitializing(false);
     }
@@ -355,7 +355,7 @@ const GamePlayPage = () => {
     setSceneImage(null);
     setIsLoading(false);
     setCharacter(null);
-    router.push(`/game/${slug}`);
+    router.push(`/game/${slug}/init`);
   };
 
   const renderLoadingState = () => (
@@ -675,7 +675,7 @@ const GamePlayPage = () => {
                 <p className="text-lg text-muted-foreground">
                   {text.setupWarning}
                 </p>
-                <Button onClick={() => router.push(`/game/${slug}`)} className="bg-gradient-primary hover:shadow-glow-orange">
+                <Button onClick={() => router.push(`/game/${slug}/init`)} className="bg-gradient-primary hover:shadow-glow-orange">
                   {text.goToSetup}
                 </Button>
               </CardContent>
