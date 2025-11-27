@@ -303,7 +303,6 @@ const Index = () => {
     question: t(item.question),
     answer: t(item.answer),
   }));
-        
   const donationItems = content.donation.bullets.map((item) => ({
     ...item,
     text: t(item.text),
