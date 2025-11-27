@@ -46,8 +46,8 @@ const copy = {
   },
   suggestedLabel: { th: "ข้อแนะนำ", en: "Suggested" },
   suggestedAmounts: {
-    th: "บริจาคเท่าที่สะดวก — 30 / 60 / 100 / หรือจำนวนที่คุณต้องการ",
-    en: "Donate what you can — 30 / 60 / 100 / or any amount you prefer",
+    th: "บริจาคเท่าที่สะดวก — 30 / 60 / 100 บาท หรือจำนวนที่คุณต้องการ",
+    en: "Donate what you can — 30 / 60 / 100 THB, or any amount you prefer",
   },
   suggestedNote: { th: "ไม่มีกดดัน ทุกบาทช่วยได้ ทุกอย่างโปร่งใส", en: "No pressure—every bit helps, with full transparency" },
   soloBadge: { th: "นักพัฒนาเดี่ยว • เล่นฟรี", en: "Solo dev • Free to play" },
