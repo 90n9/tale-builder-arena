@@ -26,7 +26,7 @@ AI-driven text RPG rebuilt on Next.js for better SEO, routing, and API hooks. Th
 
 ## Project Layout
 - App router views live in `src/app`:
-  - `/` landing, `/game` catalog, `/game/[slug]` setup, `/game/[slug]/play` turn-based scene, `/game/[slug]/end` summary
+  - `/` landing, `/game` catalog, `/game/[slug]` game detail (achievements, comments, ratings), `/game/[slug]/init` character setup, `/game/[slug]/play` turn-based scene, `/game/[slug]/end` summary
 - `/about`, `/contact`, `/privacy-policy`, `/terms-of-use`, and `not-found`
 - UI: shared components in `src/components` (navbar/footer plus shadcn-styled primitives under `src/components/ui`); reusable hooks in `src/hooks`; utilities in `src/lib`; data in `src/data`.
 - Backend/clean architecture: server-only code lives in `src/server` (ports, use cases per API route, and infra adapters). API handlers in `src/app/api/**` should stay as thin adapters that call the relevant use case.
