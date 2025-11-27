@@ -198,6 +198,10 @@ const Index = () => {
       ],
     },
     donation: {
+      eyebrow: {
+        th: "สนับสนุนโปรเจกต์อินดี้",
+        en: "Support the indie project",
+      },
       heading: {
         th: "สนับสนุน TaleBuilder Arena",
         en: "Support TaleBuilder Arena",
@@ -258,6 +262,7 @@ const Index = () => {
       items: Array<{ question: LocalizedText; answer: LocalizedText }>;
     };
     donation: {
+      eyebrow: LocalizedText;
       heading: LocalizedText;
       description: LocalizedText;
       bullets: Array<{ text: LocalizedText; icon: JSX.Element }>;
