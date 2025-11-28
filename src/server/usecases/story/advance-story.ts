@@ -1,4 +1,3 @@
-import { type Language } from "@/lib/i18n";
 import {
   type ChoiceRequirement,
   type GameContentGateway,

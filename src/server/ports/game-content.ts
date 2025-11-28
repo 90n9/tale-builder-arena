@@ -1,5 +1,4 @@
 import { type GameSetupContent } from "@/data/game-content";
-import { type LocalizedText } from "@/lib/i18n";
 
 export type ChoiceRequirement = {
   classes?: string[];
@@ -7,7 +6,7 @@ export type ChoiceRequirement = {
 };
 
 export type StoryChoice = {
-  text: LocalizedText;
+  text: string;
   next: string;
   requirements?: ChoiceRequirement;
   on_fail_next?: string;
@@ -16,17 +15,17 @@ export type StoryChoice = {
 export type StoryScene = {
   scene_id: string;
   type?: string;
-  title: LocalizedText;
-  description: LocalizedText;
+  title: string;
+  description: string;
   image?: string;
   choices: StoryChoice[];
 };
 
 export type StoryEnding = {
   ending_id: string;
-  title: LocalizedText;
-  summary: LocalizedText;
-  result: LocalizedText;
+  title: string;
+  summary: string;
+  result: string;
   image?: string;
 };
 
