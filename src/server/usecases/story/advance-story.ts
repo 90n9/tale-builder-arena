@@ -86,16 +86,16 @@ const buildImageUrl = (game: StoryGameContent, imageName?: string) => {
 };
 
 export const advanceStory = (request: StoryRequest, game: StoryGameContent): AdvanceStoryResult => {
+  if (!game) {
+    return { kind: "game_not_found" };
+  }
+
   const language: Language = "th";
   // const defaultGame = deps.gameContent.getDefaultStoryGame(); // Removed dependency
   // const gameId = request.gameId ?? defaultGame.game_id;
   // const game = deps.gameContent.findStoryGameById(gameId);
   
   const gameId = game.game_id; // Use game from argument
-
-  if (!game) {
-    return { kind: "game_not_found" };
-  }
 
   const coverImage = buildImageUrl(game, game.metadata?.cover_image);
 
