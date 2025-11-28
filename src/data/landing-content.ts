@@ -1,5 +1,4 @@
 import { type LocalizedText } from "@/lib/i18n";
-import { Zap, Image, Heart, GitBranch, Sparkles, Server, Wrench, PenTool, Timer } from "lucide-react";
 
 export const landingContent = {
   hero: {
