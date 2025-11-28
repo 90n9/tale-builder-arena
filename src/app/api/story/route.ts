@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 import { staticGameContentGateway } from "@/server/infra/game-content-static";
-import { i18nService } from "@/server/infra/i18n-service";
 import { advanceStory } from "@/server/usecases/story/advance-story";
 
 export function GET() {
@@ -16,7 +15,6 @@ export async function POST(request: Request) {
 
   const result = advanceStory(payload, {
     gameContent: staticGameContentGateway,
-    i18n: i18nService,
   });
 
   switch (result.kind) {

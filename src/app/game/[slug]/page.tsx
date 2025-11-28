@@ -11,24 +11,22 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ALL_ACHIEVEMENTS, type Achievement } from "@/data/achievements";
 import { findGameBySlug } from "@/data/games";
-import { useLanguage } from "@/contexts/language-context";
 import { getCharacterStorageKey, getEndSummaryStorageKey } from "@/lib/game-config";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 
 const gamePlaceholderSrc = "/assets/game-scene-placeholder.jpg";
 
 type MockComment = {
   id: string;
   author: string;
-  role: LocalizedText;
-  content: LocalizedText;
+  role: string;
+  content: string;
   rating: number;
-  timeAgo: LocalizedText;
+  timeAgo: string;
 };
 
 type MockRatingStat = {
   id: string;
-  label: LocalizedText;
+  label: string;
   value: number;
 };
 
@@ -36,42 +34,33 @@ const mockComments: MockComment[] = [
   {
     id: "c1",
     author: "พลอย",
-    role: { th: "DM มือใหม่", en: "New DM" },
+    role: "DM มือใหม่",
     rating: 4.8,
-    content: {
-      th: "เล่าเนื้อเรื่องลื่นมาก มีจังหวะลุ้นแบบต่อเนื่อง เหมาะให้เพื่อนลองเล่นรอบแรกก่อนเริ่มแคมเปญใหญ่",
-      en: "Story beats flow well with constant tension. Great as a first run before a longer campaign.",
-    },
-    timeAgo: { th: "2 วันที่แล้ว", en: "2 days ago" },
+    content: "เล่าเนื้อเรื่องลื่นมาก มีจังหวะลุ้นแบบต่อเนื่อง เหมาะให้เพื่อนลองเล่นรอบแรกก่อนเริ่มแคมเปญใหญ่",
+    timeAgo: "2 วันที่แล้ว",
   },
   {
     id: "c2",
     author: "Mark",
-    role: { th: "ผู้เล่นสายสำรวจ", en: "Explorer" },
+    role: "ผู้เล่นสายสำรวจ",
     rating: 4.6,
-    content: {
-      th: "ชอบที่มีหลายเส้นทางและโบนัสค่าสเตตัสระหว่างฉาก ทำให้รู้สึกว่าการตัดสินใจส่งผลจริงๆ",
-      en: "Loved the branching paths and mid-scene stat rewards. Choices actually change the run.",
-    },
-    timeAgo: { th: "1 สัปดาห์ที่แล้ว", en: "1 week ago" },
+    content: "ชอบที่มีหลายเส้นทางและโบนัสค่าสเตตัสระหว่างฉาก ทำให้รู้สึกว่าการตัดสินใจส่งผลจริงๆ",
+    timeAgo: "1 สัปดาห์ที่แล้ว",
   },
   {
     id: "c3",
     author: "อิ่มอุ่น",
-    role: { th: "เล่นกับกลุ่มเพื่อน", en: "Party runner" },
+    role: "เล่นกับกลุ่มเพื่อน",
     rating: 4.9,
-    content: {
-      th: "บรรยากาศอาร์ตเวิร์กและโทนเรื่องดีมาก ระบบค่าสถานะไม่ซับซ้อน เล่นกับเพื่อนใหม่ได้เลย",
-      en: "Art vibe and tone are great. Attribute setup is simple enough to onboard new friends fast.",
-    },
-    timeAgo: { th: "เมื่อวาน", en: "yesterday" },
+    content: "บรรยากาศอาร์ตเวิร์กและโทนเรื่องดีมาก ระบบค่าสถานะไม่ซับซ้อน เล่นกับเพื่อนใหม่ได้เลย",
+    timeAgo: "เมื่อวาน",
   },
 ];
 
 const mockRatingStats: MockRatingStat[] = [
-  { id: "pacing", label: { th: "จังหวะเล่าเรื่อง", en: "Story pacing" }, value: 4.8 },
-  { id: "challenge", label: { th: "ความท้าทาย", en: "Challenge" }, value: 4.4 },
-  { id: "mood", label: { th: "บรรยากาศ", en: "Atmosphere" }, value: 4.7 },
+  { id: "pacing", label: "จังหวะเล่าเรื่อง", value: 4.8 },
+  { id: "challenge", label: "ความท้าทาย", value: 4.4 },
+  { id: "mood", label: "บรรยากาศ", value: 4.7 },
 ];
 
 const GameDetailPage = () => {
@@ -79,7 +68,6 @@ const GameDetailPage = () => {
   const slug = (params?.slug ?? "").toString();
   const router = useRouter();
   const game = useMemo(() => findGameBySlug(slug), [slug]);
-  const { language } = useLanguage();
   const [hasCharacter, setHasCharacter] = useState(false);
   const [hasSummary, setHasSummary] = useState(false);
   const [comments, setComments] = useState(mockComments);
@@ -89,65 +77,37 @@ const GameDetailPage = () => {
   const [ratingNote, setRatingNote] = useState("");
   const [ratingSubmitted, setRatingSubmitted] = useState(false);
   const copy = {
-    th: {
-      backToList: "กลับไปเลือกเกม",
-      setupCta: "ตั้งค่าตัวละคร",
-      resumeCta: "เล่นต่อ",
-      startAdventure: "เริ่มการผจญภัย",
-      achievementsTitle: "ปลดล็อกความสำเร็จของเรื่องนี้",
-      achievementsSubtitle: "ดูฉากจบและถ้วยรางวัลที่ปลดล็อกได้ในเส้นเรื่องนี้",
-      achievementsEmpty: "ยังไม่มีข้อมูลความสำเร็จสำหรับเกมนี้",
-      achievementUnlocked: "ปลดล็อกแล้ว (ข้อมูลจำลอง)",
-      achievementLocked: "ยังไม่ปลดล็อก",
-      ratingTitle: "คะแนนความพึงพอใจ (จำลอง)",
-      ratingSubtitle: "ข้อมูลรีวิวตัวอย่างเพื่อจัดวางหน้ารายละเอียดเกม",
-      commentsTitle: "ความคิดเห็นจากผู้เล่น (จำลอง)",
-      recommendCopy: "ผู้เล่นเลือกเล่นซ้ำ",
-      ratingAverage: "ค่าเฉลี่ย",
-      ratingSamples: "เรตติ้งตัวอย่าง",
-      commentFormTitle: "เพิ่มความคิดเห็นของคุณ",
-      commentNameLabel: "ชื่อเล่น",
-      commentMessageLabel: "ข้อความ",
-      commentSubmit: "ส่งความคิดเห็น",
-      ratingFormTitle: "ให้คะแนนเกมนี้",
-      ratingValueLabel: "คะแนน (1-5)",
-      ratingNoteLabel: "เพิ่มเติม (ไม่บังคับ)",
-      ratingSubmit: "ส่งคะแนนจำลอง",
-      ratingSubmitted: "บันทึกคะแนนจำลองแล้ว",
-    },
-    en: {
-      backToList: "Back to games",
-      setupCta: "Set up character",
-      resumeCta: "Continue",
-      startAdventure: "Start adventure",
-      achievementsTitle: "Unlock endings for this tale",
-      achievementsSubtitle: "Browse the endings and trophies available for this storyline.",
-      achievementsEmpty: "No achievements found for this game yet",
-      achievementUnlocked: "Unlocked (mock data)",
-      achievementLocked: "Locked",
-      ratingTitle: "Player sentiment (mock)",
-      ratingSubtitle: "Sample review data to shape the detail layout.",
-      commentsTitle: "Player comments (mock)",
-      recommendCopy: "players replayed this run",
-      ratingAverage: "Average",
-      ratingSamples: "sample ratings",
-      commentFormTitle: "Add your comment",
-      commentNameLabel: "Nickname",
-      commentMessageLabel: "Message",
-      commentSubmit: "Submit comment",
-      ratingFormTitle: "Rate this game",
-      ratingValueLabel: "Score (1-5)",
-      ratingNoteLabel: "Optional note",
-      ratingSubmit: "Submit rating (mock)",
-      ratingSubmitted: "Mock rating saved",
-    },
-  } as const;
-  const text = language === "en" ? copy.en : copy.th;
-  const rarityLabels: Record<Achievement["rarity"], LocalizedText> = {
-    legendary: { th: "ตำนาน", en: "Legendary" },
-    epic: { th: "มหากาพย์", en: "Epic" },
-    rare: { th: "หายาก", en: "Rare" },
-    common: { th: "ทั่วไป", en: "Common" },
+    backToList: "กลับไปเลือกเกม",
+    setupCta: "ตั้งค่าตัวละคร",
+    resumeCta: "เล่นต่อ",
+    startAdventure: "เริ่มการผจญภัย",
+    achievementsTitle: "ปลดล็อกความสำเร็จของเรื่องนี้",
+    achievementsSubtitle: "ดูฉากจบและถ้วยรางวัลที่ปลดล็อกได้ในเส้นเรื่องนี้",
+    achievementsEmpty: "ยังไม่มีข้อมูลความสำเร็จสำหรับเกมนี้",
+    achievementUnlocked: "ปลดล็อกแล้ว (ข้อมูลจำลอง)",
+    achievementLocked: "ยังไม่ปลดล็อก",
+    ratingTitle: "คะแนนความพึงพอใจ (จำลอง)",
+    ratingSubtitle: "ข้อมูลรีวิวตัวอย่างเพื่อจัดวางหน้ารายละเอียดเกม",
+    commentsTitle: "ความคิดเห็นจากผู้เล่น (จำลอง)",
+    recommendCopy: "ผู้เล่นเลือกเล่นซ้ำ",
+    ratingAverage: "ค่าเฉลี่ย",
+    ratingSamples: "เรตติ้งตัวอย่าง",
+    commentFormTitle: "เพิ่มความคิดเห็นของคุณ",
+    commentNameLabel: "ชื่อเล่น",
+    commentMessageLabel: "ข้อความ",
+    commentSubmit: "ส่งความคิดเห็น",
+    ratingFormTitle: "ให้คะแนนเกมนี้",
+    ratingValueLabel: "คะแนน (1-5)",
+    ratingNoteLabel: "เพิ่มเติม (ไม่บังคับ)",
+    ratingSubmit: "ส่งคะแนนจำลอง",
+    ratingSubmitted: "บันทึกคะแนนจำลองแล้ว",
+  };
+  const text = copy;
+  const rarityLabels: Record<Achievement["rarity"], string> = {
+    legendary: "ตำนาน",
+    epic: "มหากาพย์",
+    rare: "หายาก",
+    common: "ทั่วไป",
   };
 
   const achievementsForGame = useMemo(
@@ -159,14 +119,14 @@ const GameDetailPage = () => {
     event.preventDefault();
     if (!newCommentMessage.trim()) return;
     const id = `new-${Date.now()}`;
-    const name = newCommentName.trim() || (language === "en" ? "Guest" : "ผู้มาเยือน");
+    const name = newCommentName.trim() || "ผู้มาเยือน";
     const nextComment: MockComment = {
       id,
       author: name,
-      role: { th: "ส่งจากฟอร์ม", en: "Submitted via form" },
-      content: { th: newCommentMessage, en: newCommentMessage },
+      role: "ส่งจากฟอร์ม",
+      content: newCommentMessage,
       rating: ratingValue || 4.5,
-      timeAgo: { th: "เพิ่งส่ง", en: "Just now" },
+      timeAgo: "เพิ่งส่ง",
     };
     setComments((prev) => [nextComment, ...prev]);
     setNewCommentMessage("");
@@ -222,7 +182,7 @@ const GameDetailPage = () => {
             </Button>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Compass className="h-4 w-4 text-secondary" />
-              <span>{getLocalizedText(game.genreLabel, language)}</span>
+              <span>{game.genreLabel}</span>
             </div>
           </div>
 
@@ -237,16 +197,16 @@ const GameDetailPage = () => {
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                 <div className="space-y-3">
                   <Badge className="bg-accent/20 text-accent border border-accent/30">
-                    {getLocalizedText(game.genreLabel, language)}
+                    {game.genreLabel}
                   </Badge>
                   <h1 className="text-4xl md:text-5xl font-bold text-foreground uppercase tracking-wide">
-                    {getLocalizedText(game.title, language)}
+                    {game.title}
                   </h1>
                   <p className="text-secondary font-semibold text-lg">
-                    {getLocalizedText(game.tagline, language)}
+                    {game.tagline}
                   </p>
                   <p className="text-muted-foreground max-w-3xl leading-relaxed">
-                    {getLocalizedText(game.description, language)}
+                    {game.description}
                   </p>
                 </div>
 
@@ -289,7 +249,7 @@ const GameDetailPage = () => {
                   {mockRatingStats.map((stat) => (
                     <div key={stat.id} className="space-y-1">
                       <div className="flex items-center justify-between text-sm text-muted-foreground">
-                        <span>{getLocalizedText(stat.label, language)}</span>
+                        <span>{stat.label}</span>
                         <span className="text-foreground font-semibold">{stat.value.toFixed(1)}</span>
                       </div>
                       <div className="h-2 bg-muted rounded-full overflow-hidden">
@@ -333,15 +293,15 @@ const GameDetailPage = () => {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="text-sm text-muted-foreground">
-                                {getLocalizedText(achievement.genreLabel, language)}
+                                {achievement.genreLabel}
                               </p>
                               <h3 className="text-lg font-semibold text-foreground truncate">
-                                {getLocalizedText(achievement.name, language)}
+                                {achievement.name}
                               </h3>
                             </div>
                           </div>
                           <p className="text-muted-foreground text-sm leading-relaxed">
-                            {getLocalizedText(achievement.description, language)}
+                            {achievement.description}
                           </p>
                           <div className="flex items-center justify-between text-sm">
                             <Badge
@@ -356,7 +316,7 @@ const GameDetailPage = () => {
                                   : "text-muted-foreground border-muted-foreground/50"
                               }
                             >
-                              {getLocalizedText(rarityLabels[achievement.rarity], language)}
+                              {rarityLabels[achievement.rarity]}
                             </Badge>
                             <span className="text-muted-foreground">
                               {isUnlocked ? text.achievementUnlocked : text.achievementLocked}
@@ -390,7 +350,7 @@ const GameDetailPage = () => {
                           id="comment-name"
                           value={newCommentName}
                           onChange={(e) => setNewCommentName(e.target.value)}
-                          placeholder={language === "en" ? "Your name" : "ชื่อของคุณ"}
+                          placeholder={"ชื่อของคุณ"}
                         />
                       </div>
                       <div className="space-y-1">
@@ -416,7 +376,7 @@ const GameDetailPage = () => {
                         id="comment-message"
                         value={newCommentMessage}
                         onChange={(e) => setNewCommentMessage(e.target.value)}
-                        placeholder={language === "en" ? "Share your quick thoughts" : "เล่าความเห็นของคุณ"}
+                        placeholder={"เล่าความเห็นของคุณ"}
                         rows={3}
                       />
                     </div>
@@ -434,7 +394,7 @@ const GameDetailPage = () => {
                             <div>
                               <p className="text-foreground font-semibold">{comment.author}</p>
                               <p className="text-sm text-muted-foreground">
-                                {getLocalizedText(comment.role, language)} • {getLocalizedText(comment.timeAgo, language)}
+                                {comment.role} • {comment.timeAgo}
                               </p>
                             </div>
                             <div className="flex items-center gap-1 text-accent">
@@ -443,7 +403,7 @@ const GameDetailPage = () => {
                             </div>
                           </div>
                           <p className="text-muted-foreground leading-relaxed">
-                            {getLocalizedText(comment.content, language)}
+                            {comment.content}
                           </p>
                         </CardContent>
                       </Card>
@@ -485,7 +445,7 @@ const GameDetailPage = () => {
                         rows={3}
                         value={ratingNote}
                         onChange={(e) => setRatingNote(e.target.value)}
-                        placeholder={language === "en" ? "Share a quick note" : "เขียนเพิ่มเติม (ไม่บังคับ)"}
+                        placeholder={"เขียนเพิ่มเติม (ไม่บังคับ)"}
                       />
                     </div>
                     <div className="flex items-center justify-between">

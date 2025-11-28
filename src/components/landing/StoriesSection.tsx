@@ -3,22 +3,18 @@
 import React from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { landingContent } from "@/data/landing-content";
 import { PrimaryActionButton } from "@/components/ActionButtons";
 import { Flame } from "lucide-react";
 
 export const StoriesSection = () => {
-    const { language } = useLanguage();
-    const t = (value: LocalizedText) => getLocalizedText(value, language);
     const content = landingContent.stories;
 
     const storyItems = content.items.map((story) => ({
         ...story,
-        title: t(story.title),
-        hook: t(story.hook),
-        cta: t(story.cta),
+        title: story.title,
+        hook: story.hook,
+        cta: story.cta,
     }));
 
     return (
@@ -26,7 +22,7 @@ export const StoriesSection = () => {
             <div className="absolute inset-0 bg-gradient-card opacity-50" />
             <div className="container mx-auto px-4 relative z-10">
                 <div className="text-center mb-12 space-y-6">
-                    <h2 className="text-5xl font-bold text-foreground">{t(content.heading)}</h2>
+                    <h2 className="text-5xl font-bold text-foreground">{content.heading}</h2>
                 </div>
                 <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     {storyItems.map((story) => (

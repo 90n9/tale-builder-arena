@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { privacyContent } from '@/data/privacy-content'
 import PrivacyPolicyPage from './page'
 import { vi, describe, it, expect } from 'vitest'
+import { LanguageProvider } from '@/contexts/language-context'
 
 vi.mock('next/navigation', () => ({
     usePathname: () => '/privacy-policy',
@@ -14,14 +15,6 @@ vi.mock('next/navigation', () => ({
     useSearchParams: () => ({
         get: vi.fn(),
     }),
-}))
-
-vi.mock('@/contexts/language-context', () => ({
-    useLanguage: () => ({
-        language: 'en',
-        setLanguage: vi.fn(),
-    }),
-    LanguageProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 vi.mock('lucide-react', () => ({
@@ -40,62 +33,62 @@ vi.mock('lucide-react', () => ({
 
 describe('PrivacyPolicyPage', () => {
     it('should render the page header correctly', () => {
-        render(<PrivacyPolicyPage />)
-        expect(screen.getAllByText(privacyContent.eyebrow.en)[0]).toBeInTheDocument()
-        expect(screen.getByText(privacyContent.title.en)).toBeInTheDocument()
-        expect(screen.getByText(privacyContent.description.en)).toBeInTheDocument()
+        render(<LanguageProvider><PrivacyPolicyPage /></LanguageProvider>)
+        expect(screen.getAllByText(privacyContent.eyebrow)[0]).toBeInTheDocument()
+        expect(screen.getByText(privacyContent.title)).toBeInTheDocument()
+        expect(screen.getByText(privacyContent.description)).toBeInTheDocument()
     })
 
     it('should render the principles section', () => {
-        render(<PrivacyPolicyPage />)
+        render(<LanguageProvider><PrivacyPolicyPage /></LanguageProvider>)
         privacyContent.principles.forEach((principle) => {
-            expect(screen.getByText(principle.title.en)).toBeInTheDocument()
-            expect(screen.getByText(principle.description.en)).toBeInTheDocument()
+            expect(screen.getByText(principle.title)).toBeInTheDocument()
+            expect(screen.getByText(principle.description)).toBeInTheDocument()
         })
     })
 
     it('should render the collected data section', () => {
-        render(<PrivacyPolicyPage />)
-        expect(screen.getByText(privacyContent.collectedHeading.en)).toBeInTheDocument()
-        expect(screen.getByText(privacyContent.collectedBody.en)).toBeInTheDocument()
+        render(<LanguageProvider><PrivacyPolicyPage /></LanguageProvider>)
+        expect(screen.getByText(privacyContent.collectedHeading)).toBeInTheDocument()
+        expect(screen.getByText(privacyContent.collectedBody)).toBeInTheDocument()
     })
 
     it('should render the usage section', () => {
-        render(<PrivacyPolicyPage />)
-        expect(screen.getByText(privacyContent.usageHeading.en)).toBeInTheDocument()
+        render(<LanguageProvider><PrivacyPolicyPage /></LanguageProvider>)
+        expect(screen.getByText(privacyContent.usageHeading)).toBeInTheDocument()
         privacyContent.dataUsage.forEach((item) => {
-            expect(screen.getByText(item.en)).toBeInTheDocument()
+            expect(screen.getByText(item)).toBeInTheDocument()
         })
     })
 
     it('should render the storage and security section', () => {
-        render(<PrivacyPolicyPage />)
-        expect(screen.getByText(privacyContent.storageHeading.en)).toBeInTheDocument()
+        render(<LanguageProvider><PrivacyPolicyPage /></LanguageProvider>)
+        expect(screen.getByText(privacyContent.storageHeading)).toBeInTheDocument()
         privacyContent.dataStorage.forEach((item) => {
-            expect(screen.getByText(item.en)).toBeInTheDocument()
+            expect(screen.getByText(item)).toBeInTheDocument()
         })
     })
 
     it('should render the sharing section', () => {
-        render(<PrivacyPolicyPage />)
-        expect(screen.getByText(privacyContent.sharingHeading.en)).toBeInTheDocument()
-        expect(screen.getByText(privacyContent.sharingBody.en)).toBeInTheDocument()
+        render(<LanguageProvider><PrivacyPolicyPage /></LanguageProvider>)
+        expect(screen.getByText(privacyContent.sharingHeading)).toBeInTheDocument()
+        expect(screen.getByText(privacyContent.sharingBody)).toBeInTheDocument()
     })
 
     it('should render the rights section', () => {
-        render(<PrivacyPolicyPage />)
-        expect(screen.getByText(privacyContent.rightsHeading.en)).toBeInTheDocument()
+        render(<LanguageProvider><PrivacyPolicyPage /></LanguageProvider>)
+        expect(screen.getByText(privacyContent.rightsHeading)).toBeInTheDocument()
         privacyContent.userChoices.forEach((item) => {
-            expect(screen.getByText(item.en)).toBeInTheDocument()
+            expect(screen.getByText(item)).toBeInTheDocument()
         })
-        expect(screen.getByText(privacyContent.rightsBody.en)).toBeInTheDocument()
+        expect(screen.getByText(privacyContent.rightsBody)).toBeInTheDocument()
     })
 
     it('should render the updates and contact sections', () => {
-        render(<PrivacyPolicyPage />)
-        expect(screen.getByText(privacyContent.updatesHeading.en)).toBeInTheDocument()
-        expect(screen.getByText(privacyContent.updatesBody.en)).toBeInTheDocument()
-        expect(screen.getByText(privacyContent.contactHeading.en)).toBeInTheDocument()
-        expect(screen.getByText(privacyContent.contactBody.en)).toBeInTheDocument()
+        render(<LanguageProvider><PrivacyPolicyPage /></LanguageProvider>)
+        expect(screen.getByText(privacyContent.updatesHeading)).toBeInTheDocument()
+        expect(screen.getByText(privacyContent.updatesBody)).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: privacyContent.contactHeading, level: 2 })).toBeInTheDocument()
+        expect(screen.getByText(privacyContent.contactBody)).toBeInTheDocument()
     })
 })

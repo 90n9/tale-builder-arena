@@ -11,8 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { findAchievementById, type Achievement } from "@/data/achievements";
 import { findGameBySlug } from "@/data/games";
-import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText } from "@/lib/i18n";
 import { getCharacterStorageKey, getEndSummaryStorageKey, type AdventureSummary } from "@/lib/game-config";
 
 const EndGamePage = () => {
@@ -20,46 +18,25 @@ const EndGamePage = () => {
   const slug = (params?.slug ?? "").toString();
   const router = useRouter();
   const game = useMemo(() => findGameBySlug(slug), [slug]);
-  const { language } = useLanguage();
   const copy = {
-    th: {
-      loading: "กำลังดึงข้อมูลสรุปการผจญภัย...",
-      completed: (title: string) => `${title} เสร็จสิ้น!`,
-      summaryTitle: "สรุปการเดินทาง",
-      characterInfo: "ข้อมูลผจญภัย",
-      genre: "แนวเรื่อง",
-      race: "เผ่าพันธุ์",
-      class: "สายอาชีพ",
-      background: "ภูมิหลัง",
-      turnCount: "จำนวนเทิร์น",
-      achievementUnlocked: "ปลดล็อกความสำเร็จ!",
-      yourStory: "เรื่องเล่าของคุณ",
-      closing: (title: string) =>
-        `คุณก้าวผ่านบททดสอบจาก ${title} และกลับออกมาพร้อมประสบการณ์ล้ำค่า พร้อมจะออกผจญภัยอีกครั้งหรือไม่?`,
-      viewAchievements: "ดูความสำเร็จ",
-      playAgain: "เล่นอีกครั้ง",
-      playAnotherGame: "เล่นเกมอื่น",
-    },
-    en: {
-      loading: "Fetching your adventure recap...",
-      completed: (title: string) => `${title} completed!`,
-      summaryTitle: "Journey recap",
-      characterInfo: "Adventure info",
-      genre: "Genre",
-      race: "Race",
-      class: "Class",
-      background: "Background",
-      turnCount: "Turn count",
-      achievementUnlocked: "Achievement unlocked!",
-      yourStory: "Your tale",
-      closing: (title: string) =>
-        `You cleared ${title} and returned with hard-earned experience. Ready to dive back in?`,
-      viewAchievements: "View achievements",
-      playAgain: "Play again",
-      playAnotherGame: "Play another game",
-    },
-  } as const;
-  const text = language === "en" ? copy.en : copy.th;
+    loading: "กำลังดึงข้อมูลสรุปการผจญภัย...",
+    completed: (title: string) => `${title} เสร็จสิ้น!`,
+    summaryTitle: "สรุปการเดินทาง",
+    characterInfo: "ข้อมูลผจญภัย",
+    genre: "แนวเรื่อง",
+    race: "เผ่าพันธุ์",
+    class: "สายอาชีพ",
+    background: "ภูมิหลัง",
+    turnCount: "จำนวนเทิร์น",
+    achievementUnlocked: "ปลดล็อกความสำเร็จ!",
+    yourStory: "เรื่องเล่าของคุณ",
+    closing: (title: string) =>
+      `คุณก้าวผ่านบททดสอบจาก ${title} และกลับออกมาพร้อมประสบการณ์ล้ำค่า พร้อมจะออกผจญภัยอีกครั้งหรือไม่?`,
+    viewAchievements: "ดูความสำเร็จ",
+    playAgain: "เล่นอีกครั้ง",
+    playAnotherGame: "เล่นเกมอื่น",
+  };
+  const text = copy;
   const [summary, setSummary] = useState<AdventureSummary | null>(null);
   const [achievement, setAchievement] = useState<Achievement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -115,17 +92,17 @@ const EndGamePage = () => {
   }
 
   const { character, turn } = summary;
-  const raceLabel = character.raceName ? getLocalizedText(character.raceName, language) : character.race;
-  const classLabel = character.className ? getLocalizedText(character.className, language) : character.class;
+  const raceLabel = character.raceName ? character.raceName : character.race;
+  const classLabel = character.className ? character.className : character.class;
   const backgroundLabel = character.backgroundName
-    ? getLocalizedText(character.backgroundName, language)
+    ? character.backgroundName
     : character.background || "";
   const endingNarration = summary.endingNarration?.trim() ?? "";
   const endingId = summary.endingSceneId ?? null;
   const endingImage = summary.endingImage ?? game.coverImage ?? "/assets/game-scene-placeholder.jpg";
   const narrationParts = endingNarration ? endingNarration.split(/\n{2,}/).filter(Boolean) : [];
-  const endingTitle = summary.endingTitle ?? narrationParts[0] ?? getLocalizedText(game.title, language);
-  const endingSummary = summary.endingSummary ?? narrationParts[1] ?? text.closing(getLocalizedText(game.title, language));
+  const endingTitle = summary.endingTitle ?? narrationParts[0] ?? game.title;
+  const endingSummary = summary.endingSummary ?? narrationParts[1] ?? text.closing(game.title);
   const endingResult = summary.endingResult ?? narrationParts[2] ?? narrationParts[1] ?? "";
 
   return (
@@ -161,10 +138,10 @@ const EndGamePage = () => {
                   <Trophy className="h-8 w-8 text-secondary flex-shrink-0 mt-1" />
                   <div>
                     <h4 className="text-xl font-bold text-secondary mb-2">
-                      {getLocalizedText(achievement.name, language)}
+                      {achievement.name}
                     </h4>
                     <p className="text-foreground mb-2">
-                      {getLocalizedText(achievement.description, language)}
+                      {achievement.description}
                     </p>
                     <Badge className="bg-secondary/20 text-secondary border border-secondary/30 capitalize">
                       {achievement.rarity}

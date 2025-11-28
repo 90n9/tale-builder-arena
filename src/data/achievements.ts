@@ -12,8 +12,8 @@ type GameContent = {
     string,
     {
       ending_id: string;
-      title: LocalizedText;
-      summary: LocalizedText;
+      title: string;
+      summary: string;
     }
   >;
 };
@@ -22,10 +22,10 @@ type Ending = GameContent["endings"][string];
 export interface Achievement {
   id: string;
   gameId: string;
-  name: LocalizedText;
-  description: LocalizedText;
+  name: string;
+  description: string;
   genre: string;
-  genreLabel: LocalizedText;
+  genreLabel: string;
   endSceneType: string;
   rarity: "common" | "rare" | "epic" | "legendary";
 }

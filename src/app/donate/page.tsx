@@ -9,16 +9,11 @@ import Footer from "@/components/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { PrimaryActionButton, SecondaryActionButton } from "@/components/ActionButtons";
 import { KO_FI_URL } from "@/lib/external-links";
 import { donateContent } from "@/data/donate-content";
 
 const DonatePage = () => {
-  const { language } = useLanguage();
-  const t = <K extends keyof typeof donateContent>(key: K) => getLocalizedText(donateContent[key], language);
-
   const impactItems = [
     { icon: <Server className="h-5 w-5 text-primary" />, label: donateContent.impactHosting },
     { icon: <Wrench className="h-5 w-5 text-secondary" />, label: donateContent.impactFeatures },
@@ -41,12 +36,12 @@ const DonatePage = () => {
             <div className="grid lg:grid-cols-2 gap-12 items-center py-16">
               <div className="space-y-6">
                 <PageHeader
-                  eyebrow={t("heroEyebrow")}
-                  title={t("heroTitle")}
-                  description={t("heroSubtitle")}
+                  eyebrow={donateContent.heroEyebrow}
+                  title={donateContent.heroTitle}
+                  description={donateContent.heroSubtitle}
                 />
                 <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                  {t("heroDescription")}
+                  {donateContent.heroDescription}
                 </p>
                 <div className="flex flex-wrap items-center gap-4">
                   <PrimaryActionButton asChild size="lg" className="text-base">
@@ -60,7 +55,7 @@ const DonatePage = () => {
                     >
                       <div className="flex items-center gap-2">
                         <Coffee className="h-5 w-5" />
-                        <span>{t("heroPrimaryCta")}</span>
+                        <span>{donateContent.heroPrimaryCta}</span>
                       </div>
                     </a>
                   </PrimaryActionButton>
@@ -68,7 +63,7 @@ const DonatePage = () => {
                     <Link href="/game">
                       <div className="flex items-center gap-2">
                         <ArrowLeft className="h-5 w-5" />
-                        <span>{t("heroSecondaryCta")}</span>
+                        <span>{donateContent.heroSecondaryCta}</span>
                       </div>
                     </Link>
                   </SecondaryActionButton>
@@ -82,19 +77,19 @@ const DonatePage = () => {
                       <HeartHandshake className="h-6 w-6" />
                     </div>
                     <div>
-                      <p className="text-sm uppercase tracking-[0.3em] text-accent">{t("whyHeading")}</p>
+                      <p className="text-sm uppercase tracking-[0.3em] text-accent">{donateContent.whyHeading}</p>
                       <h2 className="text-2xl font-semibold text-foreground mt-1">
-                        {t("donationHeading")}
+                        {donateContent.donationHeading}
                       </h2>
                     </div>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed">{t("whyBodyOne")}</p>
-                  <p className="text-muted-foreground leading-relaxed">{t("whyBodyTwo")}</p>
+                  <p className="text-muted-foreground leading-relaxed">{donateContent.whyBodyOne}</p>
+                  <p className="text-muted-foreground leading-relaxed">{donateContent.whyBodyTwo}</p>
                   <blockquote className="border-l-4 border-accent/60 pl-4 italic text-foreground">
-                    {t("quote")}
+                    {donateContent.quote}
                   </blockquote>
                   <Badge className="bg-background border border-border text-foreground">
-                    {t("donationBody")}
+                    {donateContent.donationBody}
                   </Badge>
                 </CardContent>
               </Card>
@@ -110,19 +105,19 @@ const DonatePage = () => {
                   <Coffee className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-sm uppercase tracking-[0.3em] text-accent">{t("impactHeading")}</p>
-                  <h3 className="text-2xl font-bold text-foreground">{t("impactDescription")}</h3>
+                  <p className="text-sm uppercase tracking-[0.3em] text-accent">{donateContent.impactHeading}</p>
+                  <h3 className="text-2xl font-bold text-foreground">{donateContent.impactDescription}</h3>
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 pt-2">
                 {impactItems.map((item) => (
                   <div
-                    key={item.label.th}
+                    key={item.label}
                     className="p-4 rounded-lg border border-border/60 bg-muted/20 hover:border-accent/60 transition-all flex items-start gap-3 ornate-corners"
                   >
                     <div className="mt-1">{item.icon}</div>
                     <p className="text-foreground leading-relaxed">
-                      {getLocalizedText(item.label, language)}
+                      {item.label}
                     </p>
                   </div>
                 ))}
@@ -135,11 +130,11 @@ const DonatePage = () => {
           <Card className="relative ornate-corners bg-gradient-card border-2 border-border/70 shadow-epic overflow-hidden">
             <div className="absolute inset-0 bg-gradient-overlay pointer-events-none" />
             <CardContent className="relative p-10 md:p-12 text-center space-y-6">
-              <h3 className="text-4xl font-bold text-foreground">{t("thanksHeading")}</h3>
+              <h3 className="text-4xl font-bold text-foreground">{donateContent.thanksHeading}</h3>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                {t("thanksBody")}
+                {donateContent.thanksBody}
               </p>
-              <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto">{t("suggestedAmounts")}</p>
+              <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto">{donateContent.suggestedAmounts}</p>
               <div className="flex flex-wrap justify-center gap-3">
                 <PrimaryActionButton asChild size="lg" className="font-semibold">
                   <a
@@ -152,7 +147,7 @@ const DonatePage = () => {
                   >
                     <div className="flex items-center gap-2">
                       <Coffee className="h-5 w-5" />
-                      <span>{t("heroPrimaryCta")}</span>
+                      <span>{donateContent.heroPrimaryCta}</span>
                     </div>
                   </a>
                 </PrimaryActionButton>
@@ -160,12 +155,12 @@ const DonatePage = () => {
                   <Link href="/">
                     <div className="flex items-center gap-2">
                       <ArrowLeft className="h-5 w-5" />
-                      <span>{t("backHome")}</span>
+                      <span>{donateContent.backHome}</span>
                     </div>
                   </Link>
                 </SecondaryActionButton>
               </div>
-              <p className="text-sm text-muted-foreground">{t("suggestedNote")}</p>
+              <p className="text-sm text-muted-foreground">{donateContent.suggestedNote}</p>
             </CardContent>
           </Card>
         </section>

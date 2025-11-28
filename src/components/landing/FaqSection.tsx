@@ -2,27 +2,23 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { landingContent } from "@/data/landing-content";
 import { CircleHelp } from "lucide-react";
 
 export const FaqSection = () => {
-    const { language } = useLanguage();
-    const t = (value: LocalizedText) => getLocalizedText(value, language);
     const content = landingContent.faq;
 
     const faqItems = content.items.map((item) => ({
         ...item,
-        question: t(item.question),
-        answer: t(item.answer),
+        question: item.question,
+        answer: item.answer,
     }));
 
     return (
         <section className="pt-16 pb-20 relative">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12 space-y-6">
-                    <h2 className="text-5xl font-bold text-foreground">{t(content.heading)}</h2>
+                    <h2 className="text-5xl font-bold text-foreground">{content.heading}</h2>
                 </div>
                 <div className="max-w-4xl mx-auto space-y-4">
                     {faqItems.map((item) => (

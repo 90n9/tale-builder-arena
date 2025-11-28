@@ -6,20 +6,13 @@ import ContactPage from './page'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { toast } from 'sonner'
 import { vi, describe, it, expect, beforeEach, Mock } from 'vitest'
+import { LanguageProvider } from '@/contexts/language-context'
 
 vi.mock('next/navigation', () => ({
   usePathname: () => '/contact',
   useRouter: () => ({
     push: vi.fn(),
   }),
-}))
-
-vi.mock('@/contexts/language-context', () => ({
-  useLanguage: () => ({
-    language: 'en',
-    toggleLanguage: vi.fn(),
-  }),
-  LanguageProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 vi.mock('sonner', () => ({
@@ -49,31 +42,33 @@ describe('ContactPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     render(
-      <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem>
-        <ContactPage />
-      </NextThemesProvider>,
+      <LanguageProvider>
+        <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem>
+          <ContactPage />
+        </NextThemesProvider>
+      </LanguageProvider>
     )
   })
 
   it('should render the contact form with all fields', () => {
     expect(
-      screen.getByRole('heading', { name: contactContent.title.en, level: 1 }),
+      screen.getByRole('heading', { name: contactContent.title, level: 1 }),
     ).toBeInTheDocument()
-    expect(screen.getByText(contactContent.description.en)).toBeInTheDocument()
+    expect(screen.getByText(contactContent.description)).toBeInTheDocument()
 
-    expect(screen.getByLabelText(contactContent.name.en)).toBeInTheDocument()
-    expect(screen.getByLabelText(contactContent.email.en)).toBeInTheDocument()
-    expect(screen.getByLabelText(contactContent.subject.en)).toBeInTheDocument()
-    expect(screen.getByLabelText(contactContent.details.en)).toBeInTheDocument()
+    expect(screen.getByLabelText(contactContent.name)).toBeInTheDocument()
+    expect(screen.getByLabelText(contactContent.email)).toBeInTheDocument()
+    expect(screen.getByLabelText(contactContent.subject)).toBeInTheDocument()
+    expect(screen.getByLabelText(contactContent.details)).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: contactContent.submit.en }),
+      screen.getByRole('button', { name: contactContent.submit }),
     ).toBeInTheDocument()
   })
 
   it('should not submit if required fields are empty', async () => {
     const user = userEvent.setup()
     await user.click(
-      screen.getByRole('button', { name: contactContent.submit.en }),
+      screen.getByRole('button', { name: contactContent.submit }),
     )
     expect(fetch).not.toHaveBeenCalled()
   })
@@ -85,21 +80,21 @@ describe('ContactPage', () => {
     })
 
     const user = userEvent.setup()
-    await user.type(screen.getByLabelText(contactContent.name.en), 'John Doe')
+    await user.type(screen.getByLabelText(contactContent.name), 'John Doe')
     await user.type(
-      screen.getByLabelText(contactContent.email.en),
+      screen.getByLabelText(contactContent.email),
       'john.doe@example.com',
     )
     await user.type(
-      screen.getByLabelText(contactContent.subject.en),
+      screen.getByLabelText(contactContent.subject),
       'Test subject',
     )
     await user.type(
-      screen.getByLabelText(contactContent.details.en),
+      screen.getByLabelText(contactContent.details),
       'This is a test message',
     )
     await user.click(
-      screen.getByRole('button', { name: contactContent.submit.en }),
+      screen.getByRole('button', { name: contactContent.submit }),
     )
 
     await waitFor(() => {
@@ -112,8 +107,8 @@ describe('ContactPage', () => {
 
     await waitFor(() => {
       expect(toast.success).toHaveBeenCalledWith(
-        contactContent.successTitle.en,
-        { description: contactContent.successDescription.en },
+        contactContent.successTitle,
+        { description: contactContent.successDescription },
       )
     })
   })
@@ -125,21 +120,21 @@ describe('ContactPage', () => {
     })
 
     const user = userEvent.setup()
-    await user.type(screen.getByLabelText(contactContent.name.en), 'John Doe')
+    await user.type(screen.getByLabelText(contactContent.name), 'John Doe')
     await user.type(
-      screen.getByLabelText(contactContent.email.en),
+      screen.getByLabelText(contactContent.email),
       'john.doe@example.com',
     )
     await user.type(
-      screen.getByLabelText(contactContent.subject.en),
+      screen.getByLabelText(contactContent.subject),
       'Test subject',
     )
     await user.type(
-      screen.getByLabelText(contactContent.details.en),
+      screen.getByLabelText(contactContent.details),
       'This is a test message',
     )
     await user.click(
-      screen.getByRole('button', { name: contactContent.submit.en }),
+      screen.getByRole('button', { name: contactContent.submit }),
     )
 
     await waitFor(() => {
@@ -148,8 +143,8 @@ describe('ContactPage', () => {
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith(
-        contactContent.errorTitle.en,
-        { description: contactContent.errorDescription.en },
+        contactContent.errorTitle,
+        { description: contactContent.errorDescription },
       )
     })
   })

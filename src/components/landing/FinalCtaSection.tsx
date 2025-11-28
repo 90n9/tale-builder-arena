@@ -2,14 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
-import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { landingContent } from "@/data/landing-content";
 import { PrimaryActionButton } from "@/components/ActionButtons";
 
 export const FinalCtaSection = () => {
-    const { language } = useLanguage();
-    const t = (value: LocalizedText) => getLocalizedText(value, language);
     const content = landingContent.finalCta;
 
     return (
@@ -17,10 +13,10 @@ export const FinalCtaSection = () => {
             <div className="absolute inset-0 bg-gradient-hero opacity-30" />
             <div className="container mx-auto px-4 text-center relative z-10">
                 <h2 className="text-5xl md:text-6xl font-bold mb-8 text-foreground">
-                    {t(content.heading)}
+                    {content.heading}
                 </h2>
                 <p className="text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-                    {t(content.description)}
+                    {content.description}
                 </p>
                 <PrimaryActionButton
                     asChild
@@ -33,7 +29,7 @@ export const FinalCtaSection = () => {
                         data-ga-category="cta"
                         data-ga-label="/game"
                     >
-                        {t(content.button)}
+                        {content.button}
                     </Link>
                 </PrimaryActionButton>
             </div>

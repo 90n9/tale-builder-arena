@@ -12,9 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { randomAchievementForGenre, findAchievementById } from "@/data/achievements";
 import { findGameBySlug } from "@/data/games";
 import { findGameSetupById } from "@/data/game-content";
-import { useLanguage } from "@/contexts/language-context";
 import { getCharacterStorageKey, getEndSummaryStorageKey, type AdventureStats, type AdventureSummary, type CharacterSelection } from "@/lib/game-config";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { trackInteraction } from "@/lib/analytics";
 
 type StoryResponse = {
@@ -51,58 +49,31 @@ const GamePlayPage = () => {
   const router = useRouter();
   const game = useMemo(() => findGameBySlug(slug), [slug]);
   const gameSetup = useMemo(() => findGameSetupById(slug), [slug]);
-  const { language } = useLanguage();
   const copy = {
-    th: {
-      loading: "กำลังเตรียมการผจญภัยของคุณ...",
-      turn: "เทิร์นที่",
-      restart: "เริ่มใหม่",
-      startOver: "เริ่มใหม่",
-      story: "เรื่องราว",
-      whatNext: "คุณจะทำอะไรต่อ?",
-      characterStatus: "สถานะตัวละคร",
-      resources: "ทรัพยากรการผจญภัย",
-      attributesPanel: "ค่าสถานะตัวละคร",
-      storyFocus: "ธีมและเดิมพันของเรื่อง",
-      buildTitle: "โปรไฟล์ตัวละคร",
-      genreLabel: "แนวเรื่อง",
-      raceLabel: "เผ่า",
-      classLabel: "สายอาชีพ",
-      backgroundLabel: "ภูมิหลัง",
-      setupWarning: "โปรดตั้งค่าตัวละครก่อนเริ่มเล่น",
-      goToSetup: "ไปตั้งค่าการผจญภัย",
-      fallbackNotice: "ระบบขอใช้เส้นเรื่องสำรองเนื่องจากเกิดข้อผิดพลาดชั่วคราว",
-      youChose: "คุณเลือก",
-      currentSceneAlt: "ฉากปัจจุบัน",
-      adventureMeta: "ข้อมูลผจญภัย",
-      coverAlt: "ภาพบรรยากาศของ",
-    },
-    en: {
-      loading: "Preparing your adventure...",
-      turn: "Turn",
-      restart: "Restart",
-      startOver: "Start over",
-      story: "Story",
-      whatNext: "What will you do next?",
-      characterStatus: "Character status",
-      resources: "Adventure resources",
-      attributesPanel: "Character attributes",
-      storyFocus: "Story focus & stakes",
-      buildTitle: "Character profile",
-      genreLabel: "Genre",
-      raceLabel: "Race",
-      classLabel: "Class",
-      backgroundLabel: "Background",
-      setupWarning: "Please set up your character before playing",
-      goToSetup: "Go to setup",
-      fallbackNotice: "Using a backup storyline due to a temporary error",
-      youChose: "You chose",
-      currentSceneAlt: "Current scene",
-      adventureMeta: "Adventure details",
-      coverAlt: "Cover art for",
-    },
-  } as const;
-  const text = language === "en" ? copy.en : copy.th;
+    loading: "กำลังเตรียมการผจญภัยของคุณ...",
+    turn: "เทิร์นที่",
+    restart: "เริ่มใหม่",
+    startOver: "เริ่มใหม่",
+    story: "เรื่องราว",
+    whatNext: "คุณจะทำอะไรต่อ?",
+    characterStatus: "สถานะตัวละคร",
+    resources: "ทรัพยากรการผจญภัย",
+    attributesPanel: "ค่าสถานะตัวละคร",
+    storyFocus: "ธีมและเดิมพันของเรื่อง",
+    buildTitle: "โปรไฟล์ตัวละคร",
+    genreLabel: "แนวเรื่อง",
+    raceLabel: "เผ่า",
+    classLabel: "สายอาชีพ",
+    backgroundLabel: "ภูมิหลัง",
+    setupWarning: "โปรดตั้งค่าตัวละครก่อนเริ่มเล่น",
+    goToSetup: "ไปตั้งค่าการผจญภัย",
+    fallbackNotice: "ระบบขอใช้เส้นเรื่องสำรองเนื่องจากเกิดข้อผิดพลาดชั่วคราว",
+    youChose: "คุณเลือก",
+    currentSceneAlt: "ฉากปัจจุบัน",
+    adventureMeta: "ข้อมูลผจญภัย",
+    coverAlt: "ภาพบรรยากาศของ",
+  };
+  const text = copy;
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [turn, setTurn] = useState(1);
@@ -112,7 +83,6 @@ const GamePlayPage = () => {
   const [choices, setChoices] = useState<Array<ChoiceItem>>([]);
   const [currentSceneId, setCurrentSceneId] = useState<string | null>(null);
   const [sceneImage, setSceneImage] = useState<string | null>(null);
-  const lastLanguageRef = useRef(language);
   const attributeSummaries = useMemo(() => {
     if (!gameSetup || !character) return [];
     const baseValues = gameSetup.config.starting_attributes.base_values ?? {};
@@ -156,7 +126,6 @@ const GamePlayPage = () => {
             currentSceneId: options?.sceneId ?? currentSceneId,
             selectedChoiceId: selectedChoice?.id,
             turn: options?.turnOverride ?? turn,
-            language,
             character: {
               classId: character.class,
               raceId: character.race,
@@ -205,7 +174,7 @@ const GamePlayPage = () => {
                 action: "achievement-unlocked",
                 category: "progress",
                 label: achievement.id,
-                params: { achievement_id: achievement.id, game_slug: slug, language, turn: data.turn },
+                params: { achievement_id: achievement.id, game_slug: slug, turn: data.turn },
               });
             }
           }
@@ -233,7 +202,6 @@ const GamePlayPage = () => {
               ending_id: summary.endingSceneId,
               achievement_id: summary.achievementId ?? undefined,
               turn: data.turn,
-              language,
             },
           });
           router.push(`/game/${slug}/end`);
@@ -246,7 +214,7 @@ const GamePlayPage = () => {
         setIsLoading(false);
       }
     },
-    [character, currentSceneId, game, language, router, slug, stats, text.fallbackNotice, text.youChose, turn],
+    [character, currentSceneId, game, router, slug, stats, text.fallbackNotice, text.youChose, turn],
   );
 
   useEffect(() => {
@@ -258,13 +226,6 @@ const GamePlayPage = () => {
     if (isInitializing || !character || !game || currentSceneId) return;
     void loadScene(undefined, { sceneId: null, turnOverride: 1 });
   }, [character, currentSceneId, game, isInitializing, loadScene]);
-
-  useEffect(() => {
-    if (!character || !game || !currentSceneId) return;
-    if (language === lastLanguageRef.current) return;
-    lastLanguageRef.current = language;
-    void loadScene(undefined, { sceneId: currentSceneId, turnOverride: turn });
-  }, [character, currentSceneId, game, language, loadScene, turn]);
 
   useEffect(() => {
     if (!game) {
@@ -314,27 +275,9 @@ const GamePlayPage = () => {
         scene_id: currentSceneId ?? undefined,
         choice_id: choice.targetId,
         turn,
-        language,
       },
     });
     void loadScene({ id: choice.targetId, text: choice.text });
-  };
-
-  const handleRestartStory = () => {
-    trackInteraction({
-      action: "restart-run",
-      category: "progress",
-      label: slug,
-      params: { game_slug: slug, method: "restart-story", language },
-    });
-    setTurn(1);
-    setNarration("");
-    setChoices([]);
-    setCurrentSceneId(null);
-    setSceneImage(null);
-    setIsLoading(false);
-    sessionStorage.removeItem(getEndSummaryStorageKey(slug));
-    void loadScene(undefined, { sceneId: null, turnOverride: 1 });
   };
 
   const handleStartOver = () => {
@@ -342,7 +285,7 @@ const GamePlayPage = () => {
       action: "restart-run",
       category: "progress",
       label: slug,
-      params: { game_slug: slug, method: "reset-character", language },
+      params: { game_slug: slug, method: "reset-character" },
     });
     const characterKey = getCharacterStorageKey(slug);
     const summaryKey = getEndSummaryStorageKey(slug);
@@ -374,12 +317,12 @@ const GamePlayPage = () => {
   const renderGame = () => {
     if (!character || !game) return null;
 
-    const raceLabel = character.raceName ? getLocalizedText(character.raceName, language) : character.race;
-    const classLabel = character.className ? getLocalizedText(character.className, language) : character.class;
+    const raceLabel = character.raceName ? character.raceName : character.race;
+    const classLabel = character.className ? character.className : character.class;
     const backgroundLabel = character.backgroundName
-      ? getLocalizedText(character.backgroundName, language)
+      ? character.backgroundName
       : character.background || "";
-    const highlights = game.highlights.map((highlight) => getLocalizedText(highlight, language));
+    const highlights = game.highlights.map((highlight) => highlight);
     const coverSrc = game.coverImage || gamePlaceholderSrc;
     const sceneImageSrc = sceneImage || gamePlaceholderSrc;
     const maxAttributeValue = attributeSummaries.reduce((max, attribute) => {
@@ -389,15 +332,15 @@ const GamePlayPage = () => {
       {
         key: "genre",
         label: text.genreLabel,
-        name: getLocalizedText(game.genreLabel, language),
-        description: getLocalizedText(game.description, language),
+        name: game.genreLabel,
+        description: game.description,
       },
       selectedClass
         ? {
             key: "class",
             label: text.classLabel,
             name: classLabel,
-            description: getLocalizedText(selectedClass.description, language),
+            description: selectedClass.description,
           }
         : null,
       selectedBackground
@@ -405,7 +348,7 @@ const GamePlayPage = () => {
             key: "background",
             label: text.backgroundLabel,
             name: backgroundLabel,
-            description: getLocalizedText(selectedBackground.description, language),
+            description: selectedBackground.description,
           }
         : null,
     ].filter(Boolean) as {
@@ -425,7 +368,7 @@ const GamePlayPage = () => {
                   <div className="absolute inset-0">
                     <Image
                       src={coverSrc}
-                      alt={`${text.coverAlt} ${getLocalizedText(game.title, language)}`}
+                      alt={`${text.coverAlt} ${game.title}`}
                       fill
                       priority
                       className="object-cover"
@@ -447,14 +390,14 @@ const GamePlayPage = () => {
                           {backgroundLabel}
                         </Badge>
                         <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
-                          {getLocalizedText(game.genreLabel, language)}
+                          {game.genreLabel}
                         </Badge>
                       </div>
                       <div className="space-y-2">
                         <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                          {getLocalizedText(game.title, language)}
+                          {game.title}
                         </h1>
-                        <p className="text-secondary font-semibold">{getLocalizedText(game.tagline, language)}</p>
+                        <p className="text-secondary font-semibold">{game.tagline}</p>
                       </div>
                     </div>
                     <div className="w-full lg:w-auto lg:min-w-[280px]">
@@ -472,7 +415,7 @@ const GamePlayPage = () => {
                           <div className="flex items-center gap-3">
                             <MapIcon className="h-5 w-5 text-accent" />
                             <p className="text-sm text-foreground">
-                              {getLocalizedText(game.genreLabel, language)}
+                              {game.genreLabel}
                             </p>
                           </div>
                         </div>
@@ -530,7 +473,7 @@ const GamePlayPage = () => {
                         <h2 className="text-xl font-semibold text-foreground">{text.story}</h2>
                       </div>
                       <Badge className="bg-accent/20 text-accent border border-accent/30">
-                        {getLocalizedText(game.genreLabel, language)}
+                        {game.genreLabel}
                       </Badge>
                     </div>
                     <p className="text-foreground leading-relaxed whitespace-pre-line">{narration}</p>
@@ -566,7 +509,7 @@ const GamePlayPage = () => {
                       <h2 className="text-lg font-semibold text-foreground">{text.storyFocus}</h2>
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      {getLocalizedText(game.description, language)}
+                      {game.description}
                     </p>
                     {highlights.length > 0 && (
                       <div className="flex flex-wrap gap-2">
@@ -608,7 +551,7 @@ const GamePlayPage = () => {
                                 <div className="flex flex-col w-full gap-1.5">
                                   <div className="flex items-center justify-between">
                                     <span className="text-sm font-medium text-foreground">
-                                      {getLocalizedText(attribute.name, language)}
+                                      {attribute.name}
                                     </span>
                                     <span className="text-sm font-semibold text-accent">{attribute.value}</span>
                                   </div>

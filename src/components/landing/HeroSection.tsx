@@ -2,15 +2,11 @@
 
 import React from "react";
 import Link from "next/link";
-import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { PrimaryActionButton } from "@/components/ActionButtons";
 import { landingContent } from "@/data/landing-content";
 
 export const HeroSection = () => {
-    const { language } = useLanguage();
     const heroImageSrc = "/assets/hero-illustration.jpg";
-    const t = (value: LocalizedText) => getLocalizedText(value, language);
     const content = landingContent.hero;
 
     return (
@@ -26,10 +22,10 @@ export const HeroSection = () => {
                 <div className="max-w-4xl mx-auto space-y-6">
                     <p className="text-accent text-lg font-semibold tracking-wide">TaleBuilder Arena</p>
                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-foreground drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
-                        {t(content.headline)}
+                        {content.headline}
                     </h1>
                     <p className="text-xl md:text-2xl text-foreground/90 leading-relaxed drop-shadow-[0_0_20px_rgba(0,0,0,0.8)] max-w-3xl mx-auto">
-                        {t(content.subhead)}
+                        {content.subhead}
                     </p>
                     <div className="flex flex-wrap gap-6 justify-center">
                         <PrimaryActionButton
@@ -43,7 +39,7 @@ export const HeroSection = () => {
                                 data-ga-category="cta"
                                 data-ga-label="/game"
                             >
-                                {t(content.primaryCta)}
+                                {content.primaryCta}
                             </Link>
                         </PrimaryActionButton>
                     </div>

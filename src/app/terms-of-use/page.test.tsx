@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { termsContent } from '@/data/terms-content'
 import TermsOfUsePage from './page'
 import { vi, describe, it, expect } from 'vitest'
+import { LanguageProvider } from '@/contexts/language-context'
 
 vi.mock('next/navigation', () => ({
     usePathname: () => '/terms-of-use',
@@ -14,14 +15,6 @@ vi.mock('next/navigation', () => ({
     useSearchParams: () => ({
         get: vi.fn(),
     }),
-}))
-
-vi.mock('@/contexts/language-context', () => ({
-    useLanguage: () => ({
-        language: 'en',
-        setLanguage: vi.fn(),
-    }),
-    LanguageProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 vi.mock('lucide-react', () => ({
@@ -40,61 +33,61 @@ vi.mock('lucide-react', () => ({
 
 describe('TermsOfUsePage', () => {
     it('should render the page header correctly', () => {
-        render(<TermsOfUsePage />)
-        expect(screen.getAllByText(termsContent.eyebrow.en)[0]).toBeInTheDocument()
-        expect(screen.getByText(termsContent.title.en)).toBeInTheDocument()
-        expect(screen.getByText(termsContent.description.en)).toBeInTheDocument()
+        render(<LanguageProvider><TermsOfUsePage /></LanguageProvider>)
+        expect(screen.getAllByText(termsContent.eyebrow)[0]).toBeInTheDocument()
+        expect(screen.getByText(termsContent.title)).toBeInTheDocument()
+        expect(screen.getByText(termsContent.description)).toBeInTheDocument()
     })
 
     it('should render the commitments section', () => {
-        render(<TermsOfUsePage />)
+        render(<LanguageProvider><TermsOfUsePage /></LanguageProvider>)
         termsContent.commitments.forEach((commitment) => {
-            expect(screen.getByText(commitment.title.en)).toBeInTheDocument()
-            expect(screen.getByText(commitment.description.en)).toBeInTheDocument()
+            expect(screen.getByText(commitment.title)).toBeInTheDocument()
+            expect(screen.getByText(commitment.description)).toBeInTheDocument()
         })
     })
 
     it('should render the account section', () => {
-        render(<TermsOfUsePage />)
-        expect(screen.getByText(termsContent.accountHeading.en)).toBeInTheDocument()
-        expect(screen.getByText(termsContent.accountBody.en)).toBeInTheDocument()
+        render(<LanguageProvider><TermsOfUsePage /></LanguageProvider>)
+        expect(screen.getByText(termsContent.accountHeading)).toBeInTheDocument()
+        expect(screen.getByText(termsContent.accountBody)).toBeInTheDocument()
     })
 
     it('should render the conduct section', () => {
-        render(<TermsOfUsePage />)
-        expect(screen.getByText(termsContent.conductHeading.en)).toBeInTheDocument()
+        render(<LanguageProvider><TermsOfUsePage /></LanguageProvider>)
+        expect(screen.getByText(termsContent.conductHeading)).toBeInTheDocument()
         termsContent.conductRules.forEach((rule) => {
-            expect(screen.getByText(rule.en)).toBeInTheDocument()
+            expect(screen.getByText(rule)).toBeInTheDocument()
         })
     })
 
     it('should render the ownership section', () => {
-        render(<TermsOfUsePage />)
-        expect(screen.getByText(termsContent.ownershipHeading.en)).toBeInTheDocument()
+        render(<LanguageProvider><TermsOfUsePage /></LanguageProvider>)
+        expect(screen.getByText(termsContent.ownershipHeading)).toBeInTheDocument()
         termsContent.ownershipPoints.forEach((point) => {
-            expect(screen.getByText(point.en)).toBeInTheDocument()
+            expect(screen.getByText(point)).toBeInTheDocument()
         })
     })
 
     it('should render the liability section', () => {
-        render(<TermsOfUsePage />)
-        expect(screen.getByText(termsContent.liabilityHeading.en)).toBeInTheDocument()
-        expect(screen.getByText(termsContent.liabilityBody.en)).toBeInTheDocument()
+        render(<LanguageProvider><TermsOfUsePage /></LanguageProvider>)
+        expect(screen.getByText(termsContent.liabilityHeading)).toBeInTheDocument()
+        expect(screen.getByText(termsContent.liabilityBody)).toBeInTheDocument()
     })
 
     it('should render the termination section', () => {
-        render(<TermsOfUsePage />)
-        expect(screen.getByText(termsContent.terminationHeading.en)).toBeInTheDocument()
+        render(<LanguageProvider><TermsOfUsePage /></LanguageProvider>)
+        expect(screen.getByText(termsContent.terminationHeading)).toBeInTheDocument()
         termsContent.terminationTerms.forEach((term) => {
-            expect(screen.getByText(term.en)).toBeInTheDocument()
+            expect(screen.getByText(term)).toBeInTheDocument()
         })
     })
 
     it('should render the law and contact sections', () => {
-        render(<TermsOfUsePage />)
-        expect(screen.getByText(termsContent.lawHeading.en)).toBeInTheDocument()
-        expect(screen.getByText(termsContent.lawBody.en)).toBeInTheDocument()
-        expect(screen.getByText(termsContent.contactHeading.en)).toBeInTheDocument()
-        expect(screen.getByText(termsContent.contactBody.en)).toBeInTheDocument()
+        render(<LanguageProvider><TermsOfUsePage /></LanguageProvider>)
+        expect(screen.getByText(termsContent.lawHeading)).toBeInTheDocument()
+        expect(screen.getByText(termsContent.lawBody)).toBeInTheDocument()
+        expect(screen.getByText(termsContent.contactHeading)).toBeInTheDocument()
+        expect(screen.getByText(termsContent.contactBody)).toBeInTheDocument()
     })
 })

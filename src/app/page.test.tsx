@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import HomePage from './page'
 import { vi, describe, it, expect } from 'vitest'
+import { LanguageProvider } from '@/contexts/language-context'
 
 vi.mock('next/navigation', () => ({
     usePathname: () => '/',
@@ -15,14 +16,6 @@ vi.mock('next/navigation', () => ({
     }),
 }))
 
-vi.mock('@/contexts/language-context', () => ({
-    useLanguage: () => ({
-        language: 'en',
-        setLanguage: vi.fn(),
-    }),
-    LanguageProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-}))
-
 vi.mock('lucide-react', async (importOriginal) => {
     const actual = await importOriginal<typeof import('lucide-react')>()
     return {
@@ -34,18 +27,18 @@ vi.mock('lucide-react', async (importOriginal) => {
 
 describe('HomePage', () => {
     it('should render without crashing', () => {
-        const { container } = render(<HomePage />)
+        const { container } = render(<LanguageProvider><HomePage /></LanguageProvider>)
         expect(container).toBeInTheDocument()
     })
 
     it('should render the navbar', () => {
-        render(<HomePage />)
+        render(<LanguageProvider><HomePage /></LanguageProvider>)
         const navbarElements = screen.getAllByText(/TaleBuilder Arena/i)
         expect(navbarElements.length).toBeGreaterThan(0)
     })
 
     it('should render the footer', () => {
-        render(<HomePage />)
-        expect(screen.getAllByText(/Privacy Policy/i).length).toBeGreaterThan(0)
+        render(<LanguageProvider><HomePage /></LanguageProvider>)
+        expect(screen.getAllByText(/นโยบายความเป็นส่วนตัว/i).length).toBeGreaterThan(0)
     })
 })

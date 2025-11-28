@@ -7,14 +7,12 @@ import {
   type StoryGameContent,
   type StoryScene,
 } from "@/server/ports/game-content";
-import { type I18nService } from "@/server/ports/i18n";
 
 export type StoryRequest = {
   gameId?: string;
   currentSceneId?: string;
   selectedChoiceId?: string;
   turn?: number;
-  language?: Language;
   character?: {
     classId?: string;
     raceId?: string;
@@ -43,7 +41,6 @@ export type AdvanceStoryResult =
 
 export type AdvanceStoryDeps = {
   gameContent: GameContentGateway;
-  i18n: I18nService;
 };
 
 const buildChoiceId = (sceneId: string, index: number, choice: StoryChoice) => `${sceneId}::${index}::${choice.next}`;
@@ -91,7 +88,7 @@ const buildImageUrl = (game: StoryGameContent, imageName?: string) => {
 };
 
 export const advanceStory = (request: StoryRequest, deps: AdvanceStoryDeps): AdvanceStoryResult => {
-  const language: Language = request.language === "en" ? "en" : "th";
+  const language: Language = "th";
   const defaultGame = deps.gameContent.getDefaultStoryGame();
   const gameId = request.gameId ?? defaultGame.game_id;
   const game = deps.gameContent.findStoryGameById(gameId);
@@ -135,9 +132,9 @@ export const advanceStory = (request: StoryRequest, deps: AdvanceStoryDeps): Adv
   const ending = findEnding(game, targetId);
 
   if (ending) {
-    const title = deps.i18n.getLocalizedText(ending.title, language);
-    const summary = deps.i18n.getLocalizedText(ending.summary, language);
-    const result = deps.i18n.getLocalizedText(ending.result, language);
+    const title = ending.title;
+    const summary = ending.summary;
+    const result = ending.result;
 
     const achievementId = `${gameId}-${ending.ending_id}`;
 
@@ -164,15 +161,15 @@ export const advanceStory = (request: StoryRequest, deps: AdvanceStoryDeps): Adv
   }
 
   const narration = [
-    deps.i18n.getLocalizedText(safeScene.title, language),
-    deps.i18n.getLocalizedText(safeScene.description, language),
+    safeScene.title,
+    safeScene.description,
   ]
     .filter(Boolean)
     .join("\n\n");
 
   const choices = safeScene.choices.map((choice, index) => ({
     id: buildChoiceId(safeScene.scene_id, index, choice),
-    text: deps.i18n.getLocalizedText(choice.text, language),
+    text: choice.text,
   }));
 
   return {

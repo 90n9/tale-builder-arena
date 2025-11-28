@@ -19,7 +19,6 @@ describe("POST /api/story", () => {
       method: "POST",
       body: JSON.stringify({
         gameId: "crypt_of_the_shattered_star",
-        language: "en",
       }),
     });
 
@@ -28,7 +27,7 @@ describe("POST /api/story", () => {
     expect(response.status).toBe(200);
     const body = await response.json();
     expect(body.sceneId).toBe("start");
-    expect(body.narration).toContain("The Forgotten Steps");
+    expect(body.narration).toContain("ขั้นบันไดที่ถูกลืม");
     expect(body.choices).toHaveLength(2);
     expect(body.shouldEnd).toBe(false);
     expect(body.image).toBeTruthy();
@@ -55,7 +54,6 @@ describe("POST /api/story", () => {
         gameId: "crypt_of_the_shattered_star",
         currentSceneId: "scene_2",
         selectedChoiceId: "scene_5",
-        language: "en",
         character: {
           classId: "warrior",
           attributes: { agi: 1 },
@@ -77,7 +75,6 @@ describe("POST /api/story", () => {
         gameId: "crypt_of_the_shattered_star",
         currentSceneId: "start",
         selectedChoiceId: "ending_1",
-        language: "en",
       }),
     });
 
@@ -86,7 +83,7 @@ describe("POST /api/story", () => {
     const body = await response.json();
     expect(body.sceneId).toBe("ending_1");
     expect(body.shouldEnd).toBe(true);
-    expect(body.narration).toContain("The Road Not Taken");
+    expect(body.narration).toContain("ทางเลือกที่ไม่ได้เดิน");
     expect(body.achievementId).toBe("crypt_of_the_shattered_star-ending_1");
     expect(body.image).toBeTruthy();
   });

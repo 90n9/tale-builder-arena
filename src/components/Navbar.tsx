@@ -6,31 +6,20 @@ import type { Route } from "next";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Heart, Menu, Scroll } from "lucide-react";
-import { useLanguage } from "@/contexts/language-context";
-import { LanguageToggle } from "@/components/LanguageToggle";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { PrimaryActionButton } from "@/components/ActionButtons";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
-  const { language } = useLanguage();
   const labels = {
-    th: {
-      donate: "สนับสนุน",
-      start: "เริ่มการผจญภัย",
-      menu: "เมนู",
-    },
-    en: {
-      donate: "Donate",
-      start: "Start Adventure",
-      menu: "Menu",
-    },
-  } as const;
-  const text = language === "en" ? labels.en : labels.th;
+    donate: "สนับสนุน",
+    start: "เริ่มการผจญภัย",
+    menu: "เมนู",
+  };
 
   const navLinks: Array<{ href: Route; label: string; icon?: JSX.Element }> = [
-    { href: "/donate", label: text.donate, icon: <Heart className="h-4 w-4 text-destructive fill-destructive" /> },
+    { href: "/donate", label: labels.donate, icon: <Heart className="h-4 w-4 text-destructive fill-destructive" /> },
   ];
 
   const isActive = (path: string) => pathname === path || pathname.startsWith(`${path}/`);
@@ -61,7 +50,6 @@ const Navbar = () => {
               {link.icon ? <span className="text-accent">{link.icon}</span> : null}
             </Link>
           ))}
-          <LanguageToggle />
           <PrimaryActionButton asChild className="text-sm font-semibold uppercase px-4">
             <Link
               href="/game"
@@ -69,7 +57,7 @@ const Navbar = () => {
               data-ga-category="navigation"
               data-ga-label="/game"
             >
-              {text.start}
+              {labels.start}
             </Link>
           </PrimaryActionButton>
         </div>
@@ -86,7 +74,7 @@ const Navbar = () => {
               data-ga-category="navigation"
               data-ga-label="/game"
             >
-              {text.start}
+              {labels.start}
             </Link>
           </PrimaryActionButton>
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -97,7 +85,7 @@ const Navbar = () => {
                 className="border border-border/60 text-foreground hover:border-accent hover:text-accent"
               >
                 <Menu className="h-5 w-5" />
-                <span className="sr-only">{text.menu}</span>
+                <span className="sr-only">{labels.menu}</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="bg-background/95 backdrop-blur-xl border-border">
@@ -114,7 +102,6 @@ const Navbar = () => {
                     <Scroll className="h-5 w-5 text-accent" />
                     <span className="text-lg font-bold text-foreground">TaleBuilder Arena</span>
                   </Link>
-                  <LanguageToggle />
                 </div>
                 <div className="space-y-3">
                   {navLinks.map((link) => (
@@ -146,7 +133,7 @@ const Navbar = () => {
                       data-ga-category="navigation"
                       data-ga-label="/game"
                     >
-                      {text.start}
+                      {labels.start}
                     </Link>
                   </PrimaryActionButton>
                 </SheetClose>

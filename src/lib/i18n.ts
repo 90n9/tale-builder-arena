@@ -1,9 +1,5 @@
-export type Language = "th" | "en";
+export type Language = "th";
 
-export type LocalizedText = {
-  th: string;
-  en: string;
-};
+export type LocalizedText = string;
 
-export const getLocalizedText = (value: LocalizedText, language: Language) =>
-  value[language] ?? value.th;
+export const getLocalizedText = (value: LocalizedText, language: Language) => value;
