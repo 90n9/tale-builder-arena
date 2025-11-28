@@ -13,9 +13,7 @@ Follow these steps to add a new game story that matches the existing content str
     "genre": string,
     "description": { "th": string, "en": string },
     "cover_image": string,
-    "estimated_play_time": string,
     "author": string,
-    "supported_languages": string[]
   },
   "config": {
     "starting_attributes": {

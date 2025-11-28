@@ -7,11 +7,7 @@
     "genre": "comedy_fantasy",
     "description": "คุณแค่โดนแม่ใช้ให้ไปซื้อของที่ร้านชำ แต่ดันต้องลงดันเจี้ยนใต้ร้านยายทองดีเพื่อตามหาเหรียญที่หล่นลงรูปริศนา เลือกทางให้ดี ไม่งั้นอาจได้เป็นพนักงานร้านประจำดันเจี้ยนแทน!",
     "cover_image": "/assets/yaitongdee_dungeon/cover.jpg",
-    "estimated_play_time": "10-20 minutes",
-    "author": "AI Generated",
-    "supported_languages": [
-      "th"
-    ]
+    "author": "AI Generated"
   },
   "config": {
     "starting_attributes": {
