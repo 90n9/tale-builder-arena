@@ -34,8 +34,6 @@ export type ProcessChoiceRequest = ChoiceInput & {
   userId: number;
 };
 
-import { Session } from '@prisma/client';
-
 export type ProcessChoiceResult =
   | { kind: 'success'; session: Session & {story: {slug: string, storyJsonUrl: string | null}}; result: Extract<AdvanceStoryResult, { kind: 'success' }>["body"] }
   | { kind: 'not_found' }
@@ -121,7 +119,10 @@ export const processChoice = async (
 
         return {
             kind: 'success',
-            session: updatedSession,
+            session: {
+                ...updatedSession,
+                story: session.story,
+            },
             result: result.body
         };
     }
