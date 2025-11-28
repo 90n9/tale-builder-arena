@@ -39,9 +39,7 @@ export type AdvanceStoryResult =
       };
     };
 
-export type AdvanceStoryDeps = {
-  gameContent: GameContentGateway;
-};
+
 
 const buildChoiceId = (sceneId: string, index: number, choice: StoryChoice) => `${sceneId}::${index}::${choice.next}`;
 
@@ -87,11 +85,13 @@ const buildImageUrl = (game: StoryGameContent, imageName?: string) => {
   return `${normalizedBase}${imageName}`;
 };
 
-export const advanceStory = (request: StoryRequest, deps: AdvanceStoryDeps): AdvanceStoryResult => {
+export const advanceStory = (request: StoryRequest, game: StoryGameContent): AdvanceStoryResult => {
   const language: Language = "th";
-  const defaultGame = deps.gameContent.getDefaultStoryGame();
-  const gameId = request.gameId ?? defaultGame.game_id;
-  const game = deps.gameContent.findStoryGameById(gameId);
+  // const defaultGame = deps.gameContent.getDefaultStoryGame(); // Removed dependency
+  // const gameId = request.gameId ?? defaultGame.game_id;
+  // const game = deps.gameContent.findStoryGameById(gameId);
+  
+  const gameId = game.game_id; // Use game from argument
 
   if (!game) {
     return { kind: "game_not_found" };
