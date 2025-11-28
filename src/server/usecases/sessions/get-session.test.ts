@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getSession } from './get-session';
 import { SessionRepository, SessionWithStory } from '@/server/ports/session-repository';
-import { Session, Story } from '@prisma/client';
 
 describe('getSession', () => {
   const mockSessionRepo: SessionRepository = {
@@ -16,7 +15,7 @@ describe('getSession', () => {
   });
 
   it('should return session if found and owned by user', async () => {
-    const mockStory: Story = {
+    const mockStory = {
       id: 1,
       slug: 'test-story',
       authorId: 1,
@@ -28,7 +27,6 @@ describe('getSession', () => {
       title: {},
       subtitle: null,
       description: null,
-      estimatedPlayTime: null,
       coverImageUrl: null,
       storyJsonUrl: null,
       createdAt: new Date(),
@@ -57,7 +55,7 @@ describe('getSession', () => {
   });
 
   it('should return forbidden if user does not own session', async () => {
-    const mockStory: Story = {
+    const mockStory = {
         id: 1,
         slug: 'test-story',
         authorId: 1,
@@ -69,7 +67,6 @@ describe('getSession', () => {
         title: {},
         subtitle: null,
         description: null,
-        estimatedPlayTime: null,
         coverImageUrl: null,
         storyJsonUrl: null,
         createdAt: new Date(),
@@ -102,3 +99,4 @@ describe('getSession', () => {
     expect(result.kind).toBe('not_found');
   });
 });
+

@@ -4,7 +4,6 @@ import { SessionRepository } from '@/server/ports/session-repository';
 import { StoryRepository } from '@/server/ports/story-repository';
 import { StorageProvider } from '@/server/ports/storage';
 import { GameContentGateway, StoryGameContent } from '@/server/ports/game-content';
-import { Session, Story } from '@prisma/client';
 import { SessionCharacterData } from './process-choice'; // Assuming this type is appropriate
 
 describe('startSession', () => {
@@ -50,7 +49,7 @@ describe('startSession', () => {
       characterData: {} as SessionCharacterData,
     };
 
-    const mockStory: Story = {
+    const mockStory = {
       id: 1,
       slug: 'test-story',
       authorId: 1,
@@ -59,10 +58,9 @@ describe('startSession', () => {
       isActive: true,
       supportedLang: ['th'],
       genre: 'fantasy',
-      title: {},
+      title: {th: 'Test Story'},
       subtitle: null,
       description: null,
-      estimatedPlayTime: null,
       coverImageUrl: null,
       storyJsonUrl: 'local://test-story',
       createdAt: new Date(),
@@ -76,7 +74,6 @@ describe('startSession', () => {
             genre: 'fantasy',
             description: 'This is a test story',
             cover_image: 'cover.jpg',
-            estimated_play_time: '10 mins',
         },
         config: {
             starting_attributes: {
@@ -102,8 +99,8 @@ describe('startSession', () => {
 
     (mockStoryRepo.findStoryById as vi.Mock).mockResolvedValue(mockStory);
     (mockStorage.readJsonFile as vi.Mock).mockResolvedValue(mockStoryGameContent);
-    (mockSessionRepo.createSession as vi.Mock).mockResolvedValue({ 
-        id: 1, 
+    (mockSessionRepo.createSession as vi.Mock).mockResolvedValue({
+        id: 1,
         userId: request.userId,
         storyId: request.storyId,
         characterData: request.characterData,
@@ -112,7 +109,7 @@ describe('startSession', () => {
         status: 'IN_PROGRESS',
         createdAt: new Date(),
         updatedAt: new Date(),
-    } as Session);
+    });
 
     const result = await startSession(request, {
       sessionRepo: mockSessionRepo,
@@ -140,3 +137,4 @@ describe('startSession', () => {
     expect(result.kind).toBe('story_not_found');
   });
 });
+
