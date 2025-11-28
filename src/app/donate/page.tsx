@@ -11,7 +11,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/language-context";
 import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
-import { trackInteraction } from "@/lib/analytics";
 import { PrimaryActionButton, SecondaryActionButton } from "@/components/ActionButtons";
 import { KO_FI_URL } from "@/lib/external-links";
 import { donateContent } from "@/data/donate-content";
