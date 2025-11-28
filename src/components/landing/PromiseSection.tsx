@@ -24,7 +24,7 @@ export const PromiseSection = () => {
             ...pillar,
             title: t(pillar.title),
             description: t(pillar.description),
-            icon: <Icon className={`h - 7 w - 7 ${pillar.iconName === "Zap" ? "text-primary" : "text-secondary"} `} />,
+            icon: <Icon className={`h-7 w-7 ${pillar.iconName === "Zap" ? "text-primary" : "text-secondary"}`} />,
         };
     });
 

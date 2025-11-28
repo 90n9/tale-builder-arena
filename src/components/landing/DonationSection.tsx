@@ -28,7 +28,7 @@ export const DonationSection = () => {
         return {
             ...item,
             text: t(item.text),
-            icon: <Icon className={`h-6 w-6 ${["Server", "PenTool"].includes(item.iconName) ? "text-primary" : "text-secondary"} `} />,
+            icon: <Icon className={`h-6 w-6 ${["Server", "PenTool"].includes(item.iconName) ? "text-primary" : "text-secondary"}`} />,
         };
     });
 
