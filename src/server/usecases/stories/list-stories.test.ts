@@ -31,7 +31,6 @@ describe('listStories', () => {
         title: {th: 'Test Story'},
         subtitle: null,
         description: null,
-        estimatedPlayTime: null,
         coverImageUrl: null,
         storyJsonUrl: 'http://example.com/story.json',
         createdAt: new Date(),
