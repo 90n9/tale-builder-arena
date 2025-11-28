@@ -77,7 +77,7 @@ const gameGateway: GameContentGateway = {
 
 describe("advanceStory use case", () => {
   it("returns game_not_found for unknown game", () => {
-    const result = advanceStory({ gameId: "missing" }, null as any);
+    const result = advanceStory({}, null); // Pass null directly as game
     expect(result.kind).toBe("game_not_found");
   });
 

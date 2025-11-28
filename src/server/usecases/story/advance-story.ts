@@ -85,7 +85,7 @@ const buildImageUrl = (game: StoryGameContent, imageName?: string) => {
   return `${normalizedBase}${imageName}`;
 };
 
-export const advanceStory = (request: StoryRequest, game: StoryGameContent): AdvanceStoryResult => {
+export const advanceStory = (request: StoryRequest, game: StoryGameContent | null): AdvanceStoryResult => {
   if (!game) {
     return { kind: "game_not_found" };
   }
