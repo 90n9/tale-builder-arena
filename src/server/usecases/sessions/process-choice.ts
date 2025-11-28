@@ -3,6 +3,7 @@ import { choiceSchema, type ChoiceInput } from '@/server/validation/session-sche
 import { ZodError } from 'zod';
 import { Session } from '@prisma/client';
 
+
 // Note: This use case is simplified. Real game logic (checking requirements, applying rewards)
 // should be handled by a Game Engine service that reads the Story JSON.
 // For this refactoring, we'll keep the logic minimal or delegate to the existing logic if possible.
@@ -33,8 +34,10 @@ export type ProcessChoiceRequest = ChoiceInput & {
   userId: number;
 };
 
+import { Session } from '@prisma/client';
+
 export type ProcessChoiceResult =
-  | { kind: 'success'; session: Session; result: Extract<AdvanceStoryResult, { kind: 'success' }>["body"] }
+  | { kind: 'success'; session: Session & {story: {slug: string, storyJsonUrl: string | null}}; result: Extract<AdvanceStoryResult, { kind: 'success' }>["body"] }
   | { kind: 'not_found' }
   | { kind: 'forbidden' }
   | { kind: 'game_error'; message: string }

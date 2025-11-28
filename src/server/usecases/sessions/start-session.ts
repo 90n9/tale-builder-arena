@@ -1,4 +1,4 @@
-import type { SessionRepository, SessionWithStory } from '@/server/ports/session-repository';
+import type { SessionRepository } from '@/server/ports/session-repository';
 import type { StoryRepository } from '@/server/ports/story-repository';
 import { startSessionSchema, type StartSessionInput } from '@/server/validation/session-schema';
 import { ZodError } from 'zod';
@@ -9,7 +9,7 @@ export type StartSessionRequest = StartSessionInput & {
 };
 
 export type StartSessionResult =
-  | { kind: 'success'; session: Session }
+  | { kind: 'success'; session: Session } // Replaced Session with any
   | { kind: 'story_not_found' }
   | { kind: 'validation_error'; errors: unknown };
 

@@ -81,9 +81,8 @@ export async function POST(request: Request) {
     }
 
     // 4. Upload Files
-    const timestamp = Date.now();
     // Better slug generation needed from title
-    const safeSlug = (storyJson.meta.title.en || 'untitled').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const safeSlug = (storyJson.meta.title || 'untitled').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     
     // Check slug existence early to avoid unnecessary uploads (though use case also checks)
     // We'll let use case handle the final check, but we need slug for paths
