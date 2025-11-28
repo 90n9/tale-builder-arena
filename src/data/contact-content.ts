@@ -1,0 +1,41 @@
+import { type LocalizedText } from "@/lib/i18n";
+
+export const contactContent: Record<string, LocalizedText> = {
+  title: {
+    th: "ติดต่อทีมงาน",
+    en: "Contact the team",
+  },
+  description: {
+    th: "มีบั๊ก ปัญหาในการเล่น หรืออยากให้ฟีเจอร์ใหม่ ส่งมาหาเราได้ทุกเรื่อง — ยินดีรับฟังเสมอ",
+    en: "Found a bug, stuck in a quest, or want a new feature? Tell us—we're listening.",
+  },
+  name: { th: "ชื่อของคุณ", en: "Your name" },
+  namePlaceholder: { th: "เช่น ผู้กล้าแห่งอาณาจักร", en: "e.g. Hero of the Realm" },
+  email: { th: "อีเมล (ถ้ามี)", en: "Email (optional)" },
+  emailPlaceholder: { th: "เช่น you@example.com", en: "e.g. you@example.com" },
+  requestType: { th: "ประเภทคำร้อง", en: "Request type" },
+  requestPlaceholder: { th: "เลือกประเภทคำร้อง", en: "Choose a request type" },
+  feedback: { th: "ข้อเสนอแนะ / ฟีดแบ็ก", en: "Feedback / Suggestions" },
+  issue: { th: "รายงานปัญหา / บั๊ก", en: "Issue / Bug report" },
+  other: { th: "อื่นๆ", en: "Other" },
+  subject: { th: "เรื่อง", en: "Subject" },
+  subjectPlaceholder: { th: "เรื่องที่อยากให้เราช่วยเหลือ", en: "What do you need help with?" },
+  details: { th: "รายละเอียด", en: "Details" },
+  detailsPlaceholder: { th: "เล่าให้เราฟังว่าคุณต้องการอะไรหรือพบปัญหาใด", en: "Share what you need or what went wrong" },
+  formNote: { th: "ส่งข้อความนี้ถึงทีมงาน เราจะตอบกลับเร็วที่สุด", en: "Send this directly to the team and we'll reply soon." },
+  submit: { th: "ส่งคำร้อง", en: "Send request" },
+  submitting: { th: "กำลังส่ง...", en: "Sending..." },
+  emailLabel: { th: "ให้เราไว้ติดต่อกลับ (ถ้าใส่)", en: "Add it if you want a reply" },
+  sideCtaTitle: { th: "เริ่มการผจญภัยอีกครั้ง", en: "Jump back into adventure" },
+  sideCtaDescription: { th: "กลับสู่เกมแล้วบอกเราว่าประสบการณ์เป็นอย่างไร", en: "Return to the game and tell us how it feels." },
+  sideButton: { th: "ไปที่เกม", en: "Go to game" },
+  sideFootnote: {
+    th: "อีเมลนี้รองรับทั้งการแจ้งปัญหาและฟีดแบ็ก ช่วยบอกบริบทให้ละเอียดที่สุด",
+    en: "This inbox handles issues and feedback—please share as much context as you can.",
+  },
+  successTitle: { th: "รับข้อความแล้ว", en: "Message received" },
+  successDescription: { th: "เราบันทึกคำร้องและจะติดต่อกลับเร็วๆ นี้", en: "We saved your request and will get back to you soon." },
+  errorTitle: { th: "ส่งไม่สำเร็จ", en: "Unable to send" },
+  errorDescription: { th: "กรุณาลองใหม่อีกครั้งหรือติดต่อผ่านอีเมล", en: "Please try again or email us directly." },
+  spamNotice: { th: "เรามีตัวกรองสแปมและบอตอัตโนมัติ", en: "We automatically filter spam and bot submissions." },
+};
