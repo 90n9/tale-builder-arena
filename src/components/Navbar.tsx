@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
@@ -51,9 +51,8 @@ const Navbar = () => {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-2 text-sm font-medium uppercase tracking-wider transition-colors hover:text-accent ${
-                isActive(link.href) ? "text-accent" : "text-muted-foreground"
-              }`}
+              className={`flex items-center gap-2 text-sm font-medium uppercase tracking-wider transition-colors hover:text-accent ${isActive(link.href) ? "text-accent" : "text-muted-foreground"
+                }`}
               data-ga-event="nav-link-click"
               data-ga-category="navigation"
               data-ga-label={link.href}
@@ -122,9 +121,8 @@ const Navbar = () => {
                     <SheetClose asChild key={link.href}>
                       <Link
                         href={link.href}
-                        className={`flex items-center gap-2 rounded-md px-3 py-2 text-base font-semibold uppercase tracking-wide transition-colors hover:text-accent hover:bg-accent/5 ${
-                          isActive(link.href) ? "text-accent" : "text-muted-foreground"
-                        }`}
+                        className={`flex items-center gap-2 rounded-md px-3 py-2 text-base font-semibold uppercase tracking-wide transition-colors hover:text-accent hover:bg-accent/5 ${isActive(link.href) ? "text-accent" : "text-muted-foreground"
+                          }`}
                         onClick={handleCloseMenu}
                         data-ga-event="nav-link-click"
                         data-ga-category="navigation"

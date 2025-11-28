@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { Heart, Scroll } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
@@ -49,7 +50,7 @@ const Footer = () => {
               {t(copy.description)}
             </p>
           </div>
-          
+
           <div>
             <h3 className="font-semibold text-foreground mb-4">{t(copy.quickLinks)}</h3>
             <ul className="space-y-2">
@@ -96,7 +97,7 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="font-semibold text-foreground mb-4">{t(copy.legal)}</h3>
             <ul className="space-y-2">
@@ -123,7 +124,7 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        
+
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
             {t(copy.copyright)}

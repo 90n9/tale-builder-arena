@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -10,32 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { GAME_STORIES } from "@/data/games";
 import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText } from "@/lib/i18n";
+import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { getCharacterStorageKey, getEndSummaryStorageKey } from "@/lib/game-config";
+import { gameListContent } from "@/data/game-list-content";
 
 const GameListPage = () => {
   const { language } = useLanguage();
   const router = useRouter();
   const [progress, setProgress] = useState<Record<string, { hasCharacter: boolean; hasSummary: boolean }>>({});
-  const copy = {
-    th: {
-      badge: "เลือกสนามผจญภัย",
-      title: "เลือกเรื่องราวที่อยากเล่น",
-      subtitle: "แต่ละแคมเปญถูกสร้างขึ้นให้มีโทนและความยากต่างกัน เลือกโลกที่ถูกใจแล้วไปตั้งค่าตัวละครก่อนออกเดินทาง",
-      setup: "ดูรายละเอียด",
-      continue: "เล่นต่อจากเดิม",
-      startOver: "เริ่มใหม่",
-    },
-    en: {
-      badge: "Choose your arena",
-      title: "Pick a story to play",
-      subtitle: "Each campaign has its own tone and challenge. Choose your world, then set your character before heading out.",
-      setup: "View details",
-      continue: "Continue your journey",
-      startOver: "Start over",
-    },
-  } as const;
-  const text = language === "en" ? copy.en : copy.th;
+  const t = (value: LocalizedText) => getLocalizedText(value, language);
   const stories = useMemo(() => GAME_STORIES, []);
 
   useEffect(() => {
@@ -77,13 +61,13 @@ const GameListPage = () => {
       <section className="pt-20 pb-16 px-4">
         <div className="container mx-auto max-w-6xl space-y-10">
           <div className="text-center space-y-4">
-            <p className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent border border-accent/30 uppercase tracking-wide text-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent border border-accent/30 uppercase tracking-wide text-sm">
               <Compass className="h-4 w-4" />
-              {text.badge}
-            </p>
-            <h1 className="text-5xl font-bold text-foreground">{text.title}</h1>
+              {t(gameListContent.badge)}
+            </div>
+            <h1 className="text-5xl font-bold text-foreground">{t(gameListContent.title)}</h1>
             <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-              {text.subtitle}
+              {t(gameListContent.subtitle)}
             </p>
             <div className="section-divider mb-8" />
           </div>
@@ -145,7 +129,7 @@ const GameListPage = () => {
                             data-ga-category="gameplay"
                             data-ga-label={game.slug}
                           >
-                            {text.continue}
+                            {t(gameListContent.continue)}
                             <ArrowRight className="h-4 w-4 ml-2" />
                           </Button>
                           <Button
@@ -157,7 +141,7 @@ const GameListPage = () => {
                             data-ga-label={game.slug}
                           >
                             <RefreshCw className="h-4 w-4 mr-2" />
-                            {text.startOver}
+                            {t(gameListContent.startOver)}
                           </Button>
                         </div>
                       ) : (
@@ -172,7 +156,7 @@ const GameListPage = () => {
                               data-ga-category="gameplay"
                               data-ga-label={game.slug}
                             >
-                              {text.setup}
+                              {t(gameListContent.setup)}
                               <ArrowRight className="h-4 w-4 ml-2" />
                             </Link>
                           </Button>
