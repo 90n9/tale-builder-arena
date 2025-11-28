@@ -15,6 +15,7 @@ export type GameSetupContent = {
       points_to_distribute: number;
       base_values: Record<string, number>;
     };
+    initialSceneId?: string;
     asset_paths?: {
       images?: string;
       videos?: string;
