@@ -8,8 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { findGameBySlug } from "@/data/games";
-import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { createEmptyCharacter, getCharacterStorageKey, type CharacterSelection } from "@/lib/game-config";
 import { trackInteraction } from "@/lib/analytics";
 
@@ -22,10 +20,10 @@ const getNextStep = (current: CharacterSelection): CharacterCreationStep => {
   return "attributes";
 };
 
-type SetupRace = { id: string; name: LocalizedText; description: LocalizedText };
-type SetupClass = { id: string; name: LocalizedText; description: LocalizedText };
-type SetupBackground = { id: string; name: LocalizedText; description: LocalizedText };
-type SetupAttribute = { id: string; name: LocalizedText };
+type SetupRace = { id: string; name: string; description: string };
+type SetupClass = { id: string; name: string; description: string };
+type SetupBackground = { id: string; name: string; description: string };
+type SetupAttribute = { id: string; name: string };
 
 type SetupApiResponse = {
   gameId: string;
@@ -42,54 +40,31 @@ const GameSetupPage = () => {
   const slug = (params?.slug ?? "").toString();
   const router = useRouter();
   const game = useMemo(() => findGameBySlug(slug), [slug]);
-  const { language } = useLanguage();
   const copy = {
-    th: {
-      backToStories: "กลับไปเลือกเรื่องอื่น",
-      chooseRaceTitle: "เลือกเผ่าพันธุ์",
-      chooseRaceSubtitle: "ตั้งรากฐานเชื้อสายให้เข้ากับโทนของเรื่อง",
-      backToGameList: "กลับไปเลือกรายการเกม",
-      chooseClassTitle: "เลือกสายอาชีพ",
-      chooseClassSubtitle: "จับคู่กับทีมของคุณเพื่อรับมือสถานการณ์ของเรื่องนี้",
-      backToRace: "กลับไปเลือกเผ่าพันธุ์",
-      chooseBackgroundTitle: "เลือกเส้นทางชีวิต",
-      chooseBackgroundSubtitle: "เติมสีสันอดีตของตัวละครเพื่อปลดล็อกจุดแข็งเฉพาะ",
-      backToClassList: "กลับไปเลือกสายอาชีพ",
-      attributesTitle: "ปรับค่าสถานะ",
-      attributesSubtitle: "บาลานซ์ความแข็งแกร่งเพื่อเตรียมรับมือเหตุการณ์เฉพาะของเรื่องนี้",
-      pointsUsed: "ใช้แต้มแล้ว",
-      backToClass: "กลับไปเลือกสายอาชีพ",
-      loadingAttributes: "กำลังโหลดค่าสถานะ...",
-      loadingOptions: "กำลังโหลดตัวเลือก...",
-      pointsLeft: "แต้มที่เหลือ",
-      start: "เริ่มการผจญภัย",
-    },
-    en: {
-      backToStories: "Back to other stories",
-      chooseRaceTitle: "Choose your race",
-      chooseRaceSubtitle: "Set your lineage to match the tone of this tale.",
-      backToGameList: "Back to game list",
-      chooseClassTitle: "Choose your class",
-      chooseClassSubtitle: "Pair with your party to tackle this scenario.",
-      backToRace: "Back to race selection",
-      chooseBackgroundTitle: "Choose a backstory",
-      chooseBackgroundSubtitle: "Give your hero a past that unlocks unique strengths.",
-      backToClassList: "Back to class selection",
-      attributesTitle: "Distribute attributes",
-      attributesSubtitle: "Balance your strengths for this story's challenges.",
-      pointsUsed: "Points used",
-      backToClass: "Back to class selection",
-      loadingAttributes: "Loading attributes...",
-      loadingOptions: "Loading options...",
-      pointsLeft: "Points left",
-      start: "Start adventure",
-    },
-  } as const;
-  const text = language === "en" ? copy.en : copy.th;
+    backToStories: "กลับไปเลือกเรื่องอื่น",
+    chooseRaceTitle: "เลือกเผ่าพันธุ์",
+    chooseRaceSubtitle: "ตั้งรากฐานเชื้อสายให้เข้ากับโทนของเรื่อง",
+    backToGameList: "กลับไปเลือกรายการเกม",
+    chooseClassTitle: "เลือกสายอาชีพ",
+    chooseClassSubtitle: "จับคู่กับทีมของคุณเพื่อรับมือสถานการณ์ของเรื่องนี้",
+    backToRace: "กลับไปเลือกเผ่าพันธุ์",
+    chooseBackgroundTitle: "เลือกเส้นทางชีวิต",
+    chooseBackgroundSubtitle: "เติมสีสันอดีตของตัวละครเพื่อปลดล็อกจุดแข็งเฉพาะ",
+    backToClassList: "กลับไปเลือกสายอาชีพ",
+    attributesTitle: "ปรับค่าสถานะ",
+    attributesSubtitle: "บาลานซ์ความแข็งแกร่งเพื่อเตรียมรับมือเหตุการณ์เฉพาะของเรื่องนี้",
+    pointsUsed: "ใช้แต้มแล้ว",
+    backToClass: "กลับไปเลือกสายอาชีพ",
+    loadingAttributes: "กำลังโหลดค่าสถานะ...",
+    loadingOptions: "กำลังโหลดตัวเลือก...",
+    pointsLeft: "แต้มที่เหลือ",
+    start: "เริ่มการผจญภัย",
+  };
+  const text = copy;
   const [step, setStep] = useState<CharacterCreationStep>("race");
   const [setupData, setSetupData] = useState<SetupApiResponse | null>(null);
   const [isLoadingSetup, setIsLoadingSetup] = useState(false);
-  const [setupError, setSetupError] = useState<LocalizedText | null>(null);
+  const [setupError, setSetupError] = useState<string | null>(null);
   const [character, setCharacter] = useState<CharacterSelection>(() => ({
     ...createEmptyCharacter(),
     genre: game?.genre ?? "",
@@ -140,10 +115,10 @@ const GameSetupPage = () => {
     raceId?: string;
     classId?: string;
     useAttributes?: CharacterSelection["attributes"];
-    raceName?: LocalizedText;
-    className?: LocalizedText;
+    raceName?: string;
+    className?: string;
     backgroundId?: string;
-    backgroundName?: LocalizedText;
+    backgroundName?: string;
   } = {}) => {
     if (!game) return;
     setIsLoadingSetup(true);
@@ -204,10 +179,7 @@ const GameSetupPage = () => {
       setStep(getNextStep(nextCharacter));
     } catch (error) {
       console.error(error);
-      setSetupError({
-        th: "ไม่สามารถโหลดการตั้งค่าตัวละครได้",
-        en: "Unable to load character setup",
-      });
+      setSetupError("ไม่สามารถโหลดการตั้งค่าตัวละครได้");
     } finally {
       setIsLoadingSetup(false);
     }
@@ -292,7 +264,7 @@ const GameSetupPage = () => {
         race_id: character.race,
         class_id: character.class,
         background_id: character.background,
-        language,
+        language: "th",
       },
     });
     router.push(`/game/${slug}/play`);
@@ -311,24 +283,24 @@ const GameSetupPage = () => {
             <CardContent className="p-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="space-y-2">
                 <Badge className="bg-accent/20 text-accent border border-accent/30">
-                  {getLocalizedText(game.genreLabel, language)}
+                  {game.genreLabel}
                 </Badge>
                 <h1 className="text-4xl font-bold text-foreground uppercase tracking-wide">
-                  {getLocalizedText(game.title, language)}
+                  {game.title}
                 </h1>
-                <p className="text-secondary font-semibold">{getLocalizedText(game.tagline, language)}</p>
+                <p className="text-secondary font-semibold">{game.tagline}</p>
                 <p className="text-muted-foreground max-w-3xl leading-relaxed">
-                  {getLocalizedText(game.description, language)}
+                  {game.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {game.highlights.map((highlight) => (
                     <Badge
-                      key={highlight.th}
+                      key={highlight}
                       variant="secondary"
                       className="bg-accent/15 text-accent border border-accent/30"
                     >
                       <Flame className="h-3 w-3 mr-1 text-accent" />
-                      {getLocalizedText(highlight, language)}
+                      {highlight}
                     </Badge>
                   ))}
                 </div>
@@ -336,7 +308,7 @@ const GameSetupPage = () => {
               <div className="text-left md:text-right space-y-2">
                 <p className="text-sm text-muted-foreground flex items-center gap-2 md:justify-end">
                   <Compass className="h-4 w-4 text-secondary" />
-                  {getLocalizedText(game.tone, language)}
+                  {game.tone}
                 </p>
                 <Button
                   variant="outline"
@@ -358,20 +330,20 @@ const GameSetupPage = () => {
                 </div>
               )}
               {setupError && !isLoadingSetup && !setupData && (
-                <p className="text-destructive text-center">{getLocalizedText(setupError, language)}</p>
+                <p className="text-destructive text-center">{setupError}</p>
               )}
               {step === "race" && setupData && (
                 <>
                   <div className="text-center space-y-3">
                     <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(game.genreLabel, language)}
+                      {game.genreLabel}
                     </Badge>
                     <h2 className="text-5xl font-bold text-foreground">{text.chooseRaceTitle}</h2>
                     <p className="text-muted-foreground text-lg">{text.chooseRaceSubtitle}</p>
                   </div>
 
                   {setupError && (
-                    <p className="text-destructive text-center">{getLocalizedText(setupError, language)}</p>
+                    <p className="text-destructive text-center">{setupError}</p>
                   )}
 
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -382,8 +354,8 @@ const GameSetupPage = () => {
                         onClick={() => handleSelectRace(race.id)}
                       >
                         <CardContent className="p-6 text-center space-y-2">
-                          <h3 className="text-2xl font-bold text-foreground">{getLocalizedText(race.name, language)}</h3>
-                          <p className="text-muted-foreground">{getLocalizedText(race.description, language)}</p>
+                          <h3 className="text-2xl font-bold text-foreground">{race.name}</h3>
+                          <p className="text-muted-foreground">{race.description}</p>
                         </CardContent>
                       </Card>
                     ))}
@@ -408,11 +380,11 @@ const GameSetupPage = () => {
               <div className="text-center space-y-3">
                 <div className="flex gap-2 justify-center">
                   <Badge className="bg-accent/20 text-accent border border-accent/30">
-                    {getLocalizedText(game.genreLabel, language)}
+                    {game.genreLabel}
                   </Badge>
                   {selectedRaceLabel && (
                     <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedRaceLabel, language)}
+                      {selectedRaceLabel}
                     </Badge>
                   )}
                 </div>
@@ -428,8 +400,8 @@ const GameSetupPage = () => {
                     onClick={() => handleSelectClass(cls.id)}
                   >
                     <CardContent className="p-6 text-center space-y-2">
-                      <h3 className="text-2xl font-bold text-foreground">{getLocalizedText(cls.name, language)}</h3>
-                      <p className="text-muted-foreground">{getLocalizedText(cls.description, language)}</p>
+                      <h3 className="text-2xl font-bold text-foreground">{cls.name}</h3>
+                      <p className="text-muted-foreground">{cls.description}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -453,16 +425,16 @@ const GameSetupPage = () => {
               <div className="text-center space-y-3">
                 <div className="flex gap-2 justify-center">
                   <Badge className="bg-accent/20 text-accent border border-accent/30">
-                    {getLocalizedText(game.genreLabel, language)}
+                    {game.genreLabel}
                   </Badge>
                   {selectedRaceLabel && (
                     <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedRaceLabel, language)}
+                      {selectedRaceLabel}
                     </Badge>
                   )}
                   {selectedClassLabel && (
                     <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedClassLabel, language)}
+                      {selectedClassLabel}
                     </Badge>
                   )}
                 </div>
@@ -479,10 +451,10 @@ const GameSetupPage = () => {
                   >
                     <CardContent className="p-6 text-center space-y-2">
                       <h3 className="text-2xl font-bold text-foreground">
-                        {getLocalizedText(background.name, language)}
+                        {background.name}
                       </h3>
                       <p className="text-muted-foreground">
-                        {getLocalizedText(background.description, language)}
+                        {background.description}
                       </p>
                     </CardContent>
                   </Card>
@@ -509,17 +481,17 @@ const GameSetupPage = () => {
                   <Badge className="bg-accent/20 text-accent border border-accent/30">{game.genre}</Badge>
                   {selectedRaceLabel && (
                     <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedRaceLabel, language)}
+                      {selectedRaceLabel}
                     </Badge>
                   )}
                   {selectedClassLabel && (
                     <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedClassLabel, language)}
+                      {selectedClassLabel}
                     </Badge>
                   )}
                   {selectedBackgroundLabel && (
                     <Badge className="bg-accent/20 text-accent border border-accent/30">
-                      {getLocalizedText(selectedBackgroundLabel, language)}
+                      {selectedBackgroundLabel}
                     </Badge>
                   )}
                 </div>
@@ -542,7 +514,7 @@ const GameSetupPage = () => {
                 <CardContent className="p-8">
                   {setupError && (
                     <p className="text-destructive mb-4 text-center">
-                      {getLocalizedText(setupError, language)}
+                      {setupError}
                     </p>
                   )}
                   {isLoadingSetup && !setupData ? (
@@ -571,10 +543,10 @@ const GameSetupPage = () => {
                             <div className="flex items-center gap-3">
                               <div className="text-left min-w-[120px]">
                                 <p className="text-sm uppercase text-foreground tracking-wide">
-                                  {getLocalizedText(attribute.name, language) ?? attribute.id}
+                                  {attribute.name ?? attribute.id}
                                 </p>
                                 <p className="text-xs text-secondary">
-                                  {language === "en" ? "Base" : "ฐาน"}: {baseValue}
+                                  {"ฐาน"}: {baseValue}
                                 </p>
                               </div>
                               <div className="flex-1 space-y-1">
@@ -591,7 +563,7 @@ const GameSetupPage = () => {
                                   </div>
                                 </div>
                                 <p className="text-xs text-muted-foreground">
-                                  {language === "en" ? "Current" : "ปัจจุบัน"}:{" "}
+                                  {"ปัจจุบัน"}:{" "}
                                   <span className="text-foreground font-semibold">{value}</span>
                                 </p>
                               </div>

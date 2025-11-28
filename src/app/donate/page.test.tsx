@@ -3,20 +3,14 @@ import { render, screen } from '@testing-library/react'
 import { donateContent } from '@/data/donate-content'
 import DonatePage from './page'
 import { KO_FI_URL } from '@/lib/external-links'
+import { vi, describe, it, expect, beforeEach } from 'vitest'
+import { LanguageProvider } from '@/contexts/language-context'
 
 vi.mock('next/navigation', () => ({
   usePathname: () => '/donate',
   useRouter: () => ({
     push: vi.fn(),
   }),
-}))
-
-vi.mock('@/contexts/language-context', () => ({
-  useLanguage: () => ({
-    language: 'en',
-    toggleLanguage: vi.fn(),
-  }),
-  LanguageProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 vi.mock('lucide-react', async () => {
@@ -40,67 +34,71 @@ vi.mock('lucide-react', async () => {
 
 describe('DonatePage', () => {
   beforeEach(() => {
-    render(<DonatePage />)
+    render(
+      <LanguageProvider>
+        <DonatePage />
+      </LanguageProvider>
+    )
   })
 
   it('should render hero section', () => {
-    expect(screen.getByText(donateContent.heroEyebrow.en)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.heroEyebrow)).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: donateContent.heroTitle.en, level: 1 }),
+      screen.getByRole('heading', { name: donateContent.heroTitle, level: 1 }),
     ).toBeInTheDocument()
-    expect(screen.getByText(donateContent.heroSubtitle.en)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.heroSubtitle)).toBeInTheDocument()
     expect(
-      screen.getByText(donateContent.heroDescription.en),
+      screen.getByText(donateContent.heroDescription),
     ).toBeInTheDocument()
     const primaryCta = screen.getAllByRole('link', {
-      name: donateContent.heroPrimaryCta.en,
+      name: donateContent.heroPrimaryCta,
     })[0]
     expect(primaryCta).toBeInTheDocument()
     expect(primaryCta).toHaveAttribute('href', KO_FI_URL)
     const secondaryCta = screen.getByRole('link', {
-      name: donateContent.heroSecondaryCta.en,
+      name: donateContent.heroSecondaryCta,
     })
     expect(secondaryCta).toBeInTheDocument()
     expect(secondaryCta).toHaveAttribute('href', '/game')
   })
 
   it('should render why support section', () => {
-    expect(screen.getByText(donateContent.whyHeading.en)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.whyHeading)).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: donateContent.donationHeading.en, level: 2 }),
+      screen.getByRole('heading', { name: donateContent.donationHeading, level: 2 }),
     ).toBeInTheDocument()
-    expect(screen.getByText(donateContent.whyBodyOne.en)).toBeInTheDocument()
-    expect(screen.getByText(donateContent.whyBodyTwo.en)).toBeInTheDocument()
-    expect(screen.getByText(donateContent.quote.en)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.whyBodyOne)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.whyBodyTwo)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.quote)).toBeInTheDocument()
   })
 
   it('should render impact section', () => {
-    expect(screen.getByText(donateContent.impactHeading.en)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.impactHeading)).toBeInTheDocument()
     expect(
       screen.getByRole('heading', {
-        name: donateContent.impactDescription.en,
+        name: donateContent.impactDescription,
         level: 3,
       }),
     ).toBeInTheDocument()
-    expect(screen.getByText(donateContent.impactHosting.en)).toBeInTheDocument()
-    expect(screen.getByText(donateContent.impactFeatures.en)).toBeInTheDocument()
-    expect(screen.getByText(donateContent.impactStories.en)).toBeInTheDocument()
-    expect(screen.getByText(donateContent.impactTime.en)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.impactHosting)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.impactFeatures)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.impactStories)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.impactTime)).toBeInTheDocument()
   })
 
   it('should render thanks section', () => {
     expect(
-      screen.getByRole('heading', { name: donateContent.thanksHeading.en, level: 3 }),
+      screen.getByRole('heading', { name: donateContent.thanksHeading, level: 3 }),
     ).toBeInTheDocument()
-    expect(screen.getByText(donateContent.thanksBody.en)).toBeInTheDocument()
+    expect(screen.getByText(donateContent.thanksBody)).toBeInTheDocument()
     expect(
-      screen.getByText(donateContent.suggestedAmounts.en),
+      screen.getByText(donateContent.suggestedAmounts),
     ).toBeInTheDocument()
     expect(
-      screen.getByText(donateContent.suggestedNote.en),
+      screen.getByText(donateContent.suggestedNote),
     ).toBeInTheDocument()
     const backHomeLink = screen.getByRole('link', {
-      name: donateContent.backHome.en,
+      name: donateContent.backHome,
     })
     expect(backHomeLink).toBeInTheDocument()
     expect(backHomeLink).toHaveAttribute('href', '/')

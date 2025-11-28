@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { gameListContent } from '@/data/game-list-content'
 import GameListPage from './page'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
+import { LanguageProvider } from '@/contexts/language-context'
 
 const mockPush = vi.fn()
 const mockRouter = {
@@ -17,14 +18,6 @@ vi.mock('next/navigation', () => ({
     useSearchParams: () => ({
         get: vi.fn(),
     }),
-}))
-
-vi.mock('@/contexts/language-context', () => ({
-    useLanguage: () => ({
-        language: 'en',
-        setLanguage: vi.fn(),
-    }),
-    LanguageProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 vi.mock('lucide-react', () => ({
@@ -68,16 +61,16 @@ describe('GameListPage', () => {
     })
 
     it('should render the page header correctly', () => {
-        render(<GameListPage />)
-        expect(screen.getByText(gameListContent.badge.en)).toBeInTheDocument()
-        expect(screen.getByText(gameListContent.title.en)).toBeInTheDocument()
-        expect(screen.getByText(gameListContent.subtitle.en)).toBeInTheDocument()
+        render(<LanguageProvider><GameListPage /></LanguageProvider>)
+        expect(screen.getByText(gameListContent.badge)).toBeInTheDocument()
+        expect(screen.getByText(gameListContent.title)).toBeInTheDocument()
+        expect(screen.getByText(gameListContent.subtitle)).toBeInTheDocument()
     })
 
     it('should render game cards', () => {
-        render(<GameListPage />)
+        render(<LanguageProvider><GameListPage /></LanguageProvider>)
         // Check for genre badges
-        const badges = screen.getAllByText(/Fantasy/i)
+        const badges = screen.getAllByText(/แฟนตาซี/i)
         expect(badges.length).toBeGreaterThan(0)
     })
 })

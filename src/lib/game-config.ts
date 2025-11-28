@@ -7,9 +7,9 @@ export type CharacterSelection = {
   race: string;
   class: string;
   background: string;
-  raceName?: LocalizedText;
-  className?: LocalizedText;
-  backgroundName?: LocalizedText;
+  raceName?: string;
+  className?: string;
+  backgroundName?: string;
   attributes: CharacterAttributes;
 };
 
@@ -55,43 +55,36 @@ export type AdventureSummary = {
 export const genres = [
   {
     name: "High Fantasy",
-    description: { th: "ผจญภัยยิ่งใหญ่ในดินแดนเวทมนตร์", en: "Grand adventures in worlds of magic" },
+    description: "ผจญภัยยิ่งใหญ่ในดินแดนเวทมนตร์",
   },
   {
     name: "Dark Fantasy",
-    description: { th: "แฟนตาซีเข้มข้นผสานสยองขวัญกอธิค", en: "Gothic danger woven into fantasy" },
+    description: "แฟนตาซีเข้มข้นผสานสยองขวัญกอธิค",
   },
   {
     name: "Sci-Fi",
-    description: { th: "เทคโนโลยีอนาคตและการสำรวจอวกาศ", en: "Futuristic tech and cosmic exploration" },
+    description: "เทคโนโลยีอนาคตและการสำรวจอวกาศ",
   },
   {
     name: "Cyberpunk",
-    description: { th: "โลกดิสโทเปียเทคโนโลยีสูง ชีวิตต่ำ", en: "High-tech, low-life dystopia" },
+    description: "โลกดิสโทเปียเทคโนโลยีสูง ชีวิตต่ำ",
   },
-  { name: "Horror", description: { th: "เอาชีวิตรอดจากสิ่งลี้ลับน่าสะพรึง", en: "Survive the uncanny and terrifying" } },
+  { name: "Horror", description: "เอาชีวิตรอดจากสิ่งลี้ลับน่าสะพรึง" },
   {
     name: "Post-Apocalyptic",
-    description: { th: "ดิ้นรนอยู่รอดในดินแดนร้างพินาศ", en: "Struggle to endure a ruined world" },
+    description: "ดิ้นรนอยู่รอดในดินแดนร้างพินาศ",
   },
 ];
 
-export const INITIAL_NARRATION: LocalizedText = {
-  th: `คุณยืนอยู่หน้าดันเจี้ยนโบราณ กำแพงหินเก่าคร่ำคร่าประดับด้วยรูนเรืองแสงลึกลับ อากาศข้นหนืดด้วยพลังบางอย่างและเสียงหยดน้ำแว่วก้องจากเบื้องลึก คบเพลิงในมือสะบัดไหวสร้างเงาเต้นระยับราวกับมีชีวิต 
+export const INITIAL_NARRATION: LocalizedText = `คุณยืนอยู่หน้าดันเจี้ยนโบราณ กำแพงหินเก่าคร่ำคร่าประดับด้วยรูนเรืองแสงลึกลับ อากาศข้นหนืดด้วยพลังบางอย่างและเสียงหยดน้ำแว่วก้องจากเบื้องลึก คบเพลิงในมือสะบัดไหวสร้างเงาเต้นระยับราวกับมีชีวิต 
 
 เบื้องหน้ามีสามเส้นทาง: ทางเดินแคบทางซ้ายที่เรืองแสงสีฟ้าเย็นเฉียบ ทางเดินกว้างตรงหน้าพร้อมลายแกะสลักโบราณบนผนัง และบันไดชันทางขวาที่ทอดลงสู่ความมืดมิด
 
-คุณจะทำอย่างไรต่อไป?`,
-  en: `You stand before an ancient dungeon, its stone walls lined with glowing runes. The air is thick with unseen power and the drip of water echoes from the depths. Your torch flickers, casting shadows that move like living things.
-
-Ahead are three paths: a narrow corridor to the left tinted in icy blue light, a broad hallway etched with ancient carvings straight ahead, and a steep staircase descending into darkness on the right.
-
-What will you do next?`,
-};
+คุณจะทำอย่างไรต่อไป?`;
 
 export const INITIAL_CHOICES: LocalizedText[] = [
-  { th: "เดินเข้าทางเดินแคบที่มีแสงสีฟ้า", en: "Enter the narrow, blue-lit passage" },
-  { th: "เข้าสู่ทางเดินกว้างที่มีลายแกะสลัก", en: "Take the wide hall with carved walls" },
-  { th: "ลงบันไดสู่ความมืด", en: "Head down the dark staircase" },
-  { th: "ตรวจสอบรูนเรืองแสงให้ละเอียดก่อน", en: "Inspect the glowing runes first" },
+  "เดินเข้าทางเดินแคบที่มีแสงสีฟ้า",
+  "เข้าสู่ทางเดินกว้างที่มีลายแกะสลัก",
+  "ลงบันไดสู่ความมืด",
+  "ตรวจสอบรูนเรืองแสงให้ละเอียดก่อน",
 ];

@@ -6,10 +6,10 @@ import yaitongdeeDungeon from "./game-content/yaitongdee_dungeon/yaitongdee_dung
 type GameContent = {
   game_id: string;
   metadata: {
-    title: LocalizedText;
-    subtitle: LocalizedText;
+    title: string;
+    subtitle: string;
     genre: string;
-    description: LocalizedText;
+    description: string;
     cover_image: string;
     estimated_play_time: string;
   };
@@ -18,13 +18,13 @@ type GameContent = {
 export type GameStory = {
   slug: string;
   genre: string;
-  genreLabel: LocalizedText;
-  title: LocalizedText;
-  tagline: LocalizedText;
-  description: LocalizedText;
-  tone: LocalizedText;
-  length: LocalizedText;
-  highlights: LocalizedText[];
+  genreLabel: string;
+  title: string;
+  tagline: string;
+  description: string;
+  tone: string;
+  length: string;
+  highlights: string[];
   coverImage: string;
 };
 
@@ -32,38 +32,29 @@ const GAME_CONTENTS: GameContent[] = [cryptOfTheShatteredStar, yaitongdeeDungeon
 
 const CUSTOM_GAME_DETAILS: Record<
   string,
-  { tone: LocalizedText; highlights: LocalizedText[]; lengthTh?: string }
+  { tone: string; highlights: string[]; lengthTh?: string }
 > = {
   crypt_of_the_shattered_star: {
-    tone: {
-      th: "ดันเจี้ยนเลือกเส้นทาง • เวทมนตร์เข้มข้น",
-      en: "Branching dungeon • Arcane peril",
-    },
+    tone: "ดันเจี้ยนเลือกเส้นทาง • เวทมนตร์เข้มข้น",
     highlights: [
-      { th: "เช็คค่าสเตตัสและโบนัสระหว่างฉาก", en: "Attribute checks and rewards mid-run" },
-      { th: "เส้นทางสำรวจได้หลายทางเลือก", en: "Multiple exploration routes" },
-      { th: "ฉากจบ 6 แบบ", en: "Six unique endings" },
+      "เช็คค่าสเตตัสและโบนัสระหว่างฉาก",
+      "เส้นทางสำรวจได้หลายทางเลือก",
+      "ฉากจบ 6 แบบ",
     ],
     lengthTh: "15-25 นาที",
   },
   yaitongdee_dungeon: {
-    tone: {
-      th: "แฟนตาซีสายฮาใต้ร้านชำไทย",
-      en: "Comedy fantasy under a Thai corner shop",
-    },
+    tone: "แฟนตาซีสายฮาใต้ร้านชำไทย",
     highlights: [
-      { th: "กับดักปลากระป๋องและตู้เย็นพูดได้", en: "Canned-fish traps and a talking fridge" },
-      { th: "โทนขำขัน ล้อวัฒนธรรมไทย", en: "Humorous Thai neighborhood vibes" },
-      { th: "ฉากจบ 6 แบบ", en: "Six playful endings" },
+      "กับดักปลากระป๋องและตู้เย็นพูดได้",
+      "โทนขำขัน ล้อวัฒนธรรมไทย",
+      "ฉากจบ 6 แบบ",
     ],
     lengthTh: "10-20 นาที",
   },
 };
 
-const buildLengthText = (playTime: string, thAlt?: string): LocalizedText => ({
-  en: playTime,
-  th: thAlt ?? playTime,
-});
+const buildLengthText = (playTime: string, thAlt?: string): string => thAlt ?? playTime;
 
 export const GAME_STORIES: GameStory[] = GAME_CONTENTS.map((content) => {
   const extras = CUSTOM_GAME_DETAILS[content.game_id];

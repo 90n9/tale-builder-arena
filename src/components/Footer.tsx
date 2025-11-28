@@ -3,39 +3,21 @@
 import React from "react";
 import Link from "next/link";
 import { Heart, Scroll } from "lucide-react";
-import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 
 const Footer = () => {
-  const { language } = useLanguage();
   const copy = {
-    description: {
-      th: "เลือกเรื่องราว สร้างตัวละคร แล้วเริ่มเล่นทันที เกมไหลลื่นพร้อมเนื้อหาและภาพที่เตรียมไว้แล้ว",
-      en: "Pick a story, build a hero, and play instantly with smooth, ready-to-go content and visuals.",
-    },
-    quickLinks: { th: "ลิงก์ด่วน", en: "Quick Links" },
-    play: { th: "เกม", en: "Games" },
-    donate: { th: "สนับสนุน", en: "Donate" },
-    about: { th: "เกี่ยวกับเรา", en: "About" },
-    contact: { th: "ติดต่อเรา", en: "Contact" },
-    legal: { th: "ข้อมูลทางกฎหมาย", en: "Legal" },
-    privacy: { th: "นโยบายความเป็นส่วนตัว", en: "Privacy Policy" },
-    terms: { th: "เงื่อนไขการให้บริการ", en: "Terms of Use" },
-    copyright: { th: "© 2025 TaleBuilder Arena. สงวนลิขสิทธิ์", en: "© 2025 TaleBuilder Arena. All rights reserved." },
-  } satisfies Record<
-    | "description"
-    | "quickLinks"
-    | "play"
-    | "donate"
-    | "about"
-    | "contact"
-    | "legal"
-    | "privacy"
-    | "terms"
-    | "copyright",
-    LocalizedText
-  >;
-  const t = (value: LocalizedText) => getLocalizedText(value, language);
+    description:
+      "เลือกเรื่องราว สร้างตัวละคร แล้วเริ่มเล่นทันที เกมไหลลื่นพร้อมเนื้อหาและภาพที่เตรียมไว้แล้ว",
+    quickLinks: "ลิงก์ด่วน",
+    play: "เกม",
+    donate: "สนับสนุน",
+    about: "เกี่ยวกับเรา",
+    contact: "ติดต่อเรา",
+    legal: "ข้อมูลทางกฎหมาย",
+    privacy: "นโยบายความเป็นส่วนตัว",
+    terms: "เงื่อนไขการให้บริการ",
+    copyright: "© 2025 TaleBuilder Arena. สงวนลิขสิทธิ์",
+  };
 
   return (
     <footer className="bg-card border-t border-border mt-20">
@@ -46,13 +28,11 @@ const Footer = () => {
               <Scroll className="h-5 w-5 text-primary" />
               <span className="font-bold text-foreground">TaleBuilder Arena</span>
             </Link>
-            <p className="text-sm text-muted-foreground">
-              {t(copy.description)}
-            </p>
+            <p className="text-sm text-muted-foreground">{copy.description}</p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-foreground mb-4">{t(copy.quickLinks)}</h3>
+            <h3 className="font-semibold text-foreground mb-4">{copy.quickLinks}</h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -61,7 +41,7 @@ const Footer = () => {
                   data-ga-event="footer-link-click"
                   data-ga-label="/game"
                 >
-                  {t(copy.play)}
+                  {copy.play}
                 </Link>
               </li>
               <li>
@@ -71,7 +51,7 @@ const Footer = () => {
                   data-ga-event="footer-link-click"
                   data-ga-label="/donate"
                 >
-                  {t(copy.donate)}
+                  {copy.donate}
                   <Heart className="h-4 w-4 text-destructive fill-destructive" />
                 </Link>
               </li>
@@ -82,7 +62,7 @@ const Footer = () => {
                   data-ga-event="footer-link-click"
                   data-ga-label="/about"
                 >
-                  {t(copy.about)}
+                  {copy.about}
                 </Link>
               </li>
               <li>
@@ -92,14 +72,14 @@ const Footer = () => {
                   data-ga-event="footer-link-click"
                   data-ga-label="/contact"
                 >
-                  {t(copy.contact)}
+                  {copy.contact}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold text-foreground mb-4">{t(copy.legal)}</h3>
+            <h3 className="font-semibold text-foreground mb-4">{copy.legal}</h3>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -108,7 +88,7 @@ const Footer = () => {
                   data-ga-event="footer-link-click"
                   data-ga-label="/privacy-policy"
                 >
-                  {t(copy.privacy)}
+                  {copy.privacy}
                 </Link>
               </li>
               <li>
@@ -118,7 +98,7 @@ const Footer = () => {
                   data-ga-event="footer-link-click"
                   data-ga-label="/terms-of-use"
                 >
-                  {t(copy.terms)}
+                  {copy.terms}
                 </Link>
               </li>
             </ul>
@@ -126,9 +106,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-8 border-t border-border text-center">
-          <p className="text-sm text-muted-foreground">
-            {t(copy.copyright)}
-          </p>
+          <p className="text-sm text-muted-foreground">{copy.copyright}</p>
         </div>
       </div>
     </footer>

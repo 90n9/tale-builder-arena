@@ -4,8 +4,6 @@
 import React from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { useLanguage } from "@/contexts/language-context";
-import { getLocalizedText, type LocalizedText } from "@/lib/i18n";
 import { landingContent } from "@/data/landing-content";
 import { PrimaryActionButton, SecondaryActionButton } from "@/components/ActionButtons";
 import { KO_FI_URL } from "@/lib/external-links";
@@ -19,15 +17,13 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export const DonationSection = () => {
-    const { language } = useLanguage();
-    const t = (value: LocalizedText) => getLocalizedText(value, language);
     const content = landingContent.donation;
 
     const donationItems = content.bullets.map((item) => {
         const Icon = iconMap[item.iconName] || Server;
         return {
             ...item,
-            text: t(item.text),
+            text: item.text,
             icon: <Icon className={`h-6 w-6 ${["Server", "PenTool"].includes(item.iconName) ? "text-primary" : "text-secondary"}`} />,
         };
     });
@@ -43,13 +39,13 @@ export const DonationSection = () => {
                                 <div className="p-3 rounded-full bg-primary/15 border border-primary/40 text-primary">
                                     <Heart className="h-6 w-6 fill-destructive text-destructive" />
                                 </div>
-                                <p className="text-sm uppercase tracking-[0.3em] text-accent">{t(content.eyebrow)}</p>
+                                <p className="text-sm uppercase tracking-[0.3em] text-accent">{content.eyebrow}</p>
                             </div>
                             <h2 className="text-3xl md:text-4xl font-bold text-foreground uppercase tracking-wide">
-                                {t(content.heading)}
+                                {content.heading}
                             </h2>
                             <p className="text-lg text-muted-foreground leading-relaxed">
-                                {t(content.description)}
+                                {content.description}
                             </p>
                             <div className="flex flex-wrap gap-3">
                                 <PrimaryActionButton
@@ -58,7 +54,7 @@ export const DonationSection = () => {
                                     className="font-semibold"
                                 >
                                     <Link href="/donate">
-                                        {t(content.primaryCta)}
+                                        {content.primaryCta}
                                     </Link>
                                 </PrimaryActionButton>
                                 <SecondaryActionButton asChild size="lg">
@@ -72,7 +68,7 @@ export const DonationSection = () => {
                                     >
                                         <div className="flex items-center gap-2">
                                             <Coffee className="h-4 w-4" />
-                                            <span>{t(content.secondaryCta)}</span>
+                                            <span>{content.secondaryCta}</span>
                                         </div>
                                     </a>
                                 </SecondaryActionButton>
