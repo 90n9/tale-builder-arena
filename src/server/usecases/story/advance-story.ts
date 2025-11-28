@@ -89,7 +89,7 @@ export const advanceStory = (request: StoryRequest, game: StoryGameContent | nul
     return { kind: "game_not_found" };
   }
 
-  const language: Language = "th";
+  const language = "th";
   // const defaultGame = deps.gameContent.getDefaultStoryGame(); // Removed dependency
   // const gameId = request.gameId ?? defaultGame.game_id;
   // const game = deps.gameContent.findStoryGameById(gameId);
