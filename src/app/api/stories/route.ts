@@ -82,12 +82,12 @@ export async function POST(request: Request) {
 
     // 4. Upload Files
     // Better slug generation needed from title
-    const safeSlug = (storyJson.meta.title || 'untitled').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const safeSlug = (storyJson.metadata.title || 'untitled').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     
     // Check slug existence early to avoid unnecessary uploads (though use case also checks)
     // We'll let use case handle the final check, but we need slug for paths
     
-    const version = storyJson.meta.version || '1.0.0';
+    const version = storyJson.version || '1.0.0';
     const uploadBase = `stories/${safeSlug}/${version}`;
 
     // Upload Story JSON
@@ -113,8 +113,8 @@ export async function POST(request: Request) {
         slug: safeSlug,
         authorId: userId,
         version,
-        title: storyJson.meta.title,
-        description: storyJson.meta.description,
+        title: storyJson.metadata.title,
+        description: storyJson.metadata.description,
         genre: 'Adventure', // Should be in JSON meta
         coverImageUrl,
         storyJsonUrl,

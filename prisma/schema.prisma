@@ -33,11 +33,12 @@ model Story {
   isActive    Boolean @default(true)
 
   // metadata
-  supportedLang String[]
-  genre         String
-  title         Json // { en: "...", th: "..." }
-  subtitle      Json?
-  description   Json?
+
+  genre String
+
+  title         String
+  subtitle      String?
+  description   String?
   coverImageUrl String?
   storyJsonUrl  String?
   createdAt     DateTime @default(now())

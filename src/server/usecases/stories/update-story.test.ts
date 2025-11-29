@@ -22,7 +22,7 @@ describe('updateStory', () => {
     const request = {
       slug: 'test-story',
       userId: 1,
-      title: { th: 'New Title' }, // Changed to th
+      title: 'New Title',
     };
 
     const existingStory: StoryWithRelations = { 
@@ -33,7 +33,7 @@ describe('updateStory', () => {
         isPublished: true,
         isActive: true,
         genre: 'fantasy',
-        title: { th: 'Old Title' },
+        title: 'Old Title',
         subtitle: null,
         description: null,
         coverImageUrl: null,
@@ -57,7 +57,7 @@ describe('updateStory', () => {
     const request = {
       slug: 'test-story',
       userId: 2, // Different user
-      title: { th: 'New Title' }, // Changed to th
+      title: 'New Title',
     };
 
     const existingStory: StoryWithRelations = { 
@@ -68,7 +68,7 @@ describe('updateStory', () => {
         isPublished: true,
         isActive: true,
         genre: 'fantasy',
-        title: { th: 'Old Title' },
+        title: 'Old Title',
         subtitle: null,
         description: null,
         coverImageUrl: null,

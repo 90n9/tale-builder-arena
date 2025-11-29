@@ -24,7 +24,7 @@ export const createStory = async (
 ): Promise<CreateStoryResult> => {
   try {
     // Validate input (excluding slug, authorId, version which are server-generated/provided)
-    const { title, description, genre, coverImageUrl, storyJsonUrl, supportedLang, isPublished, isActive } = createStorySchema.parse(request);
+    const { title, description, genre, coverImageUrl, storyJsonUrl, isPublished, isActive } = createStorySchema.parse(request);
 
     // Check if slug exists
     const existingStory = await deps.storyRepo.findStoryBySlug(request.slug);
@@ -41,7 +41,6 @@ export const createStory = async (
       genre,
       coverImageUrl,
       storyJsonUrl,
-      supportedLang,
       isPublished,
       isActive,
     });

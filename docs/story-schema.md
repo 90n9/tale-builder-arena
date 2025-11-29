@@ -18,11 +18,17 @@ Story files define the narrative structure, scenes, choices, and game mechanics 
 
 ```typescript
 {
-  meta: MetaData;
+  game_id: string;
+  version: string;
+  metadata: MetaData;
   config: ConfigData;
   scenes: Record<string, Scene>;
   endings?: Record<string, Ending>;
-  assets?: Record<string, string>;
+  races?: Race[];
+  classes?: Class[];
+  attributes?: Attribute[];
+  backgrounds?: Background[];
+  global_flags?: GlobalFlags;
 }
 ```
 
@@ -34,11 +40,12 @@ Story metadata and information.
 
 ```typescript
 {
-  title: LocalizedString;           // Required
-  description?: LocalizedString;    // Optional
-  author?: string;                  // Optional
-  version: string;                  // Required (e.g., "1.0.0")
-  supportedLanguages: string[];     // Required (e.g., ["en", "th"])
+  title: string;           // Required
+  subtitle: string;        // Required
+  genre: string;           // Required
+  description: string;     // Required
+  cover_image: string;     // Required
+  author: string;          // Required
 }
 ```
 
@@ -46,18 +53,13 @@ Story metadata and information.
 
 ```json
 {
-  "meta": {
-    "title": {
-      "en": "The Lost Temple",
-      "th": "วิหารที่สาบสูญ"
-    },
-    "description": {
-      "en": "An adventure in ancient ruins",
-      "th": "การผจญภัยในซากปรักหักพัง"
-    },
-    "author": "Story Author",
-    "version": "1.0.0",
-    "supportedLanguages": ["en", "th"]
+  "metadata": {
+    "title": "สุสานแห่งดวงดาวแตกสลาย",
+    "subtitle": "ผจญภัยดันเจี้ยนแฟนตาซีแบบเลือกเส้นทางได้",
+    "genre": "fantasy_dungeon",
+    "description": "ดันเจี้ยนแบบโต้ตอบ ที่เผ่าพันธุ์ คลาส และค่าสเตตัสของคุณ จะกำหนดชะตากรรมของตัวละคร",
+    "cover_image": "/assets/games/crypt_of_the_shattered_star/cover.png",
+    "author": "AI Generated"
   }
 }
 ```
@@ -70,23 +72,18 @@ Story configuration and settings.
 
 ```typescript
 {
-  initialSceneId: string;           // Required - Starting scene ID
-  character?: CharacterConfig;      // Optional - Character creation
-}
-```
-
-**Character Config:**
-
-```typescript
-{
-  allowCustomName: boolean;         // Default: true
-  stats?: Array<{
-    key: string;
-    label: LocalizedString;
-    min: number;
-    max: number;
-    default: number;
-  }>;
+  starting_attributes: {
+    points_to_distribute: number;
+    base_values: Record<string, number>;
+  };
+  asset_paths: {
+    images: string;
+    videos: string;
+  };
+  ui: {
+    theme_color: string;
+    text_speed: string;
+  };
 }
 ```
 
@@ -95,18 +92,23 @@ Story configuration and settings.
 ```json
 {
   "config": {
-    "initialSceneId": "scene_start",
-    "character": {
-      "allowCustomName": true,
-      "stats": [
-        {
-          "key": "strength",
-          "label": { "en": "Strength", "th": "พลัง" },
-          "min": 1,
-          "max": 10,
-          "default": 5
-        }
-      ]
+    "starting_attributes": {
+      "points_to_distribute": 5,
+      "base_values": {
+        "str": 1,
+        "int": 1,
+        "agi": 1,
+        "cha": 1,
+        "luk": 0
+      }
+    },
+    "asset_paths": {
+      "images": "/assets/games/crypt_of_the_shattered_star/",
+      "videos": "/assets/games/crypt_of_the_shattered_star/"
+    },
+    "ui": {
+      "theme_color": "#6B4FFF",
+      "text_speed": "instant"
     }
   }
 }
@@ -120,13 +122,13 @@ Scenes are the building blocks of your story.
 
 ```typescript
 {
-  id: string;                       // Required - Unique scene ID
-  title?: LocalizedString;          // Optional - Scene title
-  text: LocalizedString;            // Required - Scene description
-  image?: string;                   // Optional - Asset path
-  choices?: Choice[];               // Optional - Available choices
-  isEnding?: boolean;               // Optional - Is this an ending?
-  endingId?: string;                // Required if isEnding is true
+  scene_id: string;                 // Required - Unique scene ID
+  type: string;                     // Required - e.g., "normal"
+  title: string;                    // Required - Scene title
+  description: string;              // Required - Scene description
+  image: string;                    // Required - Image filename
+  image_prompt: string;             // Required - AI prompt for image
+  choices: Choice[];                // Required - Available choices
 }
 ```
 
@@ -134,12 +136,11 @@ Scenes are the building blocks of your story.
 
 ```typescript
 {
-  id: string;                       // Required - Unique choice ID
-  text: LocalizedString;            // Required - Choice text
-  nextSceneId?: string;             // Optional - Next scene
-  requirements?: Requirement[];     // Optional - Requirements
-  rewards?: Reward[];               // Optional - Rewards
-  onFailNextSceneId?: string;       // Optional - Scene if requirements fail
+  text: string;                     // Required - Choice text
+  next: string;                     // Required - Next scene ID
+  on_fail_next?: string;            // Optional - Scene if requirements fail
+  requirements?: Requirement;       // Optional - Requirements
+  reward_attributes?: Record<string, number>; // Optional - Stat rewards
 }
 ```
 
@@ -147,21 +148,8 @@ Scenes are the building blocks of your story.
 
 ```typescript
 {
-  type: 'stat' | 'item' | 'flag' | 'class' | 'race';
-  key: string;
-  value: string | number | boolean;
-  operator?: 'eq' | 'gt' | 'lt' | 'gte' | 'lte' | 'ne';
-}
-```
-
-### Reward Structure
-
-```typescript
-{
-  type: 'stat' | 'item' | 'flag';
-  key: string;
-  value: string | number | boolean;
-  operation?: 'add' | 'subtract' | 'set';
+  classes?: string[];
+  min_attributes?: Record<string, number>;
 }
 ```
 
@@ -171,49 +159,20 @@ Scenes are the building blocks of your story.
 {
   "scenes": {
     "scene_start": {
-      "id": "scene_start",
-      "title": {
-        "en": "The Entrance",
-        "th": "ทางเข้า"
-      },
-      "text": {
-        "en": "You stand before an ancient temple...",
-        "th": "คุณยืนอยู่หน้าวิหารโบราณ..."
-      },
-      "image": "images/temple_entrance.jpg",
+      "scene_id": "scene_start",
+      "type": "normal",
+      "title": "ขั้นบันไดที่ถูกลืม",
+      "description": "ที่ชายป่าศักดิ์สิทธิ์โบราณ บันไดหินเก่าคร่ำคร่าไล่ลงสู่ใต้ดิน...",
+      "image": "scene_start.png",
+      "image_prompt": "fantasy dungeon entrance...",
       "choices": [
         {
-          "id": "choice_enter",
-          "text": {
-            "en": "Enter the temple",
-            "th": "เข้าไปในวิหาร"
-          },
-          "nextSceneId": "scene_inside",
-          "requirements": [
-            {
-              "type": "stat",
-              "key": "courage",
-              "value": 5,
-              "operator": "gte"
-            }
-          ],
-          "rewards": [
-            {
-              "type": "stat",
-              "key": "experience",
-              "value": 10,
-              "operation": "add"
-            }
-          ],
-          "onFailNextSceneId": "scene_too_scared"
+          "text": "ก้าวลงไปในสุสานใต้ดิน",
+          "next": "scene_1"
         },
         {
-          "id": "choice_leave",
-          "text": {
-            "en": "Leave",
-            "th": "จากไป"
-          },
-          "nextSceneId": "ending_coward"
+          "text": "ถอยกลับไปยังความปลอดภัย",
+          "next": "ending_1"
         }
       ]
     }
@@ -225,15 +184,20 @@ Scenes are the building blocks of your story.
 
 ## Endings
 
-Define story endings (optional but recommended).
+Define story endings.
 
 ```typescript
 {
-  id: string;                       // Required - Unique ending ID
-  title: LocalizedString;           // Required - Ending title
-  description: LocalizedString;     // Required - Ending description
-  image?: string;                   // Optional - Asset path
-  type?: 'good' | 'bad' | 'neutral' | 'secret';  // Optional
+  ending_id: string;                // Required - Unique ending ID
+  title: string;                    // Required - Ending title
+  summary: string;                  // Required - Ending summary
+  result: string;                   // Required - Ending result text
+  image: string;                    // Required - Image filename
+  image_prompt: string;             // Required - AI prompt for image
+  conditions: {
+    min_attributes: Record<string, number>;
+    flags_required: string[];
+  };
 }
 ```
 
@@ -243,16 +207,16 @@ Define story endings (optional but recommended).
 {
   "endings": {
     "ending_hero": {
-      "id": "ending_hero",
-      "title": {
-        "en": "The Hero's Victory",
-        "th": "ชัยชนะของวีรบุรุษ"
-      },
-      "description": {
-        "en": "You have saved the kingdom!",
-        "th": "คุณได้ช่วยอาณาจักรไว้!"
-      },
-      "type": "good"
+      "ending_id": "ending_hero",
+      "title": "ผู้พิชิตดวงดาว",
+      "summary": "คุณทำลายหรือผนึกพลังของเศษดวงดาวได้...",
+      "result": "บทเพลงจะถูกขับร้องถึงผู้ที่พิชิตดวงดาวแตกสลายได้",
+      "image": "ending_hero.png",
+      "image_prompt": "heroic adventurer...",
+      "conditions": {
+        "min_attributes": {},
+        "flags_required": []
+      }
     }
   }
 }
@@ -260,48 +224,47 @@ Define story endings (optional but recommended).
 
 ---
 
-## Localized Strings
+## Game Components
 
-All user-facing text should be localized.
+### Races
 
 ```typescript
-type LocalizedString = Record<string, string>;
-```
-
-**Example:**
-
-```json
 {
-  "en": "English text",
-  "th": "ข้อความภาษาไทย",
-  "ja": "日本語のテキスト"
+  id: string;
+  name: string;
+  description: string;
+  attribute_bonus: Record<string, number>;
 }
 ```
 
-**Rules:**
-- Must include all languages listed in `meta.supportedLanguages`
-- Keys are ISO 639-1 language codes
-- Values are strings
-
----
-
-## Assets
-
-Optional mapping of asset keys to paths/URLs.
+### Classes
 
 ```typescript
-type Assets = Record<string, string>;
+{
+  id: string;
+  name: string;
+  description: string;
+  starting_bonus: Record<string, number>;
+}
 ```
 
-**Example:**
+### Attributes
 
-```json
+```typescript
 {
-  "assets": {
-    "temple_bg": "images/backgrounds/temple.jpg",
-    "sword_icon": "images/items/sword.png",
-    "theme_music": "audio/temple_theme.mp3"
-  }
+  id: string;
+  name: string;
+}
+```
+
+### Backgrounds
+
+```typescript
+{
+  id: string;
+  name: string;
+  description: string;
+  bonus_attributes: Record<string, number>;
 }
 ```
 
@@ -309,74 +272,7 @@ type Assets = Record<string, string>;
 
 ## Complete Example
 
-```json
-{
-  "meta": {
-    "title": { "en": "The Lost Temple" },
-    "description": { "en": "An adventure story" },
-    "version": "1.0.0",
-    "supportedLanguages": ["en"]
-  },
-  "config": {
-    "initialSceneId": "scene_1"
-  },
-  "scenes": {
-    "scene_1": {
-      "id": "scene_1",
-      "text": { "en": "You find a mysterious temple..." },
-      "choices": [
-        {
-          "id": "c1",
-          "text": { "en": "Enter" },
-          "nextSceneId": "scene_2"
-        },
-        {
-          "id": "c2",
-          "text": { "en": "Leave" },
-          "nextSceneId": "ending_1"
-        }
-      ]
-    },
-    "scene_2": {
-      "id": "scene_2",
-      "text": { "en": "Inside the temple..." },
-      "choices": [
-        {
-          "id": "c3",
-          "text": { "en": "Continue" },
-          "nextSceneId": "ending_2"
-        }
-      ]
-    },
-    "ending_1": {
-      "id": "ending_1",
-      "text": { "en": "You decided to leave." },
-      "isEnding": true,
-      "endingId": "ending_1"
-    },
-    "ending_2": {
-      "id": "ending_2",
-      "text": { "en": "You found the treasure!" },
-      "isEnding": true,
-      "endingId": "ending_2"
-    }
-  },
-  "endings": {
-    "ending_1": {
-      "id": "ending_1",
-      "title": { "en": "The Cautious Path" },
-      "description": { "en": "Sometimes wisdom is knowing when to walk away." },
-      "type": "neutral"
-    },
-    "ending_2": {
-      "id": "ending_2",
-      "title": { "en": "The Treasure Hunter" },
-      "description": { "en": "Fortune favors the bold!" },
-      "type": "good"
-    }
-  }
-}
-```
+See `src/data/game-content/crypt_of_the_shattered_star/crypt_of_the_shattered_star.json` for a full example.
 
 ---
 
@@ -384,32 +280,27 @@ type Assets = Record<string, string>;
 
 ### Required Fields
 
-- `meta.title`
-- `meta.version`
-- `meta.supportedLanguages`
-- `config.initialSceneId`
+- `game_id`
+- `version`
+- `metadata` (all fields)
+- `config` (all fields)
 - `scenes` (at least one scene)
-- Each scene must have `id` and `text`
-- Ending scenes must have `isEnding: true` and `endingId`
+- `endings` (at least one ending)
 
 ### Constraints
 
 - Scene IDs must be unique
-- Choice IDs must be unique within a scene
-- `nextSceneId` must reference an existing scene
-- `initialSceneId` must reference an existing scene
-- `endingId` should reference an ending in the `endings` object
-- All localized strings must include all supported languages
+- `next` and `on_fail_next` must reference existing scenes or endings
+- All text should be in Thai (as per current project standard)
 
 ### Best Practices
 
 1. **Use descriptive IDs**: `scene_forest_entrance` not `s1`
-2. **Validate references**: Ensure all `nextSceneId` values exist
+2. **Validate references**: Ensure all `next` values exist
 3. **Test all paths**: Make sure every choice leads somewhere
 4. **Provide endings**: Every story path should reach an ending
-5. **Localize everything**: Include all supported languages
-6. **Optimize assets**: Keep file sizes reasonable
-7. **Version properly**: Use semantic versioning (major.minor.patch)
+5. **Optimize assets**: Keep file sizes reasonable
+6. **Version properly**: Use semantic versioning (major.minor.patch)
 
 ---
 

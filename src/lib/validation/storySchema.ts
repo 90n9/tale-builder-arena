@@ -1,86 +1,92 @@
 import { z } from 'zod';
 
-// Basic types
-const LocalizedString = z.record(z.string()); // { en: "...", th: "..." }
+const attributeMap = z.record(z.number());
 
-// Asset references
-const AssetPath = z.string(); // e.g. "images/scene1.jpg"
-
-// Choice requirement
-const Requirement = z.object({
-  type: z.enum(['stat', 'item', 'flag', 'class', 'race']),
-  key: z.string(),
-  value: z.union([z.string(), z.number(), z.boolean()]),
-  operator: z.enum(['eq', 'gt', 'lt', 'gte', 'lte', 'ne']).optional(),
+const requirementSchema = z.object({
+  classes: z.array(z.string()).optional(),
+  min_attributes: attributeMap.optional(),
 });
 
-// Choice reward
-const Reward = z.object({
-  type: z.enum(['stat', 'item', 'flag']),
-  key: z.string(),
-  value: z.union([z.string(), z.number(), z.boolean()]),
-  operation: z.enum(['add', 'subtract', 'set']).optional(),
+const choiceSchema = z.object({
+  text: z.string(),
+  next: z.string(),
+  on_fail_next: z.string().optional(),
+  requirements: requirementSchema.optional(),
+  reward_attributes: attributeMap.optional(),
 });
 
-// Choice
-const Choice = z.object({
-  id: z.string(),
-  text: LocalizedString,
-  nextSceneId: z.string().optional(),
-  requirements: z.array(Requirement).optional(),
-  rewards: z.array(Reward).optional(),
-  onFailNextSceneId: z.string().optional(), // If requirements not met
+const sceneSchema = z.object({
+  scene_id: z.string(),
+  type: z.string().optional(),
+  title: z.string(),
+  description: z.string(),
+  image: z.string().optional(),
+  image_prompt: z.string().optional(),
+  choices: z.array(choiceSchema).min(1),
 });
 
-// Scene
-const Scene = z.object({
-  id: z.string(),
-  title: LocalizedString.optional(),
-  text: LocalizedString,
-  image: AssetPath.optional(),
-  choices: z.array(Choice).optional(),
-  isEnding: z.boolean().optional(),
-  endingId: z.string().optional(), // If isEnding is true
+const endingSchema = z.object({
+  ending_id: z.string(),
+  title: z.string(),
+  summary: z.string(),
+  result: z.string(),
+  image: z.string().optional(),
+  image_prompt: z.string().optional(),
+  conditions: z.object({
+    min_attributes: attributeMap,
+    flags_required: z.array(z.string()),
+  }).optional(),
 });
 
-// Ending
-const Ending = z.object({
-  id: z.string(),
-  title: LocalizedString,
-  description: LocalizedString,
-  image: AssetPath.optional(),
-  type: z.enum(['good', 'bad', 'neutral', 'secret']).optional(),
-});
-
-// Character creation config
-const CharacterConfig = z.object({
-  allowCustomName: z.boolean().default(true),
-  stats: z.array(z.object({
-    key: z.string(),
-    label: LocalizedString,
-    min: z.number(),
-    max: z.number(),
-    default: z.number(),
-  })).optional(),
-  // Add races/classes if needed
-});
-
-// Main Story Schema
 export const storySchema = z.object({
-  meta: z.object({
-    title: LocalizedString,
-    description: LocalizedString.optional(),
-    author: z.string().optional(),
-    version: z.string(),
-    supportedLanguages: z.array(z.string()),
+  game_id: z.string(),
+  version: z.string(),
+  metadata: z.object({
+    title: z.string(),
+    subtitle: z.string().optional().nullable(),
+    genre: z.string(),
+    description: z.string(),
+    cover_image: z.string().optional().nullable(),
+    author: z.string(),
   }),
   config: z.object({
-    initialSceneId: z.string(),
-    character: CharacterConfig.optional(),
+    starting_attributes: z.object({
+      points_to_distribute: z.number(),
+      base_values: attributeMap,
+    }),
+    asset_paths: z.object({
+      images: z.string(),
+      videos: z.string(),
+    }),
+    ui: z.object({
+      theme_color: z.string(),
+      text_speed: z.string(),
+    }),
   }),
-  scenes: z.record(Scene), // Keyed by scene ID for easier lookup, or array
-  endings: z.record(Ending).optional(),
-  assets: z.record(z.string()).optional(), // Map of asset keys to paths/urls if needed
+  races: z.array(z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      attribute_bonus: attributeMap.optional(),
+  })).optional(),
+  classes: z.array(z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      starting_bonus: attributeMap.optional(),
+  })).optional(),
+  backgrounds: z.array(z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      bonus_attributes: attributeMap.optional(),
+  })).optional(),
+  attributes: z.array(z.object({
+      id: z.string(),
+      name: z.string(),
+  })).optional(),
+  scenes: z.record(sceneSchema),
+  endings: z.record(endingSchema),
 });
 
 export type StoryDefinition = z.infer<typeof storySchema>;

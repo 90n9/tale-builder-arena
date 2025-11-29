@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const createStorySchema = z.object({
-  title: z.record(z.string()),
-  description: z.record(z.string()).optional(),
+  title: z.string(),
+  description: z.string().optional(),
   genre: z.string(),
   coverImageUrl: z.string().optional(),
   storyJsonUrl: z.string().url(),

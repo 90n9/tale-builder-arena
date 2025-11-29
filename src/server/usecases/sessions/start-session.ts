@@ -54,7 +54,7 @@ export const startSession = async (
         game = deps.gameContent.findStoryGameById(story.slug);
     }
 
-    const initialSceneId = game?.config?.initialSceneId || 'start';
+    const initialSceneId = 'start';
 
     const session = await deps.sessionRepo.createSession({
       userId: request.userId,

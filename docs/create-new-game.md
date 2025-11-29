@@ -8,12 +8,12 @@ Follow these steps to add a new game story that matches the existing content str
   "game_id": string,
   "version": string,
   "metadata": {
-    "title": { "th": string, "en": string },
-    "subtitle": { "th": string, "en": string },
+    "title": string,
+    "subtitle": string,
     "genre": string,
-    "description": { "th": string, "en": string },
+    "description": string,
     "cover_image": string,
-    "author": string,
+    "author": string
   },
   "config": {
     "starting_attributes": {
@@ -32,30 +32,30 @@ Follow these steps to add a new game story that matches the existing content str
   "races": [
     {
       "id": string,
-      "name": { "th": string, "en": string },
-      "description": { "th": string, "en": string },
+      "name": string,
+      "description": string,
       "attribute_bonus": { [attributeId: string]: number }
     }
   ],
   "classes": [
     {
       "id": string,
-      "name": { "th": string, "en": string },
-      "description": { "th": string, "en": string },
+      "name": string,
+      "description": string,
       "starting_bonus": { [attributeId: string]: number }
     }
   ],
   "attributes": [
     {
       "id": string,
-      "name": { "th": string, "en": string }
+      "name": string
     }
   ],
   "backgrounds": [
     {
       "id": string,
-      "name": { "th": string, "en": string },
-      "description": { "th": string, "en": string },
+      "name": string,
+      "description": string,
       "bonus_attributes": { [attributeId: string]: number }
     }
   ],
@@ -67,13 +67,13 @@ Follow these steps to add a new game story that matches the existing content str
     [sceneId: string]: {
       "scene_id": string,
       "type": string,
-      "title": { "th": string, "en": string },
-      "description": { "th": string, "en": string },
+      "title": string,
+      "description": string,
       "image": string,
       "image_prompt": string,
       "choices": [
         {
-          "text": { "th": string, "en": string },
+          "text": string,
           "next": string,
           "on_fail_next"?: string,
           "requirements"?: {
@@ -88,9 +88,9 @@ Follow these steps to add a new game story that matches the existing content str
   "endings": {
     [endingId: string]: {
       "ending_id": string,
-      "title": { "th": string, "en": string },
-      "summary": { "th": string, "en": string },
-      "result": { "th": string, "en": string },
+      "title": string,
+      "summary": string,
+      "result": string,
       "image": string,
       "image_prompt": string,
       "conditions": {
@@ -104,7 +104,7 @@ Follow these steps to add a new game story that matches the existing content str
 
 ### 1) Review the existing schema
 - Open an existing game JSON in `src/data/game-content/` (e.g., `crypt_of_the_shattered_star/crypt_of_the_shattered_star.json`).
-- Every user-facing string must be bilingual via `LocalizedText` objects (`{ th, en }`).
+- Every user-facing string is a simple string (no longer bilingual objects).
 - Required top-level keys: `game_id`, `version`, `metadata`, `config`, `races`, `classes`, `attributes`, `backgrounds`, `global_flags`, `scenes`, `endings` (match the current structure).
 - Scenes and endings must include IDs, titles, descriptions, images/prompts, choices, requirements, rewards, and conditions consistent with the existing files.
 

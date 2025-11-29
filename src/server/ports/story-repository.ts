@@ -15,8 +15,8 @@ export type CreateStoryData = {
   slug: string;
   authorId: number;
   version: string;
-  title: Record<string, string>;
-  description?: Record<string, string>;
+  title: string;
+  description?: string;
   genre: string;
   coverImageUrl?: string;
   storyJsonUrl: string;
@@ -25,8 +25,8 @@ export type CreateStoryData = {
 };
 
 export type UpdateStoryData = {
-  title?: Record<string, string>;
-  description?: Record<string, string>;
+  title?: string;
+  description?: string;
   genre?: string;
   coverImageUrl?: string;
   storyJsonUrl?: string;

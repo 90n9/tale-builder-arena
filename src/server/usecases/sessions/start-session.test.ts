@@ -26,7 +26,6 @@ describe('startSession', () => {
 
   const mockStorage: StorageProvider = {
     uploadFile: vi.fn(),
-    getPublicUrl: vi.fn(),
     deleteFile: vi.fn(),
     fileExists: vi.fn(),
     readJsonFile: vi.fn(),
@@ -57,7 +56,7 @@ describe('startSession', () => {
       isPublished: true,
       isActive: true,
       genre: 'fantasy',
-      title: {th: 'Test Story'},
+      title: 'Test Story',
       subtitle: null,
       description: null,
       coverImageUrl: null,
@@ -67,12 +66,14 @@ describe('startSession', () => {
     };
     const mockStoryGameContent: StoryGameContent = {
         game_id: 'test-story',
+        version: '1.0.0',
         metadata: {
             title: 'Test Story',
             subtitle: 'A test story',
             genre: 'fantasy',
             description: 'This is a test story',
             cover_image: 'cover.jpg',
+            author: 'Test Author',
         },
         config: {
             starting_attributes: {

@@ -27,7 +27,6 @@ describe('processChoice', () => {
 
   const mockStorage: StorageProvider = {
     uploadFile: vi.fn(),
-    getPublicUrl: vi.fn(),
     deleteFile: vi.fn(),
     fileExists: vi.fn(),
     readJsonFile: vi.fn(),
@@ -51,12 +50,10 @@ describe('processChoice', () => {
         version: '1.0.0',
         isPublished: true,
         isActive: true,
-        supportedLang: ['th'],
         genre: 'fantasy',
-        title: {},
+        title: 'Test Story',
         subtitle: null,
         description: null,
-        estimatedPlayTime: null,
         coverImageUrl: null,
         storyJsonUrl: 'local://test-story',
         createdAt: new Date(),
@@ -77,13 +74,14 @@ describe('processChoice', () => {
 
     const mockStoryGameContent: StoryGameContent = {
         game_id: 'test-story',
+        version: '1.0.0',
         metadata: {
             title: 'Test Story',
             subtitle: 'A test story',
             genre: 'fantasy',
             description: 'This is a test story',
             cover_image: 'cover.jpg',
-            estimated_play_time: '10 mins',
+            author: 'Test Author',
         },
         config: {
             starting_attributes: {

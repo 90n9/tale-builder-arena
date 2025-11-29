@@ -79,7 +79,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
         return NextResponse.json({ error: 'Story not found' }, { status: 404 });
     }
 
-    const newVersion = storyJson?.meta?.version || existingStory.version;
+    const newVersion = storyJson?.version || existingStory.version;
     const uploadBase = `stories/${slug}/${newVersion}`;
     
     let storyJsonUrl = existingStory.storyJsonUrl;
@@ -108,8 +108,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
         userId,
         version: storyFile ? newVersion : undefined, // Only create new version if story file updated
         storyJsonUrl: storyFile ? storyJsonUrl : undefined,
-        title: storyJson?.meta?.title,
-        description: storyJson?.meta?.description,
+        title: storyJson?.metadata?.title,
+        description: storyJson?.metadata?.description,
         coverImageUrl: coverFile ? coverImageUrl : undefined,
         // genre, isPublished, isActive can be updated if we parse them from form fields too
         // For now assuming they are not changed via this endpoint or extracted from JSON

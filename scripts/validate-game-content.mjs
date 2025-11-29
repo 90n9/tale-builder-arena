@@ -6,11 +6,6 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 
-const localizedText = z.object({
-  en: z.string(),
-  th: z.string(),
-}).strict();
-
 const attributeMap = z.record(z.number());
 
 const requirementSchema = z.object({
@@ -19,7 +14,7 @@ const requirementSchema = z.object({
 }).strict();
 
 const choiceSchema = z.object({
-  text: localizedText,
+  text: z.string(),
   next: z.string(),
   on_fail_next: z.string().optional(),
   requirements: requirementSchema.optional(),
@@ -29,8 +24,8 @@ const choiceSchema = z.object({
 const sceneSchema = z.object({
   scene_id: z.string(),
   type: z.string(),
-  title: localizedText,
-  description: localizedText,
+  title: z.string(),
+  description: z.string(),
   image: z.string(),
   image_prompt: z.string(),
   choices: z.array(choiceSchema).min(1),
@@ -38,9 +33,9 @@ const sceneSchema = z.object({
 
 const endingSchema = z.object({
   ending_id: z.string(),
-  title: localizedText,
-  summary: localizedText,
-  result: localizedText,
+  title: z.string(),
+  summary: z.string(),
+  result: z.string(),
   image: z.string(),
   image_prompt: z.string(),
   conditions: z.object({
@@ -53,14 +48,12 @@ const gameContentSchema = z.object({
   game_id: z.string(),
   version: z.string(),
   metadata: z.object({
-    title: localizedText,
-    subtitle: localizedText,
+    title: z.string(),
+    subtitle: z.string(),
     genre: z.string(),
-    description: localizedText,
+    description: z.string(),
     cover_image: z.string(),
-    estimated_play_time: z.string(),
     author: z.string(),
-    supported_languages: z.array(z.string()).min(1),
   }).strict(),
   config: z.object({
     starting_attributes: z.object({
@@ -79,31 +72,31 @@ const gameContentSchema = z.object({
   races: z.array(
     z.object({
       id: z.string(),
-      name: localizedText,
-      description: localizedText,
-      attribute_bonus: attributeMap,
+      name: z.string(),
+      description: z.string(),
+      attribute_bonus: attributeMap.optional(),
     }).strict(),
   ),
   classes: z.array(
     z.object({
       id: z.string(),
-      name: localizedText,
-      description: localizedText,
-      starting_bonus: attributeMap,
+      name: z.string(),
+      description: z.string(),
+      starting_bonus: attributeMap.optional(),
     }).strict(),
   ),
   attributes: z.array(
     z.object({
       id: z.string(),
-      name: localizedText,
+      name: z.string(),
     }).strict(),
   ),
   backgrounds: z.array(
     z.object({
       id: z.string(),
-      name: localizedText,
-      description: localizedText,
-      bonus_attributes: attributeMap,
+      name: z.string(),
+      description: z.string(),
+      bonus_attributes: attributeMap.optional(),
     }).strict(),
   ),
   global_flags: z.object({

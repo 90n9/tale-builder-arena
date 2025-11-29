@@ -7,11 +7,7 @@
     "genre": "adventure",
     "description": "A test story to verify the game system works correctly",
     "cover_image": "/assets/games/test-story/cover.png",
-    "estimated_play_time": "5-10 minutes",
-    "author": "Test Author",
-    "supported_languages": [
-      "en"
-    ]
+    "author": "Test Author"
   },
   "config": {
     "starting_attributes": {

@@ -22,8 +22,8 @@ describe('createStory', () => {
     // Arrange
     const request = {
       slug: 'my-story',
-      title: { th: 'My Story' },
-      description: { th: 'A great adventure' },
+      title: 'My Story',
+      description: 'A great adventure',
       genre: 'fantasy',
       authorId: 1,
       version: '1.0.0',
@@ -44,7 +44,6 @@ describe('createStory', () => {
       isActive: request.isActive,
       genre: request.genre,
       description: request.description,
-      estimatedPlayTime: null,
       coverImageUrl: request.coverImageUrl,
       storyJsonUrl: request.storyJsonUrl,
       createdAt: new Date(),
@@ -66,7 +65,7 @@ describe('createStory', () => {
     // Arrange
     const request = {
       slug: 'my-story',
-      title: { th: 'My Story' },
+      title: 'My Story',
       genre: 'fantasy',
       authorId: 1,
       version: '1.0.0',

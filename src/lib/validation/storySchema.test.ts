@@ -4,43 +4,71 @@ import { storySchema } from '@/lib/validation/storySchema';
 
 describe('Story Schema Validation', () => {
   const validStory = {
-    meta: {
-      title: { en: 'Test Story' },
-      description: { en: 'A test story description' },
-      version: '1.0.0',
-      supportedLanguages: ['en'],
+    game_id: 'test-story',
+    version: '1.0.0',
+    metadata: {
+      title: 'Test Story',
+      subtitle: 'A test story',
+      genre: 'fantasy',
+      description: 'This is a test story',
+      cover_image: 'cover.jpg',
+      author: 'Test Author',
     },
     config: {
-      initialSceneId: 'scene_1',
+      starting_attributes: {
+        points_to_distribute: 0,
+        base_values: {},
+      },
+      asset_paths: {
+        images: '/',
+        videos: '/',
+      },
+      ui: {
+        theme_color: '#000000',
+        text_speed: 'instant',
+      },
     },
     scenes: {
       scene_1: {
-        id: 'scene_1',
-        text: { en: 'Scene text' },
+        scene_id: 'scene_1',
+        title: 'Scene 1',
+        description: 'Scene 1 description',
         choices: [
           {
-            id: 'choice_1',
-            text: { en: 'Choice text' },
-            nextSceneId: 'scene_2',
+            text: 'Choice 1',
+            next: 'scene_2',
           },
         ],
       },
       scene_2: {
-        id: 'scene_2',
-        text: { en: 'End scene' },
-        isEnding: true,
-        endingId: 'ending_1',
+        scene_id: 'scene_2',
+        title: 'Scene 2',
+        description: 'Scene 2 description',
+        choices: [
+            {
+                text: 'End',
+                next: 'end',
+            }
+        ]
       },
     },
+    endings: {
+        end: {
+            ending_id: 'end',
+            title: 'The End',
+            summary: 'You finished the story.',
+            result: 'Victory',
+        }
+    }
   };
 
   it('should validate a correct story structure', () => {
     expect(() => storySchema.parse(validStory)).not.toThrow();
   });
 
-  it('should reject story without meta', () => {
+  it('should reject story without metadata', () => {
     const invalidStory = { ...validStory };
-    delete (invalidStory as any).meta;
+    delete (invalidStory as any).metadata;
 
     expect(() => storySchema.parse(invalidStory)).toThrow();
   });
@@ -64,47 +92,15 @@ describe('Story Schema Validation', () => {
       ...validStory,
       scenes: {
         scene_1: {
-          id: 'scene_1',
-          // Missing required 'text' field
+          scene_id: 'scene_1',
+          // Missing required 'description' field
+          title: 'Scene 1',
           choices: [],
         },
       },
     };
 
     expect(() => storySchema.parse(invalidStory)).toThrow();
-  });
-
-  it('should accept story with multiple languages', () => {
-    const multiLangStory = {
-      ...validStory,
-      meta: {
-        ...validStory.meta,
-        title: { en: 'Test Story', th: 'เรื่องทดสอบ' },
-        description: { en: 'Description', th: 'คำอธิบาย' },
-        supportedLanguages: ['en', 'th'],
-      },
-      scenes: {
-        scene_1: {
-          id: 'scene_1',
-          text: { en: 'Scene text', th: 'ข้อความฉาก' },
-          choices: [
-            {
-              id: 'choice_1',
-              text: { en: 'Choice', th: 'ตัวเลือก' },
-              nextSceneId: 'scene_2',
-            },
-          ],
-        },
-        scene_2: {
-          id: 'scene_2',
-          text: { en: 'End', th: 'จบ' },
-          isEnding: true,
-          endingId: 'ending_1',
-        },
-      },
-    };
-
-    expect(() => storySchema.parse(multiLangStory)).not.toThrow();
   });
 
   it('should accept scenes with requirements', () => {
@@ -116,14 +112,13 @@ describe('Story Schema Validation', () => {
           ...validStory.scenes.scene_1,
           choices: [
             {
-              id: 'choice_1',
-              text: { en: 'Choice text' },
-              nextSceneId: 'scene_2',
-              requirements: [
-                { type: 'stat' as const, key: 'strength', value: 10, operator: 'gte' as const },
-                { type: 'item' as const, key: 'sword', value: true },
-              ],
-              onFailNextSceneId: 'scene_fail',
+              text: 'Choice 1',
+              next: 'scene_2',
+              requirements: {
+                classes: ['warrior'],
+                min_attributes: { strength: 10 },
+              },
+              on_fail_next: 'scene_fail',
             },
           ],
         },
