@@ -25,13 +25,11 @@ export class PrismaStoryRepository implements StoryRepository {
         description: true,
         genre: true,
         coverImageUrl: true,
-        supportedLang: true,
         version: true,
         isPublished: true,
         isActive: true,
         authorId: true,
         storyJsonUrl: true,
-        estimatedPlayTime: true,
         createdAt: true,
         updatedAt: true,
         author: {
@@ -39,6 +37,11 @@ export class PrismaStoryRepository implements StoryRepository {
             id: true,
             username: true,
           },
+        },
+        versions: {
+            orderBy: {
+                createdAt: 'desc',
+            },
         },
         _count: {
           select: {
@@ -107,7 +110,6 @@ export class PrismaStoryRepository implements StoryRepository {
         genre: data.genre,
         coverImageUrl: data.coverImageUrl,
         storyJsonUrl: data.storyJsonUrl,
-        supportedLang: data.supportedLang,
         isPublished: data.isPublished ?? false,
         isActive: data.isActive ?? true,
         versions: {

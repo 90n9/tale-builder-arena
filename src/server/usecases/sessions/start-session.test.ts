@@ -56,7 +56,6 @@ describe('startSession', () => {
       version: '1.0.0',
       isPublished: true,
       isActive: true,
-      supportedLang: ['th'],
       genre: 'fantasy',
       title: {th: 'Test Story'},
       subtitle: null,

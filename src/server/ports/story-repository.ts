@@ -20,7 +20,6 @@ export type CreateStoryData = {
   genre: string;
   coverImageUrl?: string;
   storyJsonUrl: string;
-  supportedLang: string[];
   isPublished?: boolean;
   isActive?: boolean;
 };
@@ -31,7 +30,6 @@ export type UpdateStoryData = {
   genre?: string;
   coverImageUrl?: string;
   storyJsonUrl?: string;
-  supportedLang?: string[];
   isPublished?: boolean;
   isActive?: boolean;
   version?: string;

@@ -118,7 +118,6 @@ export async function POST(request: Request) {
         genre: 'Adventure', // Should be in JSON meta
         coverImageUrl,
         storyJsonUrl,
-        supportedLang: storyJson.meta.supportedLanguages,
         isPublished: false,
         isActive: true,
       },

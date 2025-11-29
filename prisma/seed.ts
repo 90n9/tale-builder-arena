@@ -51,18 +51,17 @@ async function main() {
 
       // Extract metadata
       const meta = storyJson.metadata || {};
-      const supportedLang = meta.supported_languages || ['en'];
       
       // Handle title: if string, wrap in object using first supported lang
-      let title = meta.title || { en: slug };
+      let title = meta.title || { th: slug };
       if (typeof title === 'string') {
-        title = { [supportedLang[0]]: title };
+        title = { th: title };
       }
 
       // Handle description
-      let description = meta.description || { en: 'A legacy story.' };
+      let description = meta.description || { th: 'A legacy story.' };
       if (typeof description === 'string') {
-        description = { [supportedLang[0]]: description };
+        description = { th: description };
       }
 
       const genre = meta.genre || 'Adventure';
@@ -101,7 +100,6 @@ async function main() {
           title,
           description,
           genre,
-          supportedLang,
         },
         create: {
           slug,
@@ -109,7 +107,6 @@ async function main() {
           version: '1.0.0',
           isPublished: true,
           isActive: true,
-          supportedLang,
           genre,
           title,
           description,
