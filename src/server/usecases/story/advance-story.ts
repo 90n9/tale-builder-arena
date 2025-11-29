@@ -1,4 +1,3 @@
-import { type Language } from "@/lib/i18n";
 import {
   type ChoiceRequirement,
   type GameContentGateway,
@@ -39,9 +38,7 @@ export type AdvanceStoryResult =
       };
     };
 
-export type AdvanceStoryDeps = {
-  gameContent: GameContentGateway;
-};
+
 
 const buildChoiceId = (sceneId: string, index: number, choice: StoryChoice) => `${sceneId}::${index}::${choice.next}`;
 
@@ -87,15 +84,12 @@ const buildImageUrl = (game: StoryGameContent, imageName?: string) => {
   return `${normalizedBase}${imageName}`;
 };
 
-export const advanceStory = (request: StoryRequest, deps: AdvanceStoryDeps): AdvanceStoryResult => {
-  const language: Language = "th";
-  const defaultGame = deps.gameContent.getDefaultStoryGame();
-  const gameId = request.gameId ?? defaultGame.game_id;
-  const game = deps.gameContent.findStoryGameById(gameId);
-
+export const advanceStory = (request: StoryRequest, game: StoryGameContent | null): AdvanceStoryResult => {
   if (!game) {
     return { kind: "game_not_found" };
   }
+
+  const gameId = game.game_id; // Use game from argument
 
   const coverImage = buildImageUrl(game, game.metadata?.cover_image);
 

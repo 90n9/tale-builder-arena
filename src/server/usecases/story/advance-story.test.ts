@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import { type GameContentGateway } from "@/server/ports/game-content";
-import { type I18nService } from "@/server/ports/i18n";
 import { advanceStory } from "./advance-story";
 
 const mockGameContent = {
@@ -18,22 +17,22 @@ const mockGameContent = {
   scenes: {
     start: {
       scene_id: "start",
-      title: { th: "เริ่ม", en: "Start" },
-      description: { th: "เริ่มเกม", en: "Begin the game" },
+      title: "เริ่ม",
+      description: "เริ่มเกม",
       image: "start.png",
       choices: [
-        { text: { th: "ไป A", en: "Go A" }, next: "scene_a" },
-        { text: { th: "ไป จบ", en: "End", }, next: "ending_1" },
+        { text: "ไป A", next: "scene_a" },
+        { text: "ไป จบ", next: "ending_1" },
       ],
     },
     scene_a: {
       scene_id: "scene_a",
-      title: { th: "ฉาก เอ", en: "Scene A" },
-      description: { th: "ทางเลือก", en: "Choice ahead" },
+      title: "ฉาก เอ",
+      description: "ทางเลือก",
       image: "/scene-a.png",
       choices: [
         {
-          text: { th: "ต้องเป็นเมจ", en: "Mage only" },
+          text: "ต้องเป็นเมจ",
           next: "scene_b",
           requirements: { classes: ["mage"] },
           on_fail_next: "scene_fail",
@@ -42,23 +41,23 @@ const mockGameContent = {
     },
     scene_fail: {
       scene_id: "scene_fail",
-      title: { th: "ล้มเหลว", en: "Failed" },
-      description: { th: "ไม่ผ่านเงื่อนไข", en: "Requirement not met" },
+      title: "ล้มเหลว",
+      description: "ไม่ผ่านเงื่อนไข",
       choices: [],
     },
     no_image: {
       scene_id: "no_image",
-      title: { th: "ไม่มีรูป", en: "No Image" },
-      description: { th: "ใช้ภาพหน้าปก", en: "Falls back to cover" },
+      title: "ไม่มีรูป",
+      description: "ใช้ภาพหน้าปก",
       choices: [],
     },
   },
   endings: {
     ending_1: {
       ending_id: "ending_1",
-      title: { th: "จบ", en: "End" },
-      summary: { th: "สรุป", en: "Summary" },
-      result: { th: "ผลลัพธ์", en: "Result" },
+      title: "จบ",
+      summary: "สรุป",
+      result: "ผลลัพธ์",
       image: "ending.png",
     },
   },
@@ -76,20 +75,14 @@ const gameGateway: GameContentGateway = {
   },
 };
 
-const i18n: I18nService = {
-  getLocalizedText(value, language) {
-    return value[language] ?? value.th;
-  },
-};
-
 describe("advanceStory use case", () => {
   it("returns game_not_found for unknown game", () => {
-    const result = advanceStory({ gameId: "missing" }, { gameContent: gameGateway, i18n });
+    const result = advanceStory({}, null); // Pass null directly as game
     expect(result.kind).toBe("game_not_found");
   });
 
   it("returns start scene when no selection is provided", () => {
-    const result = advanceStory({ gameId: mockGameContent.game_id, language: "en" }, { gameContent: gameGateway, i18n });
+    const result = advanceStory({ gameId: mockGameContent.game_id }, mockGameContent);
     expect(result.kind).toBe("success");
     expect(result.kind === "success" && result.body.sceneId).toBe("start");
     expect(result.kind === "success" && result.body.shouldEnd).toBe(false);
@@ -103,10 +96,9 @@ describe("advanceStory use case", () => {
         gameId: mockGameContent.game_id,
         currentSceneId: "scene_a",
         selectedChoiceId: "scene_b",
-        language: "en",
         character: { classId: "warrior" },
       },
-      { gameContent: gameGateway, i18n },
+      mockGameContent,
     );
 
     expect(result.kind).toBe("success");
@@ -126,16 +118,8 @@ describe("advanceStory use case", () => {
         gameId: emptyGame.game_id,
         currentSceneId: "missing",
         selectedChoiceId: "nowhere",
-        language: "en",
       },
-      {
-        gameContent: {
-          ...gameGateway,
-          findStoryGameById: () => emptyGame,
-          getDefaultStoryGame: () => emptyGame,
-        },
-        i18n,
-      },
+      emptyGame,
     );
 
     expect(result.kind).toBe("scene_not_found");
@@ -147,9 +131,8 @@ describe("advanceStory use case", () => {
         gameId: mockGameContent.game_id,
         currentSceneId: "start",
         selectedChoiceId: "ending_1",
-        language: "en",
       },
-      { gameContent: gameGateway, i18n },
+      mockGameContent,
     );
 
     expect(result.kind).toBe("success");
@@ -166,9 +149,8 @@ describe("advanceStory use case", () => {
       {
         gameId: mockGameContent.game_id,
         currentSceneId: "no_image",
-        language: "en",
       },
-      { gameContent: gameGateway, i18n },
+      mockGameContent,
     );
 
     expect(result.kind).toBe("success");

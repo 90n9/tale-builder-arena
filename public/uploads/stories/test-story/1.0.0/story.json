@@ -1,0 +1,223 @@
+{
+  "game_id": "test-story",
+  "version": "1.0.0",
+  "metadata": {
+    "title": "Test Adventure Story",
+    "subtitle": "A simple test story for development",
+    "genre": "adventure",
+    "description": "A test story to verify the game system works correctly",
+    "cover_image": "/assets/games/test-story/cover.png",
+    "author": "Test Author"
+  },
+  "config": {
+    "starting_attributes": {
+      "points_to_distribute": 3,
+      "base_values": {
+        "str": 1,
+        "int": 1,
+        "agi": 1
+      }
+    },
+    "asset_paths": {
+      "images": "/assets/games/test-story/",
+      "videos": "/assets/games/test-story/"
+    },
+    "ui": {
+      "theme_color": "#4A90E2",
+      "text_speed": "instant"
+    }
+  },
+  "races": [
+    {
+      "id": "human",
+      "name": "Human",
+      "description": "Versatile and adaptable",
+      "attribute_bonus": {
+        "str": 1
+      }
+    },
+    {
+      "id": "elf",
+      "name": "Elf",
+      "description": "Graceful and intelligent",
+      "attribute_bonus": {
+        "int": 1
+      }
+    }
+  ],
+  "classes": [
+    {
+      "id": "warrior",
+      "name": "Warrior",
+      "description": "Master of combat",
+      "starting_bonus": {
+        "str": 2
+      }
+    },
+    {
+      "id": "mage",
+      "name": "Mage",
+      "description": "Wielder of magic",
+      "starting_bonus": {
+        "int": 2
+      }
+    }
+  ],
+  "attributes": [
+    {
+      "id": "str",
+      "name": "Strength"
+    },
+    {
+      "id": "int",
+      "name": "Intelligence"
+    },
+    {
+      "id": "agi",
+      "name": "Agility"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "start",
+      "text": "You stand at the entrance of an ancient dungeon. The air is thick with mystery and danger.",
+      "choices": [
+        {
+          "id": "enter_dungeon",
+          "text": "Enter the dungeon",
+          "next_scene": "inside_dungeon",
+          "requirements": []
+        },
+        {
+          "id": "leave",
+          "text": "Turn back",
+          "next_scene": "ending_coward",
+          "requirements": []
+        }
+      ]
+    },
+    {
+      "id": "inside_dungeon",
+      "text": "You step inside the dark dungeon. A fork in the path lies ahead.",
+      "choices": [
+        {
+          "id": "go_left",
+          "text": "Take the left path",
+          "next_scene": "treasure_room",
+          "requirements": [
+            {
+              "type": "attribute",
+              "attribute": "int",
+              "operator": ">=",
+              "value": 2
+            }
+          ],
+          "on_fail": "trap_room"
+        },
+        {
+          "id": "go_right",
+          "text": "Take the right path",
+          "next_scene": "monster_room",
+          "requirements": []
+        }
+      ]
+    },
+    {
+      "id": "treasure_room",
+      "text": "You found a hidden treasure room! Gold and jewels sparkle in the torchlight.",
+      "choices": [
+        {
+          "id": "take_treasure",
+          "text": "Take the treasure",
+          "next_scene": "ending_rich",
+          "requirements": [],
+          "effects": [
+            {
+              "type": "attribute",
+              "attribute": "luk",
+              "operator": "+",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trap_room",
+      "text": "You triggered a trap! Arrows fly from the walls.",
+      "choices": [
+        {
+          "id": "dodge",
+          "text": "Try to dodge",
+          "next_scene": "ending_wounded",
+          "requirements": [
+            {
+              "type": "attribute",
+              "attribute": "agi",
+              "operator": ">=",
+              "value": 3
+            }
+          ],
+          "on_success": "treasure_room",
+          "on_fail": "ending_dead"
+        }
+      ]
+    },
+    {
+      "id": "monster_room",
+      "text": "A fearsome monster blocks your path!",
+      "choices": [
+        {
+          "id": "fight",
+          "text": "Fight the monster",
+          "next_scene": "ending_hero",
+          "requirements": [
+            {
+              "type": "attribute",
+              "attribute": "str",
+              "operator": ">=",
+              "value": 3
+            }
+          ],
+          "on_fail": "ending_dead"
+        },
+        {
+          "id": "flee",
+          "text": "Run away",
+          "next_scene": "ending_coward",
+          "requirements": []
+        }
+      ]
+    },
+    {
+      "id": "ending_hero",
+      "text": "You defeated the monster and became a hero! Tales of your bravery will be told for generations.",
+      "is_ending": true,
+      "ending_type": "good"
+    },
+    {
+      "id": "ending_rich",
+      "text": "You escaped with the treasure and lived a life of luxury.",
+      "is_ending": true,
+      "ending_type": "good"
+    },
+    {
+      "id": "ending_coward",
+      "text": "You fled from danger. Safety is yours, but not glory.",
+      "is_ending": true,
+      "ending_type": "neutral"
+    },
+    {
+      "id": "ending_wounded",
+      "text": "You barely escaped with your life, wounded but alive.",
+      "is_ending": true,
+      "ending_type": "neutral"
+    },
+    {
+      "id": "ending_dead",
+      "text": "Your adventure ends here. The dungeon claims another victim.",
+      "is_ending": true,
+      "ending_type": "bad"
+    }
+  ]
+}

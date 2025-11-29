@@ -12,10 +12,13 @@ export function GET() {
 
 export async function POST(request: Request) {
   const payload = await request.json().catch(() => ({}));
+  const game = staticGameContentGateway.findStoryGameById(payload.gameId);
 
-  const result = advanceStory(payload, {
-    gameContent: staticGameContentGateway,
-  });
+  if (!game) {
+    return NextResponse.json({ message: "Game not found" }, { status: 400 });
+  }
+
+  const result = advanceStory(payload, game);
 
   switch (result.kind) {
     case "game_not_found":

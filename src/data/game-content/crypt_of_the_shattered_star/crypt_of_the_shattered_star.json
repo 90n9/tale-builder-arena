@@ -7,11 +7,7 @@
     "genre": "fantasy_dungeon",
     "description": "ดันเจี้ยนแบบโต้ตอบ ที่เผ่าพันธุ์ คลาส และค่าสเตตัสของคุณ จะกำหนดชะตากรรมของตัวละคร",
     "cover_image": "/assets/games/crypt_of_the_shattered_star/cover.png",
-    "estimated_play_time": "15-25 minutes",
-    "author": "AI Generated",
-    "supported_languages": [
-      "th"
-    ]
+    "author": "AI Generated"
   },
   "config": {
     "starting_attributes": {

@@ -11,7 +11,6 @@ type GameContent = {
     genre: string;
     description: string;
     cover_image: string;
-    estimated_play_time: string;
   };
 };
 
@@ -23,7 +22,6 @@ export type GameStory = {
   tagline: string;
   description: string;
   tone: string;
-  length: string;
   highlights: string[];
   coverImage: string;
 };
@@ -32,7 +30,7 @@ const GAME_CONTENTS: GameContent[] = [cryptOfTheShatteredStar, yaitongdeeDungeon
 
 const CUSTOM_GAME_DETAILS: Record<
   string,
-  { tone: string; highlights: string[]; lengthTh?: string }
+  { tone: string; highlights: string[]; }
 > = {
   crypt_of_the_shattered_star: {
     tone: "ดันเจี้ยนเลือกเส้นทาง • เวทมนตร์เข้มข้น",
@@ -41,7 +39,6 @@ const CUSTOM_GAME_DETAILS: Record<
       "เส้นทางสำรวจได้หลายทางเลือก",
       "ฉากจบ 6 แบบ",
     ],
-    lengthTh: "15-25 นาที",
   },
   yaitongdee_dungeon: {
     tone: "แฟนตาซีสายฮาใต้ร้านชำไทย",
@@ -50,11 +47,8 @@ const CUSTOM_GAME_DETAILS: Record<
       "โทนขำขัน ล้อวัฒนธรรมไทย",
       "ฉากจบ 6 แบบ",
     ],
-    lengthTh: "10-20 นาที",
   },
 };
-
-const buildLengthText = (playTime: string, thAlt?: string): string => thAlt ?? playTime;
 
 export const GAME_STORIES: GameStory[] = GAME_CONTENTS.map((content) => {
   const extras = CUSTOM_GAME_DETAILS[content.game_id];
@@ -66,7 +60,6 @@ export const GAME_STORIES: GameStory[] = GAME_CONTENTS.map((content) => {
     tagline: content.metadata.subtitle,
     description: content.metadata.description,
     tone: extras?.tone ?? getGenreLabel(content.metadata.genre),
-    length: buildLengthText(content.metadata.estimated_play_time, extras?.lengthTh),
     highlights: extras?.highlights ?? [],
     coverImage: content.metadata.cover_image,
   };
