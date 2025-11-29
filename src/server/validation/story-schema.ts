@@ -6,7 +6,6 @@ export const createStorySchema = z.object({
   genre: z.string(),
   coverImageUrl: z.string().optional(),
   storyJsonUrl: z.string().url(),
-  supportedLang: z.array(z.string()),
   isPublished: z.boolean().optional(),
   isActive: z.boolean().optional(),
 });

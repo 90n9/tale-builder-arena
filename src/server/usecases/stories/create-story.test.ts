@@ -29,7 +29,6 @@ describe('createStory', () => {
       version: '1.0.0',
       storyJsonUrl: 'http://example.com/story.json',
       coverImageUrl: 'http://example.com/cover.jpg',
-      supportedLang: ['th'],
       isPublished: true,
       isActive: true,
     };
@@ -43,7 +42,6 @@ describe('createStory', () => {
       version: request.version,
       isPublished: request.isPublished,
       isActive: request.isActive,
-      supportedLang: request.supportedLang,
       genre: request.genre,
       description: request.description,
       estimatedPlayTime: null,
@@ -73,7 +71,6 @@ describe('createStory', () => {
       authorId: 1,
       version: '1.0.0',
       storyJsonUrl: 'http://example.com/story.json',
-      supportedLang: ['th'],
     };
 
     (mockStoryRepo.findStoryBySlug as vi.Mock).mockResolvedValue({ id: 1 } as Story);

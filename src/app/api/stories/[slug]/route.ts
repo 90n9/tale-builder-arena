@@ -110,7 +110,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
         storyJsonUrl: storyFile ? storyJsonUrl : undefined,
         title: storyJson?.meta?.title,
         description: storyJson?.meta?.description,
-        supportedLang: storyJson?.meta?.supportedLanguages,
         coverImageUrl: coverFile ? coverImageUrl : undefined,
         // genre, isPublished, isActive can be updated if we parse them from form fields too
         // For now assuming they are not changed via this endpoint or extracted from JSON
