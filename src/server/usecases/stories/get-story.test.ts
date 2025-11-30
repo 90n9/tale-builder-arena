@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getStory } from './get-story';
-import { StoryRepository, StoryWithRelations } from '@/server/ports/story-repository';
-import { Story } from '@prisma/client';
+import { StoryRepository } from '@/server/ports/story-repository';
+import { createMockStoryWithRelations } from '../__tests__/fixtures/story';
 
 describe('getStory', () => {
   const mockStoryRepo: StoryRepository = {
@@ -19,23 +19,11 @@ describe('getStory', () => {
   });
 
   it('should return story if found', async () => {
-    const mockStory: StoryWithRelations = {
-        id: 1,
-        slug: 'test-story',
-        authorId: 1,
-        version: '1.0.0',
-        isPublished: true,
-        isActive: true,
-        genre: 'fantasy',
-        title: {th: 'Test Story'},
-        subtitle: null,
-        description: null,
-        coverImageUrl: null,
-        storyJsonUrl: 'http://example.com/story.json',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        author: { id: 1, username: 'author1' }
-    };
+    const mockStory = createMockStoryWithRelations({
+      slug: 'test-story',
+      storyJsonUrl: 'http://example.com/story.json',
+      author: { id: 1, username: 'author1', displayName: null },
+    });
     (mockStoryRepo.findStoryBySlug as vi.Mock).mockResolvedValue(mockStory);
 
     const result = await getStory({ slug: 'test-story' }, { storyRepo: mockStoryRepo });

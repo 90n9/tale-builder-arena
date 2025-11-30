@@ -1,4 +1,4 @@
-export type Language = "th";
+export type Language = 'th';
 
 export type LocalizedText = string;
 

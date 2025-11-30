@@ -20,7 +20,7 @@ export const registerUser = async (
 ): Promise<RegisterUserResult> => {
   try {
     // Validate input
-    const { email, username, password } = registerSchema.parse(request);
+    const { email, username, password, displayName } = registerSchema.parse(request);
 
     // Check if user already exists
     const existingUser = await deps.authRepo.findUserByEmail(email);
@@ -35,6 +35,7 @@ export const registerUser = async (
     const user = await deps.authRepo.createUser({
       email,
       username,
+      displayName,
       passwordHash,
     });
 

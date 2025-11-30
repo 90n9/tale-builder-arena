@@ -1,7 +1,7 @@
-import { type LocalizedText } from "@/lib/i18n";
-import { getGenreLabel } from "@/data/genres";
-import cryptOfTheShatteredStar from "./game-content/crypt_of_the_shattered_star/crypt_of_the_shattered_star.json";
-import yaitongdeeDungeon from "./game-content/yaitongdee_dungeon/yaitongdee_dungeon.json";
+import { type LocalizedText } from '@/lib/i18n';
+import { getGenreLabel } from '@/data/genres';
+import cryptOfTheShatteredStar from './game-content/crypt_of_the_shattered_star/crypt_of_the_shattered_star.json';
+import yaitongdeeDungeon from './game-content/yaitongdee_dungeon/yaitongdee_dungeon.json';
 
 type GameContent = {
   game_id: string;
@@ -17,7 +17,7 @@ type GameContent = {
     }
   >;
 };
-type Ending = GameContent["endings"][string];
+type Ending = GameContent['endings'][string];
 
 export interface Achievement {
   id: string;
@@ -27,24 +27,24 @@ export interface Achievement {
   genre: string;
   genreLabel: string;
   endSceneType: string;
-  rarity: "common" | "rare" | "epic" | "legendary";
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
 }
 
 const GAME_CONTENTS: GameContent[] = [cryptOfTheShatteredStar, yaitongdeeDungeon];
 
-const rarityByEnding: Record<string, Achievement["rarity"]> = {
-  "crypt_of_the_shattered_star:ending_1": "common",
-  "crypt_of_the_shattered_star:ending_2": "rare",
-  "crypt_of_the_shattered_star:ending_3": "rare",
-  "crypt_of_the_shattered_star:ending_4": "legendary",
-  "crypt_of_the_shattered_star:ending_5": "epic",
-  "crypt_of_the_shattered_star:ending_6": "rare",
-  "yaitongdee_dungeon:ending_1": "common",
-  "yaitongdee_dungeon:ending_2": "rare",
-  "yaitongdee_dungeon:ending_3": "rare",
-  "yaitongdee_dungeon:ending_4": "epic",
-  "yaitongdee_dungeon:ending_5": "legendary",
-  "yaitongdee_dungeon:ending_6": "epic",
+const rarityByEnding: Record<string, Achievement['rarity']> = {
+  'crypt_of_the_shattered_star:ending_1': 'common',
+  'crypt_of_the_shattered_star:ending_2': 'rare',
+  'crypt_of_the_shattered_star:ending_3': 'rare',
+  'crypt_of_the_shattered_star:ending_4': 'legendary',
+  'crypt_of_the_shattered_star:ending_5': 'epic',
+  'crypt_of_the_shattered_star:ending_6': 'rare',
+  'yaitongdee_dungeon:ending_1': 'common',
+  'yaitongdee_dungeon:ending_2': 'rare',
+  'yaitongdee_dungeon:ending_3': 'rare',
+  'yaitongdee_dungeon:ending_4': 'epic',
+  'yaitongdee_dungeon:ending_5': 'legendary',
+  'yaitongdee_dungeon:ending_6': 'epic',
 };
 
 const buildAchievementId = (gameId: string, endingId: string) => `${gameId}-${endingId}`;
@@ -59,12 +59,12 @@ const convertEndingToAchievement = (game: GameContent, ending: Ending): Achievem
     genre: game.metadata.genre,
     genreLabel: getGenreLabel(game.metadata.genre),
     endSceneType: ending.ending_id,
-    rarity: rarityByEnding[key] ?? "rare",
+    rarity: rarityByEnding[key] ?? 'rare',
   };
 };
 
 export const ALL_ACHIEVEMENTS: Achievement[] = GAME_CONTENTS.flatMap((game) =>
-  Object.values(game.endings).map((ending) => convertEndingToAchievement(game, ending)),
+  Object.values(game.endings).map((ending) => convertEndingToAchievement(game, ending))
 );
 
 export function findAchievementById(id: string) {
@@ -72,7 +72,9 @@ export function findAchievementById(id: string) {
 }
 
 export function randomAchievementForGenre(genre?: string) {
-  const pool = genre ? ALL_ACHIEVEMENTS.filter((achievement) => achievement.genre === genre) : ALL_ACHIEVEMENTS;
+  const pool = genre
+    ? ALL_ACHIEVEMENTS.filter((achievement) => achievement.genre === genre)
+    : ALL_ACHIEVEMENTS;
   if (!pool.length) {
     return null;
   }

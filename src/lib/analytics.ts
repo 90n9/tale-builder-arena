@@ -7,15 +7,14 @@ declare global {
 
 export const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
-const isBrowser = typeof window !== "undefined";
+const isBrowser = typeof window !== 'undefined';
 
-const isGtagReady = () =>
-  isBrowser && typeof window.gtag === "function" && !!gaMeasurementId;
+const isGtagReady = () => isBrowser && typeof window.gtag === 'function' && !!gaMeasurementId;
 
 export function trackPageview(url: string) {
   if (!isGtagReady()) return;
 
-  window.gtag?.("config", gaMeasurementId as string, {
+  window.gtag?.('config', gaMeasurementId as string, {
     page_path: url,
   });
 }
@@ -30,14 +29,14 @@ type InteractionEvent = {
 
 export function trackInteraction({
   action,
-  category = "interaction",
+  category = 'interaction',
   label,
   value,
   params,
 }: InteractionEvent) {
   if (!isGtagReady()) return;
 
-  window.gtag?.("event", action, {
+  window.gtag?.('event', action, {
     event_category: category,
     event_label: label,
     value,

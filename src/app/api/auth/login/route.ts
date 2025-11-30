@@ -1,52 +1,40 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { loginUser } from '@/server/usecases/auth/login-user';
 import { PrismaAuthRepository } from '@/server/infra/prisma-auth-repository';
+import { prisma } from '@/lib/prisma';
+import { cookies } from 'next/headers';
 
-const prisma = new PrismaClient();
+const authRepo = new PrismaAuthRepository(prisma);
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    
-    const result = await loginUser(body, {
-      authRepo: new PrismaAuthRepository(prisma),
-    });
+    const result = await loginUser(body, { authRepo });
 
     if (result.kind === 'success') {
-      return NextResponse.json({
-        token: result.token,
-        user: result.user,
+      // Set cookie
+      const cookieStore = await cookies();
+      cookieStore.set('token', result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+        path: '/',
       });
-    }
 
-    if (result.kind === 'invalid_credentials') {
+      return NextResponse.json(result);
+    } else if (result.kind === 'invalid_credentials') {
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    } else if (result.kind === 'validation_error') {
       return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      );
-    }
-
-    if (result.kind === 'validation_error') {
-      return NextResponse.json(
-        { error: result.errors },
+        { error: 'Validation error', details: result.errors },
         { status: 400 }
       );
     }
 
-    // Exhaustive check
-    const _exhaustive: never = result;
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   } catch (error) {
     console.error('Login error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
-  } finally {
-    await prisma.$disconnect();
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

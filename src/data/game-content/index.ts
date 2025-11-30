@@ -1,5 +1,5 @@
-import cryptOfTheShatteredStar from "./crypt_of_the_shattered_star/crypt_of_the_shattered_star.json";
-import yaitongdeeDungeon from "./yaitongdee_dungeon/yaitongdee_dungeon.json";
+import cryptOfTheShatteredStar from './crypt_of_the_shattered_star/crypt_of_the_shattered_star.json';
+import yaitongdeeDungeon from './yaitongdee_dungeon/yaitongdee_dungeon.json';
 
 type AttributeBonus = Record<string, number>;
 

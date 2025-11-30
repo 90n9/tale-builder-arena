@@ -54,19 +54,17 @@ async function main() {
       scene_1: {
         id: 'scene_1',
         text: { en: 'Start scene' },
-        choices: [
-          { id: 'c1', text: { en: 'Go to end' }, nextSceneId: 'scene_end' }
-        ]
+        choices: [{ id: 'c1', text: { en: 'Go to end' }, nextSceneId: 'scene_end' }],
       },
       scene_end: {
         id: 'scene_end',
         text: { en: 'The End' },
         isEnding: true,
-        endingId: 'ending_1'
-      }
-    }
+        endingId: 'ending_1',
+      },
+    },
   };
-  
+
   // Write temp file
   const tempJsonPath = path.join(process.cwd(), 'temp_story.json');
   fs.writeFileSync(tempJsonPath, JSON.stringify(storyJson));
@@ -78,7 +76,7 @@ async function main() {
   const uploadRes = await fetch(`${BASE_URL}/stories`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       ...form.getHeaders(),
     },
     body: form,
@@ -97,7 +95,7 @@ async function main() {
   // So listing might not show it unless we filter or update it.
   // Let's manually update it to published for testing
   await prisma.story.update({ where: { id: storyId }, data: { isPublished: true } });
-  
+
   const listRes = await fetch(`${BASE_URL}/stories`);
   const listData: any = await listRes.json();
   if (!listRes.ok) throw new Error(`List failed: ${JSON.stringify(listData)}`);
@@ -108,7 +106,7 @@ async function main() {
   const sessionRes = await fetch(`${BASE_URL}/sessions`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ storyId, characterData: { name: 'Hero' } }),
@@ -123,7 +121,7 @@ async function main() {
   const choiceRes = await fetch(`${BASE_URL}/sessions/${sessionId}/choice`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ choiceId: 'c1' }),
@@ -134,9 +132,9 @@ async function main() {
   console.log('Status:', choiceData.session.status);
 
   if (choiceData.session.status === 'COMPLETED') {
-      console.log('Story completed successfully!');
+    console.log('Story completed successfully!');
   } else {
-      console.log('Story not completed?');
+    console.log('Story not completed?');
   }
 
   console.log('\nVerification Successful!');

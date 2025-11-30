@@ -48,10 +48,7 @@ export interface StoryRepository {
   /**
    * Find stories with optional filters and pagination
    */
-  findStories(
-    filters: StoryFilters,
-    pagination: PaginationOptions
-  ): Promise<StoryWithRelations[]>;
+  findStories(filters: StoryFilters, pagination: PaginationOptions): Promise<StoryWithRelations[]>;
 
   /**
    * Count stories matching filters
@@ -81,5 +78,10 @@ export interface StoryRepository {
   /**
    * Create a new version for a story
    */
-  createVersion(storyId: number, version: string, storyJsonUrl: string, createdBy: number): Promise<StoryVersion>;
+  createVersion(
+    storyId: number,
+    version: string,
+    storyJsonUrl: string,
+    createdBy: number
+  ): Promise<StoryVersion>;
 }

@@ -5,6 +5,7 @@ This document explains how to use the API verification script to test all backen
 ## Overview
 
 The `verify-api.ts` script is an end-to-end test that verifies all API endpoints are working correctly by:
+
 1. Registering a new user
 2. Logging in
 3. Uploading a story
@@ -16,11 +17,13 @@ The `verify-api.ts` script is an end-to-end test that verifies all API endpoints
 Before running the verification script, ensure:
 
 1. **Database is running**
+
    ```bash
    npm run db:up
    ```
 
 2. **Database migrations are applied**
+
    ```bash
    npm run prisma:migrate
    ```
@@ -41,11 +44,13 @@ Full URL to the API endpoint.
 **Default:** `http://localhost:${PORT}/api`
 
 **Usage:**
+
 ```bash
 API_BASE_URL=https://staging.example.com/api npm run verify-api
 ```
 
 **When to use:**
+
 - Testing against a remote server
 - Testing staging/production environments
 - Using a custom domain
@@ -57,11 +62,13 @@ Port number where the Next.js server is running.
 **Default:** `3000`
 
 **Usage:**
+
 ```bash
 PORT=3001 npm run verify-api
 ```
 
 **When to use:**
+
 - Your dev server runs on a different port
 - Testing multiple environments simultaneously
 
@@ -102,6 +109,7 @@ API_BASE_URL=http://localhost:3001/api
 ```
 
 Then run:
+
 ```bash
 npm run verify-api
 ```
@@ -109,33 +117,39 @@ npm run verify-api
 ## What the Script Tests
 
 ### 1. User Registration
+
 - **Endpoint:** `POST /api/auth/register`
 - **Tests:** User creation, token generation
 - **Expected:** 200 OK with token and user data
 
 ### 2. User Login
+
 - **Endpoint:** `POST /api/auth/login`
 - **Tests:** Authentication, token generation
 - **Expected:** 200 OK with token
 
 ### 3. Story Upload
+
 - **Endpoint:** `POST /api/stories`
 - **Tests:** File upload, story creation, metadata extraction
 - **Expected:** 200 OK with story details
 - **Note:** Creates a temporary story JSON file
 
 ### 4. Story Listing
+
 - **Endpoint:** `GET /api/stories`
 - **Tests:** Story retrieval, pagination
 - **Expected:** 200 OK with story list
 - **Note:** Story is manually published for testing
 
 ### 5. Session Creation
+
 - **Endpoint:** `POST /api/sessions`
 - **Tests:** Game session initialization
 - **Expected:** 200 OK with session data
 
 ### 6. Choice Processing
+
 - **Endpoint:** `POST /api/sessions/:sessionId/choice`
 - **Tests:** Game logic, scene progression
 - **Expected:** 200 OK with updated session
@@ -177,6 +191,7 @@ Verification Successful!
 **Problem:** Cannot connect to the API server
 
 **Solutions:**
+
 1. Ensure dev server is running: `npm run dev`
 2. Check the port matches: `PORT=3001 npm run verify-api`
 3. Verify the server started successfully
@@ -186,6 +201,7 @@ Verification Successful!
 **Problem:** JWT token issues
 
 **Solutions:**
+
 1. Check `JWT_SECRET` is set in `.env`
 2. Ensure database is accessible
 3. Verify user was created successfully
@@ -195,6 +211,7 @@ Verification Successful!
 **Problem:** Story upload or retrieval failed
 
 **Solutions:**
+
 1. Check file upload permissions
 2. Verify `public/uploads` directory exists
 3. Check story JSON is valid
@@ -204,6 +221,7 @@ Verification Successful!
 **Problem:** Cannot connect to database
 
 **Solutions:**
+
 1. Start database: `npm run db:up`
 2. Check database credentials in `.env`
 3. Verify Prisma schema is up to date: `npm run prisma:generate`
@@ -229,13 +247,14 @@ To add additional endpoint tests:
 3. Follow the existing pattern for error handling
 
 Example:
+
 ```typescript
 // 7. Test Comments
 console.log('\n7. Testing Comments...');
 const commentRes = await fetch(`${BASE_URL}/stories/${slug}/comments`, {
   method: 'POST',
   headers: {
-    'Authorization': `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({ text: 'Great story!', rating: 5 }),

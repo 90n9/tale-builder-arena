@@ -7,7 +7,10 @@ import { verifyToken } from '@/lib/auth';
 const prisma = new PrismaClient();
 const sessionRepo = new PrismaSessionRepository(prisma);
 
-export async function GET(request: Request, { params }: { params: Promise<{ sessionId: string }> }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ sessionId: string }> }
+) {
   try {
     const { sessionId: sessionIdStr } = await params;
     const sessionId = parseInt(sessionIdStr);
@@ -19,7 +22,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ sess
     }
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
-    
+
     if (!decoded || typeof decoded === 'string' || !('userId' in decoded)) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
@@ -47,7 +50,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ sess
     }
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-
   } catch (error) {
     console.error('Error fetching session:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

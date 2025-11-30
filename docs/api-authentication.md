@@ -27,6 +27,7 @@ Create a new user account.
 ```
 
 **Validation Rules:**
+
 - `email`: Valid email format, required
 - `username`: 3-50 characters, required
 - `password`: Minimum 6 characters, required
@@ -48,6 +49,7 @@ Create a new user account.
 **Error Responses:**
 
 - **400 Bad Request** - Invalid input data
+
   ```json
   {
     "error": [
@@ -61,6 +63,7 @@ Create a new user account.
   ```
 
 - **409 Conflict** - User already exists
+
   ```json
   {
     "error": "User already exists"
@@ -107,6 +110,7 @@ Authenticate an existing user.
 **Error Responses:**
 
 - **400 Bad Request** - Invalid input data
+
   ```json
   {
     "error": [
@@ -119,6 +123,7 @@ Authenticate an existing user.
   ```
 
 - **401 Unauthorized** - Invalid credentials
+
   ```json
   {
     "error": "Invalid credentials"

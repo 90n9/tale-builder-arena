@@ -22,7 +22,7 @@ async function main() {
 
   // 2. Scan src/data/game-content for legacy stories
   const gamesDir = path.join(process.cwd(), 'src', 'data', 'game-content');
-  
+
   try {
     const gameDirs = await fs.readdir(gamesDir);
 
@@ -31,13 +31,13 @@ async function main() {
 
       const gamePath = path.join(gamesDir, slug);
       const stat = await fs.stat(gamePath);
-      
+
       if (!stat.isDirectory()) continue;
 
       // Look for [slug].json
       const jsonFile = `${slug}.json`;
       const jsonPath = path.join(gamePath, jsonFile);
-      
+
       try {
         await fs.access(jsonPath);
       } catch {
@@ -51,7 +51,7 @@ async function main() {
 
       // Extract metadata
       const meta = storyJson.metadata || {};
-      
+
       // Handle title: if string, wrap in object using first supported lang
       let title = meta.title || { th: slug };
       if (typeof title === 'string') {
@@ -65,7 +65,7 @@ async function main() {
       }
 
       const genre = meta.genre || 'Adventure';
-      
+
       // Construct public URL for the JSON
       // Since these are in src/data, they are NOT publicly accessible via URL directly unless we expose them.
       // However, the requirement says "All existing stories (JSON + assets in public folder)".
@@ -75,15 +75,15 @@ async function main() {
       // For the seed, we'll set storyJsonUrl to a special prefix or just the path, and handle it in the API.
       // Let's use a special prefix "local://" to indicate it's a local file in src/data.
       const storyJsonUrl = `local://${slug}`;
-      
+
       // Cover image - assuming it's in public/assets/games/[slug]/cover.png or similar
       // We need to check public folder for assets
       const publicAssetsDir = path.join(process.cwd(), 'public', 'assets', 'games', slug);
       let coverImageUrl = '/assets/game-scene-placeholder.jpg';
-      
+
       try {
         const assets = await fs.readdir(publicAssetsDir);
-        const coverFile = assets.find(f => f.match(/^cover\.(jpg|png|webp)$/));
+        const coverFile = assets.find((f) => f.match(/^cover\.(jpg|png|webp)$/));
         if (coverFile) {
           coverImageUrl = `/assets/games/${slug}/${coverFile}`;
         }

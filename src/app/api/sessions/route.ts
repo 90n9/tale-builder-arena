@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     }
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
-    
+
     if (!decoded || typeof decoded === 'string' || !('userId' in decoded)) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
@@ -57,7 +57,6 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-
   } catch (error) {
     console.error('Error starting session:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

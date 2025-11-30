@@ -1,5 +1,5 @@
-import { type GameContentGateway } from "@/server/ports/game-content";
-import { type LocalizedText } from "@/lib/i18n";
+import { type GameContentGateway } from '@/server/ports/game-content';
+import { type LocalizedText } from '@/lib/i18n';
 
 export type GetSetupRequest = {
   gameId: string;
@@ -9,9 +9,9 @@ export type GetSetupRequest = {
 };
 
 export type GetSetupResult =
-  | { kind: "not_found" }
+  | { kind: 'not_found' }
   | {
-      kind: "success";
+      kind: 'success';
       body: {
         gameId: string;
         races: Array<{ id: string; name: LocalizedText; description: LocalizedText }>;
@@ -30,7 +30,7 @@ export type GetSetupDeps = {
 const combineAttributeBonuses = (
   base: Record<string, number>,
   bonuses: Array<Record<string, number> | undefined>,
-  attributeIds: string[],
+  attributeIds: string[]
 ) => {
   const combined = attributeIds.reduce<Record<string, number>>((acc, id) => {
     acc[id] = base[id] ?? 0;
@@ -40,7 +40,7 @@ const combineAttributeBonuses = (
   bonuses.forEach((bonus) => {
     if (!bonus) return;
     Object.entries(bonus).forEach(([key, value]) => {
-      if (typeof value !== "number") return;
+      if (typeof value !== 'number') return;
       combined[key] = (combined[key] ?? 0) + value;
     });
   });
@@ -52,21 +52,23 @@ export const getGameSetup = (request: GetSetupRequest, deps: GetSetupDeps): GetS
   const game = deps.gameContent.findSetupById(request.gameId);
 
   if (!game) {
-    return { kind: "not_found" };
+    return { kind: 'not_found' };
   }
 
   const raceBonus = game.races.find((race) => race.id === request.raceId)?.attribute_bonus;
   const classBonus = game.classes.find((cls) => cls.id === request.classId)?.starting_bonus;
-  const backgroundBonus = game.backgrounds.find((bg) => bg.id === request.backgroundId)?.bonus_attributes;
+  const backgroundBonus = game.backgrounds.find(
+    (bg) => bg.id === request.backgroundId
+  )?.bonus_attributes;
 
   const baseAttributes = combineAttributeBonuses(
     game.config.starting_attributes.base_values,
     [raceBonus, classBonus, backgroundBonus],
-    game.attributes.map((attr) => attr.id),
+    game.attributes.map((attr) => attr.id)
   );
 
   return {
-    kind: "success",
+    kind: 'success',
     body: {
       gameId: game.game_id,
       races: game.races.map(({ attribute_bonus, ...rest }) => rest),

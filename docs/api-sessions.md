@@ -36,10 +36,10 @@ Create a new game session for a story.
 
 **Request Fields:**
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `storyId` | integer | Yes | ID of the story to play |
-| `characterData` | object | Yes | Character creation data |
+| Field           | Type    | Required | Description             |
+| --------------- | ------- | -------- | ----------------------- |
+| `storyId`       | integer | Yes      | ID of the story to play |
+| `characterData` | object  | Yes      | Character creation data |
 
 **Success Response (200):**
 
@@ -66,6 +66,7 @@ Create a new game session for a story.
 **Error Responses:**
 
 - **400 Bad Request** - Invalid input data
+
   ```json
   {
     "error": [
@@ -79,6 +80,7 @@ Create a new game session for a story.
   ```
 
 - **401 Unauthorized** - Missing or invalid token
+
   ```json
   {
     "error": "Unauthorized"
@@ -86,6 +88,7 @@ Create a new game session for a story.
   ```
 
 - **404 Not Found** - Story not found
+
   ```json
   {
     "error": "Story not found"
@@ -111,9 +114,9 @@ Retrieve the current status of a game session.
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `sessionId` | integer | Session ID |
+| Parameter   | Type    | Description |
+| ----------- | ------- | ----------- |
+| `sessionId` | integer | Session ID  |
 
 **Example Request:**
 
@@ -171,9 +174,9 @@ Process a player's choice and advance the story.
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `sessionId` | integer | Session ID |
+| Parameter   | Type    | Description |
+| ----------- | ------- | ----------- |
+| `sessionId` | integer | Session ID  |
 
 **Request Body:**
 
@@ -195,9 +198,7 @@ Process a player's choice and advance the story.
       "stats": { "strength": 11 }
     },
     "status": "IN_PROGRESS",
-    "history": [
-      { "sceneId": "scene_1", "choiceId": "choice_1" }
-    ]
+    "history": [{ "sceneId": "scene_1", "choiceId": "choice_1" }]
   },
   "scene": {
     "id": "scene_2",
@@ -243,12 +244,15 @@ Process a player's choice and advance the story.
 **Error Responses:**
 
 - **400 Bad Request** - Invalid choice or session not active
+
   ```json
   {
     "error": "Invalid choice"
   }
   ```
+
   or
+
   ```json
   {
     "error": "Session is not active"
@@ -272,11 +276,11 @@ Process a player's choice and advance the story.
 
 ## Session Status Values
 
-| Status | Description |
-|--------|-------------|
-| `IN_PROGRESS` | Session is active and playable |
-| `COMPLETED` | Player reached an ending |
-| `ABANDONED` | Session was abandoned by player |
+| Status        | Description                     |
+| ------------- | ------------------------------- |
+| `IN_PROGRESS` | Session is active and playable  |
+| `COMPLETED`   | Player reached an ending        |
+| `ABANDONED`   | Session was abandoned by player |
 
 ## Game Flow
 
@@ -298,6 +302,7 @@ Each choice is recorded in the session history:
 ```
 
 This allows for:
+
 - Replay functionality
 - Achievement tracking
 - Analytics

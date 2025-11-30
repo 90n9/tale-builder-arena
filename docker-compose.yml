@@ -1,4 +1,4 @@
-version: "3.9"
+version: '3.9'
 
 services:
   db:
@@ -10,11 +10,11 @@ services:
       POSTGRES_USER: tba_local
       POSTGRES_PASSWORD: tba_password
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U tba_local -d tale_builder_arena"]
+      test: ['CMD-SHELL', 'pg_isready -U tba_local -d tale_builder_arena']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,8 +30,8 @@ services:
       PGWEB_AUTH_USER: ${PGWEB_AUTH_USER}
       PGWEB_AUTH_PASS: ${PGWEB_AUTH_PASS}
     ports:
-      - "8081:8081"
-    command: ["--bind=0.0.0.0", "--listen=8081"]
+      - '8081:8081'
+    command: ['--bind=0.0.0.0', '--listen=8081']
 
 volumes:
   db_data:

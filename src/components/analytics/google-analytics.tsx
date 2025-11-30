@@ -1,13 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import Script from "next/script";
-import { usePathname, useSearchParams } from "next/navigation";
-import {
-  gaMeasurementId,
-  trackInteraction,
-  trackPageview,
-} from "@/lib/analytics";
+import { useEffect } from 'react';
+import Script from 'next/script';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { gaMeasurementId, trackInteraction, trackPageview } from '@/lib/analytics';
 
 export function GoogleAnalytics() {
   const pathname = usePathname();
@@ -17,7 +13,7 @@ export function GoogleAnalytics() {
   useEffect(() => {
     if (!gaMeasurementId) return;
 
-    const url = search ? `${pathname}?${search}` : pathname || "/";
+    const url = search ? `${pathname}?${search}` : pathname || '/';
 
     trackPageview(url);
   }, [pathname, search]);
@@ -27,25 +23,21 @@ export function GoogleAnalytics() {
 
     const handleClick = (event: MouseEvent) => {
       const target = (event.target as HTMLElement | null)?.closest(
-        "[data-ga-event]",
+        '[data-ga-event]'
       ) as HTMLElement | null;
 
       if (!target) return;
 
-      const action = target.getAttribute("data-ga-event") ?? "interaction";
-      const category =
-        target.getAttribute("data-ga-category") ?? "interaction";
-      const label =
-        target.getAttribute("data-ga-label") ??
-        target.textContent?.trim() ??
-        undefined;
+      const action = target.getAttribute('data-ga-event') ?? 'interaction';
+      const category = target.getAttribute('data-ga-category') ?? 'interaction';
+      const label = target.getAttribute('data-ga-label') ?? target.textContent?.trim() ?? undefined;
 
       trackInteraction({ action, category, label });
     };
 
-    document.addEventListener("click", handleClick);
+    document.addEventListener('click', handleClick);
 
-    return () => document.removeEventListener("click", handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, []);
 
   if (!gaMeasurementId) return null;

@@ -14,6 +14,7 @@ Complete API documentation for the Tale Builder Arena backend services.
 ## Overview
 
 The Tale Builder Arena API provides endpoints for:
+
 - User authentication and management
 - Story creation and management
 - Game session handling
@@ -23,11 +24,13 @@ The Tale Builder Arena API provides endpoints for:
 ### Base URL
 
 **Development:**
+
 ```
 http://localhost:3001/api
 ```
 
 **Production:**
+
 ```
 https://your-domain.com/api
 ```
@@ -35,6 +38,7 @@ https://your-domain.com/api
 ### Content Type
 
 All requests and responses use JSON format:
+
 ```
 Content-Type: application/json
 ```
@@ -74,11 +78,13 @@ Tokens are valid for **7 days** from issuance. After expiration, users must logi
 ## API Endpoints
 
 ### Authentication
+
 - [Authentication API](./api-authentication.md)
   - `POST /api/auth/register` - Register new user
   - `POST /api/auth/login` - Login user
 
 ### Stories
+
 - [Stories API](./api-stories.md)
   - `GET /api/stories` - List published stories
   - `GET /api/stories/:slug` - Get story details
@@ -86,12 +92,14 @@ Tokens are valid for **7 days** from issuance. After expiration, users must logi
   - `PUT /api/stories/:slug` - Update story (auth required)
 
 ### Game Sessions
+
 - [Sessions API](./api-sessions.md)
   - `POST /api/sessions` - Start new game session (auth required)
   - `GET /api/sessions/:sessionId` - Get session status (auth required)
   - `POST /api/sessions/:sessionId/choice` - Make choice (auth required)
 
 ### Comments & Ratings
+
 - [Comments API](./api-comments.md)
   - `GET /api/stories/:slug/comments` - List comments
   - `POST /api/stories/:slug/comments` - Add comment (auth required)
@@ -122,25 +130,27 @@ Tokens are valid for **7 days** from issuance. After expiration, users must logi
 
 ### HTTP Status Codes
 
-| Code | Meaning | Usage |
-|------|---------|-------|
-| 200 | OK | Successful request |
-| 400 | Bad Request | Invalid input data |
-| 401 | Unauthorized | Missing or invalid authentication |
-| 403 | Forbidden | Authenticated but not authorized |
-| 404 | Not Found | Resource doesn't exist |
-| 409 | Conflict | Resource already exists |
-| 500 | Internal Server Error | Server error |
+| Code | Meaning               | Usage                             |
+| ---- | --------------------- | --------------------------------- |
+| 200  | OK                    | Successful request                |
+| 400  | Bad Request           | Invalid input data                |
+| 401  | Unauthorized          | Missing or invalid authentication |
+| 403  | Forbidden             | Authenticated but not authorized  |
+| 404  | Not Found             | Resource doesn't exist            |
+| 409  | Conflict              | Resource already exists           |
+| 500  | Internal Server Error | Server error                      |
 
 ## Rate Limiting
 
 **Current Status:** Not implemented
 
 **Planned Limits:**
+
 - 100 requests per minute per IP
 - 1000 requests per hour per user
 
 When implemented, rate limit info will be in response headers:
+
 ```
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 95
@@ -152,6 +162,7 @@ X-RateLimit-Reset: 1640000000
 **Current Version:** v1 (implicit)
 
 API versioning will be added in the future:
+
 ```
 /api/v2/stories
 ```
@@ -250,6 +261,7 @@ For now, all endpoints are considered v1.
 ## Support
 
 For issues or questions:
+
 - GitHub Issues: [Repository URL]
 - Documentation: [Docs URL]
 - Email: support@example.com
@@ -257,6 +269,7 @@ For issues or questions:
 ## Changelog
 
 ### 2024-01-01 - Initial Release
+
 - Authentication endpoints
 - Story management
 - Game sessions

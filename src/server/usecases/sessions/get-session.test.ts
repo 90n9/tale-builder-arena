@@ -23,7 +23,7 @@ describe('getSession', () => {
       isPublished: true,
       isActive: true,
       genre: 'fantasy',
-      title: {},
+      title: 'Test Story',
       subtitle: null,
       description: null,
       coverImageUrl: null,
@@ -55,20 +55,20 @@ describe('getSession', () => {
 
   it('should return forbidden if user does not own session', async () => {
     const mockStory = {
-        id: 1,
-        slug: 'test-story',
-        authorId: 1,
-        version: '1.0.0',
-        isPublished: true,
-        isActive: true,
-        genre: 'fantasy',
-        title: {},
-        subtitle: null,
-        description: null,
-        coverImageUrl: null,
-        storyJsonUrl: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      id: 1,
+      slug: 'test-story',
+      authorId: 1,
+      version: '1.0.0',
+      isPublished: true,
+      isActive: true,
+      genre: 'fantasy',
+      title: 'Test Story',
+      subtitle: null,
+      description: null,
+      coverImageUrl: null,
+      storyJsonUrl: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
     const mockSession: SessionWithStory = {
       id: 1,
@@ -92,9 +92,11 @@ describe('getSession', () => {
   it('should return not_found if session does not exist', async () => {
     (mockSessionRepo.findSessionWithStory as vi.Mock).mockResolvedValue(null);
 
-    const result = await getSession({ sessionId: 999, userId: 1 }, { sessionRepo: mockSessionRepo });
+    const result = await getSession(
+      { sessionId: 999, userId: 1 },
+      { sessionRepo: mockSessionRepo }
+    );
 
     expect(result.kind).toBe('not_found');
   });
 });
-

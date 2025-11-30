@@ -18,9 +18,9 @@ Get all comments for a specific story.
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `slug` | string | Story slug identifier |
+| Parameter | Type   | Description           |
+| --------- | ------ | --------------------- |
+| `slug`    | string | Story slug identifier |
 
 **Example Request:**
 
@@ -80,9 +80,9 @@ Add a comment and rating to a story (requires authentication).
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `slug` | string | Story slug identifier |
+| Parameter | Type   | Description           |
+| --------- | ------ | --------------------- |
+| `slug`    | string | Story slug identifier |
 
 **Request Body:**
 
@@ -95,10 +95,10 @@ Add a comment and rating to a story (requires authentication).
 
 **Request Fields:**
 
-| Field | Type | Required | Validation |
-|-------|------|----------|------------|
-| `text` | string | Yes | 1-1000 characters |
-| `rating` | integer | Yes | 1-5 (inclusive) |
+| Field    | Type    | Required | Validation        |
+| -------- | ------- | -------- | ----------------- |
+| `text`   | string  | Yes      | 1-1000 characters |
+| `rating` | integer | Yes      | 1-5 (inclusive)   |
 
 **Success Response (200):**
 
@@ -120,6 +120,7 @@ Add a comment and rating to a story (requires authentication).
 **Error Responses:**
 
 - **400 Bad Request** - Invalid input data
+
   ```json
   {
     "error": [
@@ -133,6 +134,7 @@ Add a comment and rating to a story (requires authentication).
   ```
 
 - **401 Unauthorized** - Missing or invalid token
+
   ```json
   {
     "error": "Unauthorized"
@@ -152,13 +154,13 @@ Add a comment and rating to a story (requires authentication).
 
 ### Rating Values
 
-| Rating | Meaning |
-|--------|---------|
-| 1 | Poor |
-| 2 | Below Average |
-| 3 | Average |
-| 4 | Good |
-| 5 | Excellent |
+| Rating | Meaning       |
+| ------ | ------------- |
+| 1      | Poor          |
+| 2      | Below Average |
+| 3      | Average       |
+| 4      | Good          |
+| 5      | Excellent     |
 
 ### Rating Guidelines
 
@@ -190,13 +192,13 @@ Add a comment and rating to a story (requires authentication).
 const response = await fetch('/api/stories/adventure-quest/comments', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer YOUR_TOKEN',
-    'Content-Type': 'application/json'
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json',
   },
   body: JSON.stringify({
     text: 'Loved the multiple endings!',
-    rating: 5
-  })
+    rating: 5,
+  }),
 });
 
 const comment = await response.json();
@@ -215,6 +217,7 @@ const avgRating = comments.reduce((sum, c) => sum + c.rating, 0) / comments.leng
 ## Future Enhancements
 
 Potential future features:
+
 - Comment editing and deletion
 - Comment replies/threads
 - Upvoting/downvoting comments

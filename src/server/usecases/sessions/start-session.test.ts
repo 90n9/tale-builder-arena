@@ -65,50 +65,50 @@ describe('startSession', () => {
       updatedAt: new Date(),
     };
     const mockStoryGameContent: StoryGameContent = {
-        game_id: 'test-story',
-        version: '1.0.0',
-        metadata: {
-            title: 'Test Story',
-            subtitle: 'A test story',
-            genre: 'fantasy',
-            description: 'This is a test story',
-            cover_image: 'cover.jpg',
-            author: 'Test Author',
+      game_id: 'test-story',
+      version: '1.0.0',
+      metadata: {
+        title: 'Test Story',
+        subtitle: 'A test story',
+        genre: 'fantasy',
+        description: 'This is a test story',
+        cover_image: 'cover.jpg',
+        author: 'Test Author',
+      },
+      config: {
+        starting_attributes: {
+          points_to_distribute: 0,
+          base_values: {},
         },
-        config: {
-            starting_attributes: {
-                points_to_distribute: 0,
-                base_values: {},
-            },
-            asset_paths: {
-                images: '/',
-                videos: '/',
-            },
-            ui: {
-                theme_color: '#000000',
-                text_speed: 'instant',
-            },
+        asset_paths: {
+          images: '/',
+          videos: '/',
         },
-        races: [],
-        classes: [],
-        backgrounds: [],
-        attributes: [],
-        scenes: { intro: { scene_id: 'intro', title: 'Intro', description: 'Intro', choices: [] } },
-        endings: {},
+        ui: {
+          theme_color: '#000000',
+          text_speed: 'instant',
+        },
+      },
+      races: [],
+      classes: [],
+      backgrounds: [],
+      attributes: [],
+      scenes: { intro: { scene_id: 'intro', title: 'Intro', description: 'Intro', choices: [] } },
+      endings: {},
     };
 
     (mockStoryRepo.findStoryById as vi.Mock).mockResolvedValue(mockStory);
     (mockStorage.readJsonFile as vi.Mock).mockResolvedValue(mockStoryGameContent);
     (mockSessionRepo.createSession as vi.Mock).mockResolvedValue({
-        id: 1,
-        userId: request.userId,
-        storyId: request.storyId,
-        characterData: request.characterData,
-        currentScene: 'intro',
-        history: [],
-        status: 'IN_PROGRESS',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      id: 1,
+      userId: request.userId,
+      storyId: request.storyId,
+      characterData: request.characterData,
+      currentScene: 'intro',
+      history: [],
+      status: 'IN_PROGRESS',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     const result = await startSession(request, {
@@ -127,14 +127,16 @@ describe('startSession', () => {
   it('should return story_not_found if story does not exist', async () => {
     (mockStoryRepo.findStoryById as vi.Mock).mockResolvedValue(null);
 
-    const result = await startSession({ storyId: 999, userId: 1, characterData: {} }, {
-      sessionRepo: mockSessionRepo,
-      storyRepo: mockStoryRepo,
-      storage: mockStorage,
-      gameContent: mockGameContent,
-    });
+    const result = await startSession(
+      { storyId: 999, userId: 1, characterData: {} },
+      {
+        sessionRepo: mockSessionRepo,
+        storyRepo: mockStoryRepo,
+        storage: mockStorage,
+        gameContent: mockGameContent,
+      }
+    );
 
     expect(result.kind).toBe('story_not_found');
   });
 });
-

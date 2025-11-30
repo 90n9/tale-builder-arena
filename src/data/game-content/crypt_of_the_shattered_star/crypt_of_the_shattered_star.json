@@ -221,9 +221,7 @@
           "text": "เพ่งดูอักขระอย่างละเอียด พยายามคลี่คลายเวทมนตร์ที่สลักอยู่",
           "next": "scene_8",
           "requirements": {
-            "classes": [
-              "mage"
-            ],
+            "classes": ["mage"],
             "min_attributes": {
               "int": 3
             }
@@ -460,9 +458,7 @@
           "text": "ย่องเข้าไปใกล้ ๆ แล้วจู่โจมจากเงามืด",
           "next": "scene_17",
           "requirements": {
-            "classes": [
-              "rogue"
-            ],
+            "classes": ["rogue"],
             "min_attributes": {
               "agi": 3
             }
@@ -497,9 +493,7 @@
           "text": "เพ่งสมาธิเรียกพลังภายในเพื่อต้านความหนาวก่อนจะเดินหน้าต่อ",
           "next": "scene_19",
           "requirements": {
-            "classes": [
-              "mage"
-            ],
+            "classes": ["mage"],
             "min_attributes": {
               "int": 3
             }

@@ -1,4 +1,4 @@
-import { type RateLimiter } from "@/server/ports/rate-limit";
+import { type RateLimiter } from '@/server/ports/rate-limit';
 
 type RateLimitEntry = {
   windowStart: number;
