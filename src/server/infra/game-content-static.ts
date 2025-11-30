@@ -1,7 +1,7 @@
-import cryptOfTheShatteredStar from "@/data/game-content/crypt_of_the_shattered_star/crypt_of_the_shattered_star.json";
-import yaitongdeeDungeon from "@/data/game-content/yaitongdee_dungeon/yaitongdee_dungeon.json";
-import { findGameSetupById } from "@/data/game-content";
-import { type GameContentGateway, type StoryGameContent } from "@/server/ports/game-content";
+import cryptOfTheShatteredStar from '@/data/game-content/crypt_of_the_shattered_star/crypt_of_the_shattered_star.json';
+import yaitongdeeDungeon from '@/data/game-content/yaitongdee_dungeon/yaitongdee_dungeon.json';
+import { findGameSetupById } from '@/data/game-content';
+import { type GameContentGateway, type StoryGameContent } from '@/server/ports/game-content';
 
 const STORY_GAMES: Record<string, StoryGameContent> = {
   [cryptOfTheShatteredStar.game_id]: cryptOfTheShatteredStar as StoryGameContent,

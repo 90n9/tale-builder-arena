@@ -1,7 +1,7 @@
-import { type LocalizedText } from "@/lib/i18n";
-import { getGenreLabel } from "@/data/genres";
-import cryptOfTheShatteredStar from "./game-content/crypt_of_the_shattered_star/crypt_of_the_shattered_star.json";
-import yaitongdeeDungeon from "./game-content/yaitongdee_dungeon/yaitongdee_dungeon.json";
+import { type LocalizedText } from '@/lib/i18n';
+import { getGenreLabel } from '@/data/genres';
+import cryptOfTheShatteredStar from './game-content/crypt_of_the_shattered_star/crypt_of_the_shattered_star.json';
+import yaitongdeeDungeon from './game-content/yaitongdee_dungeon/yaitongdee_dungeon.json';
 
 type GameContent = {
   game_id: string;
@@ -28,25 +28,14 @@ export type GameStory = {
 
 const GAME_CONTENTS: GameContent[] = [cryptOfTheShatteredStar, yaitongdeeDungeon];
 
-const CUSTOM_GAME_DETAILS: Record<
-  string,
-  { tone: string; highlights: string[]; }
-> = {
+const CUSTOM_GAME_DETAILS: Record<string, { tone: string; highlights: string[] }> = {
   crypt_of_the_shattered_star: {
-    tone: "ดันเจี้ยนเลือกเส้นทาง • เวทมนตร์เข้มข้น",
-    highlights: [
-      "เช็คค่าสเตตัสและโบนัสระหว่างฉาก",
-      "เส้นทางสำรวจได้หลายทางเลือก",
-      "ฉากจบ 6 แบบ",
-    ],
+    tone: 'ดันเจี้ยนเลือกเส้นทาง • เวทมนตร์เข้มข้น',
+    highlights: ['เช็คค่าสเตตัสและโบนัสระหว่างฉาก', 'เส้นทางสำรวจได้หลายทางเลือก', 'ฉากจบ 6 แบบ'],
   },
   yaitongdee_dungeon: {
-    tone: "แฟนตาซีสายฮาใต้ร้านชำไทย",
-    highlights: [
-      "กับดักปลากระป๋องและตู้เย็นพูดได้",
-      "โทนขำขัน ล้อวัฒนธรรมไทย",
-      "ฉากจบ 6 แบบ",
-    ],
+    tone: 'แฟนตาซีสายฮาใต้ร้านชำไทย',
+    highlights: ['กับดักปลากระป๋องและตู้เย็นพูดได้', 'โทนขำขัน ล้อวัฒนธรรมไทย', 'ฉากจบ 6 แบบ'],
   },
 };
 

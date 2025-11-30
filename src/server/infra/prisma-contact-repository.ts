@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/prisma";
-import { type ContactRepository, type NewContactRecord } from "@/server/ports/contact-repository";
+import { prisma } from '@/lib/prisma';
+import { type ContactRepository, type NewContactRecord } from '@/server/ports/contact-repository';
 
 export const prismaContactRepository: ContactRepository = {
   async save(input: NewContactRecord) {

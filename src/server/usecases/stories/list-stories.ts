@@ -1,4 +1,9 @@
-import type { StoryRepository, StoryWithRelations, StoryFilters, PaginationOptions } from '@/server/ports/story-repository';
+import type {
+  StoryRepository,
+  StoryWithRelations,
+  StoryFilters,
+  PaginationOptions,
+} from '@/server/ports/story-repository';
 
 export type ListStoriesRequest = {
   page?: number;

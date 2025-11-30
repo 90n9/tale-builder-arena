@@ -64,7 +64,10 @@ describe('registerUser', () => {
       password: 'password123',
     };
 
-    (mockAuthRepo.findUserByEmail as vi.Mock).mockResolvedValue({ id: 1, email: request.email } as User); // Cast to User
+    (mockAuthRepo.findUserByEmail as vi.Mock).mockResolvedValue({
+      id: 1,
+      email: request.email,
+    } as User); // Cast to User
 
     // Act
     const result = await registerUser(request, { authRepo: mockAuthRepo });

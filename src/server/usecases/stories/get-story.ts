@@ -4,9 +4,7 @@ export type GetStoryRequest = {
   slug: string;
 };
 
-export type GetStoryResult =
-  | { kind: 'success'; story: StoryWithRelations }
-  | { kind: 'not_found' };
+export type GetStoryResult = { kind: 'success'; story: StoryWithRelations } | { kind: 'not_found' };
 
 export type GetStoryDeps = {
   storyRepo: StoryRepository;

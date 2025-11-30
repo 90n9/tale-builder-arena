@@ -3,6 +3,7 @@ import { User } from '@prisma/client';
 export type CreateUserData = {
   email: string;
   username: string;
+  displayName?: string;
   passwordHash: string;
 };
 
@@ -18,4 +19,14 @@ export interface AuthRepository {
    * Create a new user
    */
   createUser(data: CreateUserData): Promise<User>;
+
+  /**
+   * Find a user by ID
+   */
+  findUserById(id: number): Promise<User | null>;
+
+  /**
+   * Update user password
+   */
+  updateUserPassword(id: number, passwordHash: string): Promise<void>;
 }

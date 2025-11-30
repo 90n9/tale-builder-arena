@@ -1,6 +1,6 @@
-import { type Language } from "@/lib/i18n";
+import { type Language } from '@/lib/i18n';
 
-export type ContactRequestType = "feedback" | "issue" | "other";
+export type ContactRequestType = 'feedback' | 'issue' | 'other';
 
 export type NewContactRecord = {
   name: string;

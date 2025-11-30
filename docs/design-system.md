@@ -3,6 +3,7 @@
 Design references are derived from `src/app/globals.css`, `tailwind.config.ts`, and the current page compositions under `src/app`. Use this document as the source of truth when extending or refactoring UI.
 
 ## Brand Foundations
+
 - **Color tokens (HSL):**
   - background `215 30% 8%`, foreground `0 0% 98%`
   - card `220 25% 12% / 0.6`, popover `220 25% 12%`
@@ -17,17 +18,20 @@ Design references are derived from `src/app/globals.css`, `tailwind.config.ts`, 
 - **Motion:** Preferred easing via `transition-smooth` (0.3s) and `transition-epic` (0.5s). Use Tailwind transitions on hover/focus; avoid abrupt state changes.
 
 ## Typography
+
 - Fonts: Headings use **Prompt** (400/600 weights), body uses **Noto Sans Thai**; both are loaded via `next/font`.
 - Default Tailwind sans stack stays as fallback; body uses `text-foreground` on dark background.
 - Headings are bold, large, and often uppercase with `tracking-wide` to reinforce the epic tone (see landing hero at `text-6xl`–`text-8xl`).
 - Secondary text uses `text-muted-foreground`; quotes or story snippets may use `italic`.
 
 ## Layout & Spacing
+
 - Container centers content with `padding: 2rem` and a `1400px` max width (`tailwind.config.ts`).
 - Page sections frequently use `py-24` or greater and layered backdrops: gradient surfaces plus vignette dots from the `body` background.
 - Keep generous gaps (`gap-6` to `gap-12`) in grids to preserve the premium, airy feel.
 
 ## Components & Patterns
+
 - **Buttons (`<Button>` from `src/components/ui/button.tsx`):**
   - Primary action = solid orange (secondary token) with subtle glow. Use `PrimaryActionButton` (`src/components/ActionButtons.tsx`) for main CTAs (hero, submit, modal primary).
   - Secondary action = blue outline/transparent fill. Use `SecondaryActionButton` for supporting CTAs or navigation.
@@ -39,15 +43,18 @@ Design references are derived from `src/app/globals.css`, `tailwind.config.ts`, 
 - **Footer:** Uses `bg-card`, `border-border`, and muted text for legal links.
 
 ## Decorative Utilities
+
 - `ornate-corners`: Adds diagonally opposing corner strokes for cards and panels.
 - `section-divider`: Horizontal line with a centered diamond glyph; place before major section headings.
 - `bg-gradient-hero` + `bg-gradient-overlay`: Layer over imagery to keep text legible.
 - `shadow-epic`: Apply to marquee cards or modals to emphasize depth.
 
 ## Interaction Guidelines
+
 - Favor gradient or accent glows on primary actions to signal interactivity; pair with `hover:-translate-y-2` on feature cards sparingly.
 - Keep contrast high: primary/accent on dark surfaces; use `text-muted-foreground` for body copy.
 - Preserve the Thai copy tone currently in use; keep uppercase nav/CTA labels consistent.
 
 ## Assets
+
 - Hero and scene imagery live in `public/assets` (e.g., `/assets/hero-illustration.jpg`). Overlay gradients should always accompany photography to maintain contrast, and prefer `next/image` with explicit sizes when embedding.

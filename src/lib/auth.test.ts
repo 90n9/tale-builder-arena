@@ -48,11 +48,7 @@ describe('Auth Library', () => {
       const result = signToken({ userId: 1 });
 
       expect(result).toBe('signed_token');
-      expect(jwt.sign).toHaveBeenCalledWith(
-        { userId: 1 },
-        expect.any(String),
-        { expiresIn: '7d' }
-      );
+      expect(jwt.sign).toHaveBeenCalledWith({ userId: 1 }, expect.any(String), { expiresIn: '7d' });
     });
   });
 

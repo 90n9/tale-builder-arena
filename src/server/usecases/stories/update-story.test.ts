@@ -25,25 +25,28 @@ describe('updateStory', () => {
       title: 'New Title',
     };
 
-    const existingStory: StoryWithRelations = { 
-        id: 1, 
-        slug: 'test-story', 
-        authorId: 1,
-        version: '1.0.0',
-        isPublished: true,
-        isActive: true,
-        genre: 'fantasy',
-        title: 'Old Title',
-        subtitle: null,
-        description: null,
-        coverImageUrl: null,
-        storyJsonUrl: 'http://example.com/story.json',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        author: { id: 1, username: 'author1' }
+    const existingStory: StoryWithRelations = {
+      id: 1,
+      slug: 'test-story',
+      authorId: 1,
+      version: '1.0.0',
+      isPublished: true,
+      isActive: true,
+      genre: 'fantasy',
+      title: 'Old Title',
+      subtitle: null,
+      description: null,
+      coverImageUrl: null,
+      storyJsonUrl: 'http://example.com/story.json',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      author: { id: 1, username: 'author1' },
     };
     (mockStoryRepo.findStoryBySlug as vi.Mock).mockResolvedValue(existingStory);
-    (mockStoryRepo.updateStory as vi.Mock).mockResolvedValue({ ...existingStory, title: request.title });
+    (mockStoryRepo.updateStory as vi.Mock).mockResolvedValue({
+      ...existingStory,
+      title: request.title,
+    });
 
     const result = await updateStory(request, { storyRepo: mockStoryRepo });
 
@@ -60,22 +63,22 @@ describe('updateStory', () => {
       title: 'New Title',
     };
 
-    const existingStory: StoryWithRelations = { 
-        id: 1, 
-        slug: 'test-story', 
-        authorId: 1,
-        version: '1.0.0',
-        isPublished: true,
-        isActive: true,
-        genre: 'fantasy',
-        title: 'Old Title',
-        subtitle: null,
-        description: null,
-        coverImageUrl: null,
-        storyJsonUrl: 'http://example.com/story.json',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        author: { id: 1, username: 'author1' }
+    const existingStory: StoryWithRelations = {
+      id: 1,
+      slug: 'test-story',
+      authorId: 1,
+      version: '1.0.0',
+      isPublished: true,
+      isActive: true,
+      genre: 'fantasy',
+      title: 'Old Title',
+      subtitle: null,
+      description: null,
+      coverImageUrl: null,
+      storyJsonUrl: 'http://example.com/story.json',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      author: { id: 1, username: 'author1' },
     };
     (mockStoryRepo.findStoryBySlug as vi.Mock).mockResolvedValue(existingStory);
 

@@ -39,19 +39,19 @@ export const startSession = async (
 
     // Fetch Game Content to get initial scene ID
     let game: StoryGameContent | null = null;
-    
+
     // 1. Try loading from JSON URL if available
     if (story.storyJsonUrl) {
-        try {
-            game = await deps.storage.readJsonFile<StoryGameContent>(story.storyJsonUrl);
-        } catch (e) {
-            console.error(`Failed to load story JSON from ${story.storyJsonUrl}`, e);
-        }
+      try {
+        game = await deps.storage.readJsonFile<StoryGameContent>(story.storyJsonUrl);
+      } catch (e) {
+        console.error(`Failed to load story JSON from ${story.storyJsonUrl}`, e);
+      }
     }
 
     // 2. Fallback to Gateway (legacy stories)
     if (!game) {
-        game = deps.gameContent.findStoryGameById(story.slug);
+      game = deps.gameContent.findStoryGameById(story.slug);
     }
 
     const initialSceneId = 'start';

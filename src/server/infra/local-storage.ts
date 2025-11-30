@@ -20,12 +20,12 @@ export class LocalStorage implements StorageProvider {
     }
 
     const fullPath = path.join(this.uploadDir, filePath);
-    
+
     // Ensure directory exists
     await fs.mkdir(path.dirname(fullPath), { recursive: true });
-    
+
     await fs.writeFile(fullPath, buffer);
-    
+
     // Ensure no leading slash in filePath to avoid double slashes
     const cleanPath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
     return `${this.publicUrlBase}/${cleanPath}`;
@@ -53,20 +53,20 @@ export class LocalStorage implements StorageProvider {
 
   async fileExists(filePath: string): Promise<boolean> {
     try {
-        // filePath might be a URL like /uploads/stories/..., we need to extract relative path
-        let relativePath = filePath;
-        if (filePath.startsWith(this.publicUrlBase)) {
-            relativePath = filePath.slice(this.publicUrlBase.length);
-        }
-        // Remove leading slash
-        if (relativePath.startsWith('/')) {
-            relativePath = relativePath.slice(1);
-        }
-        const fullPath = path.join(this.uploadDir, relativePath);
-        await fs.access(fullPath);
-        return true;
+      // filePath might be a URL like /uploads/stories/..., we need to extract relative path
+      let relativePath = filePath;
+      if (filePath.startsWith(this.publicUrlBase)) {
+        relativePath = filePath.slice(this.publicUrlBase.length);
+      }
+      // Remove leading slash
+      if (relativePath.startsWith('/')) {
+        relativePath = relativePath.slice(1);
+      }
+      const fullPath = path.join(this.uploadDir, relativePath);
+      await fs.access(fullPath);
+      return true;
     } catch {
-        return false;
+      return false;
     }
   }
 
@@ -74,11 +74,11 @@ export class LocalStorage implements StorageProvider {
     // filePath might be a URL like /uploads/stories/..., we need to extract relative path
     let relativePath = filePath;
     if (filePath.startsWith(this.publicUrlBase)) {
-        relativePath = filePath.slice(this.publicUrlBase.length);
+      relativePath = filePath.slice(this.publicUrlBase.length);
     }
     // Remove leading slash
     if (relativePath.startsWith('/')) {
-        relativePath = relativePath.slice(1);
+      relativePath = relativePath.slice(1);
     }
 
     const fullPath = path.join(this.uploadDir, relativePath);

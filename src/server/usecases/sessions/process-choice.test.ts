@@ -44,20 +44,20 @@ describe('processChoice', () => {
     };
 
     const mockStory: Story = {
-        id: 1,
-        slug: 'test-story',
-        authorId: 1,
-        version: '1.0.0',
-        isPublished: true,
-        isActive: true,
-        genre: 'fantasy',
-        title: 'Test Story',
-        subtitle: null,
-        description: null,
-        coverImageUrl: null,
-        storyJsonUrl: 'local://test-story',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      id: 1,
+      slug: 'test-story',
+      authorId: 1,
+      version: '1.0.0',
+      isPublished: true,
+      isActive: true,
+      genre: 'fantasy',
+      title: 'Test Story',
+      subtitle: null,
+      description: null,
+      coverImageUrl: null,
+      storyJsonUrl: 'local://test-story',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
     const mockSession: SessionWithStory = {
       id: 1,
@@ -73,41 +73,41 @@ describe('processChoice', () => {
     };
 
     const mockStoryGameContent: StoryGameContent = {
-        game_id: 'test-story',
-        version: '1.0.0',
-        metadata: {
-            title: 'Test Story',
-            subtitle: 'A test story',
-            genre: 'fantasy',
-            description: 'This is a test story',
-            cover_image: 'cover.jpg',
-            author: 'Test Author',
+      game_id: 'test-story',
+      version: '1.0.0',
+      metadata: {
+        title: 'Test Story',
+        subtitle: 'A test story',
+        genre: 'fantasy',
+        description: 'This is a test story',
+        cover_image: 'cover.jpg',
+        author: 'Test Author',
+      },
+      config: {
+        starting_attributes: {
+          points_to_distribute: 0,
+          base_values: {},
         },
-        config: {
-            starting_attributes: {
-                points_to_distribute: 0,
-                base_values: {},
-            },
-            asset_paths: {
-                images: '/',
-                videos: '/',
-            },
-            ui: {
-                theme_color: '#000000',
-                text_speed: 'instant',
-            },
+        asset_paths: {
+          images: '/',
+          videos: '/',
         },
-        races: [],
-        classes: [],
-        backgrounds: [],
-        attributes: [],
-        scenes: {},
-        endings: {},
+        ui: {
+          theme_color: '#000000',
+          text_speed: 'instant',
+        },
+      },
+      races: [],
+      classes: [],
+      backgrounds: [],
+      attributes: [],
+      scenes: {},
+      endings: {},
     };
 
     (mockSessionRepo.findSessionWithStory as vi.Mock).mockResolvedValue(mockSession);
     (mockStorage.readJsonFile as vi.Mock).mockResolvedValue(mockStoryGameContent);
-    
+
     // Mock advanceStory result
     (advanceStoryModule.advanceStory as vi.Mock).mockReturnValue({
       kind: 'success',
@@ -125,7 +125,10 @@ describe('processChoice', () => {
       },
     });
 
-    (mockSessionRepo.updateSession as vi.Mock).mockResolvedValue({ ...mockSession, currentScene: 'scene-2' });
+    (mockSessionRepo.updateSession as vi.Mock).mockResolvedValue({
+      ...mockSession,
+      currentScene: 'scene-2',
+    });
 
     const result = await processChoice(request, {
       sessionRepo: mockSessionRepo,

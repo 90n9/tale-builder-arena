@@ -16,7 +16,9 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
-    const isPublished = searchParams.has('isPublished') ? searchParams.get('isPublished') === 'true' : true;
+    const isPublished = searchParams.has('isPublished')
+      ? searchParams.get('isPublished') === 'true'
+      : true;
 
     const result = await listStories(
       {
@@ -54,7 +56,7 @@ export async function POST(request: Request) {
     }
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
-    
+
     if (!decoded || typeof decoded === 'string' || !('userId' in decoded)) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
@@ -82,11 +84,14 @@ export async function POST(request: Request) {
 
     // 4. Upload Files
     // Better slug generation needed from title
-    const safeSlug = (storyJson.metadata.title || 'untitled').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    
+    const safeSlug = (storyJson.metadata.title || 'untitled')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
     // Check slug existence early to avoid unnecessary uploads (though use case also checks)
     // We'll let use case handle the final check, but we need slug for paths
-    
+
     const version = storyJson.version || '1.0.0';
     const uploadBase = `stories/${safeSlug}/${version}`;
 
@@ -137,7 +142,6 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-
   } catch (error) {
     console.error('Story upload error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

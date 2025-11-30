@@ -45,21 +45,21 @@ describe('Story Schema Validation', () => {
         title: 'Scene 2',
         description: 'Scene 2 description',
         choices: [
-            {
-                text: 'End',
-                next: 'end',
-            }
-        ]
+          {
+            text: 'End',
+            next: 'end',
+          },
+        ],
       },
     },
     endings: {
-        end: {
-            ending_id: 'end',
-            title: 'The End',
-            summary: 'You finished the story.',
-            result: 'Victory',
-        }
-    }
+      end: {
+        ending_id: 'end',
+        title: 'The End',
+        summary: 'You finished the story.',
+        result: 'Victory',
+      },
+    },
   };
 
   it('should validate a correct story structure', () => {

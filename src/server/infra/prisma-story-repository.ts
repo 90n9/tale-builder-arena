@@ -39,9 +39,9 @@ export class PrismaStoryRepository implements StoryRepository {
           },
         },
         versions: {
-            orderBy: {
-                createdAt: 'desc',
-            },
+          orderBy: {
+            createdAt: 'desc',
+          },
         },
         _count: {
           select: {

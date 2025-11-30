@@ -1,4 +1,4 @@
-import { type GameSetupContent } from "@/data/game-content";
+import { type GameSetupContent } from '@/data/game-content';
 
 export type ChoiceRequirement = {
   classes?: string[];

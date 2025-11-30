@@ -8,7 +8,6 @@ async function main() {
   for (const story of stories) {
     console.log(`- Slug: ${story.slug}`);
     console.log(`  Title: ${JSON.stringify(story.title)}`);
-
   }
 }
 

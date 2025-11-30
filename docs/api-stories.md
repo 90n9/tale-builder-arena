@@ -18,10 +18,10 @@ Get a paginated list of published stories.
 
 **Query Parameters:**
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `page` | integer | 1 | Page number |
-| `limit` | integer | 10 | Items per page |
+| Parameter | Type    | Default | Description    |
+| --------- | ------- | ------- | -------------- |
+| `page`    | integer | 1       | Page number    |
+| `limit`   | integer | 10      | Items per page |
 
 **Example Request:**
 
@@ -85,9 +85,9 @@ Get a specific story by its slug.
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `slug` | string | Story slug identifier |
+| Parameter | Type   | Description           |
+| --------- | ------ | --------------------- |
+| `slug`    | string | Story slug identifier |
 
 **Example Request:**
 
@@ -148,11 +148,11 @@ Upload a new story (requires authentication).
 
 **Form Fields:**
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `story` | File (JSON) | Yes | Story definition JSON file |
-| `cover` | File (Image) | No | Cover image |
-| `assets` | File[] | No | Story assets (images, audio, etc.) |
+| Field    | Type         | Required | Description                        |
+| -------- | ------------ | -------- | ---------------------------------- |
+| `story`  | File (JSON)  | Yes      | Story definition JSON file         |
+| `cover`  | File (Image) | No       | Cover image                        |
+| `assets` | File[]       | No       | Story assets (images, audio, etc.) |
 
 **Story JSON Structure:**
 
@@ -203,12 +203,15 @@ Upload a new story (requires authentication).
 **Error Responses:**
 
 - **400 Bad Request** - Missing story file or invalid JSON
+
   ```json
   {
     "error": "Missing story JSON file"
   }
   ```
+
   or
+
   ```json
   {
     "error": "Invalid story JSON",
@@ -217,6 +220,7 @@ Upload a new story (requires authentication).
   ```
 
 - **401 Unauthorized** - Missing or invalid token
+
   ```json
   {
     "error": "Unauthorized"
@@ -242,19 +246,19 @@ Update an existing story (requires authentication and ownership).
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `slug` | string | Story slug identifier |
+| Parameter | Type   | Description           |
+| --------- | ------ | --------------------- |
+| `slug`    | string | Story slug identifier |
 
 **Request:** `multipart/form-data`
 
 **Form Fields:**
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `story` | File (JSON) | No | Updated story definition |
-| `cover` | File (Image) | No | Updated cover image |
-| `assets` | File[] | No | Updated story assets |
+| Field    | Type         | Required | Description              |
+| -------- | ------------ | -------- | ------------------------ |
+| `story`  | File (JSON)  | No       | Updated story definition |
+| `cover`  | File (Image) | No       | Updated cover image      |
+| `assets` | File[]       | No       | Updated story assets     |
 
 **Success Response (200):**
 

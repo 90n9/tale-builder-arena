@@ -2,7 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createComment } from './create-comment';
 import { CommentRepository } from '@/server/ports/comment-repository';
 import { StoryRepository } from '@/server/ports/story-repository';
-import { Comment, Story } from '@prisma/client';
+import { Comment } from '@prisma/client';
+import { createMockStory } from '../__tests__/fixtures/story';
 
 describe('createComment', () => {
   const mockCommentRepo: CommentRepository = {
@@ -32,34 +33,25 @@ describe('createComment', () => {
       rating: 5,
     };
 
-    const mockStory: Story = {
-        id: 1,
-        slug: 'test-story',
-        authorId: 1,
-        version: '1.0.0',
-        isPublished: true,
-        isActive: true,
-        genre: 'fantasy',
-        title: {th: 'Test Story'},
-        subtitle: null,
-        description: null,
-        coverImageUrl: null,
-        storyJsonUrl: 'http://example.com/story.json',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    };
+    const mockStory = createMockStory({
+      slug: 'test-story',
+      storyJsonUrl: 'http://example.com/story.json',
+    });
     (mockStoryRepo.findStoryBySlug as vi.Mock).mockResolvedValue(mockStory);
-    (mockCommentRepo.createComment as vi.Mock).mockResolvedValue({ 
-        id: 1, 
-        storyId: mockStory.id, 
-        userId: request.userId, 
-        text: request.text, 
-        rating: request.rating,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+    (mockCommentRepo.createComment as vi.Mock).mockResolvedValue({
+      id: 1,
+      storyId: mockStory.id,
+      userId: request.userId,
+      text: request.text,
+      rating: request.rating,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     } as Comment);
 
-    const result = await createComment(request, { commentRepo: mockCommentRepo, storyRepo: mockStoryRepo });
+    const result = await createComment(request, {
+      commentRepo: mockCommentRepo,
+      storyRepo: mockStoryRepo,
+    });
 
     expect(result.kind).toBe('success');
     if (result.kind === 'success') {
@@ -70,10 +62,13 @@ describe('createComment', () => {
   it('should return story_not_found if story does not exist', async () => {
     (mockStoryRepo.findStoryBySlug as vi.Mock).mockResolvedValue(null);
 
-    const result = await createComment({ storySlug: 'unknown', userId: 1, text: 'hi', rating: 5 }, {
-      commentRepo: mockCommentRepo,
-      storyRepo: mockStoryRepo,
-    });
+    const result = await createComment(
+      { storySlug: 'unknown', userId: 1, text: 'hi', rating: 5 },
+      {
+        commentRepo: mockCommentRepo,
+        storyRepo: mockStoryRepo,
+      }
+    );
 
     expect(result.kind).toBe('story_not_found');
   });

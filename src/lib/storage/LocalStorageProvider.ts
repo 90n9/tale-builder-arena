@@ -14,12 +14,12 @@ export class LocalStorageProvider implements StorageService {
   async uploadFile(file: File | Blob, filePath: string): Promise<string> {
     const buffer = Buffer.from(await file.arrayBuffer());
     const fullPath = path.join(this.uploadDir, filePath);
-    
+
     // Ensure directory exists
     await fs.mkdir(path.dirname(fullPath), { recursive: true });
-    
+
     await fs.writeFile(fullPath, buffer);
-    
+
     return this.getFileUrl(filePath);
   }
 

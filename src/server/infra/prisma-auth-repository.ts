@@ -15,4 +15,17 @@ export class PrismaAuthRepository implements AuthRepository {
       data,
     });
   }
+
+  async findUserById(id: number) {
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
+
+  async updateUserPassword(id: number, passwordHash: string) {
+    await this.prisma.user.update({
+      where: { id },
+      data: { passwordHash },
+    });
+  }
 }

@@ -5,7 +5,7 @@ import {
   type StoryEnding,
   type StoryGameContent,
   type StoryScene,
-} from "@/server/ports/game-content";
+} from '@/server/ports/game-content';
 
 export type StoryRequest = {
   gameId?: string;
@@ -20,10 +20,10 @@ export type StoryRequest = {
 };
 
 export type AdvanceStoryResult =
-  | { kind: "game_not_found" }
-  | { kind: "scene_not_found" }
+  | { kind: 'game_not_found' }
+  | { kind: 'scene_not_found' }
   | {
-      kind: "success";
+      kind: 'success';
       body: {
         turn: number;
         sceneId: string;
@@ -38,11 +38,13 @@ export type AdvanceStoryResult =
       };
     };
 
+const buildChoiceId = (sceneId: string, index: number, choice: StoryChoice) =>
+  `${sceneId}::${index}::${choice.next}`;
 
-
-const buildChoiceId = (sceneId: string, index: number, choice: StoryChoice) => `${sceneId}::${index}::${choice.next}`;
-
-const meetsRequirements = (requirements: ChoiceRequirement | undefined, character?: StoryRequest["character"]) => {
+const meetsRequirements = (
+  requirements: ChoiceRequirement | undefined,
+  character?: StoryRequest['character']
+) => {
   if (!requirements) return true;
 
   const { classId, attributes } = character || {};
@@ -64,53 +66,64 @@ const meetsRequirements = (requirements: ChoiceRequirement | undefined, characte
   return true;
 };
 
-const findScene = (game: { scenes: Record<string, StoryScene> }, sceneId: string | undefined): StoryScene | null => {
+const findScene = (
+  game: { scenes: Record<string, StoryScene> },
+  sceneId: string | undefined
+): StoryScene | null => {
   if (!sceneId) return null;
   return game.scenes[sceneId] ?? null;
 };
 
-const findEnding = (game: { endings: Record<string, StoryEnding> }, endingId: string | undefined): StoryEnding | null => {
+const findEnding = (
+  game: { endings: Record<string, StoryEnding> },
+  endingId: string | undefined
+): StoryEnding | null => {
   if (!endingId) return null;
   return game.endings[endingId] ?? null;
 };
 
 const buildImageUrl = (game: StoryGameContent, imageName?: string) => {
   if (!imageName) return null;
-  if (/^https?:\/\//.test(imageName) || imageName.startsWith("/")) return imageName;
+  if (/^https?:\/\//.test(imageName) || imageName.startsWith('/')) return imageName;
 
   const base = game.config.asset_paths?.images;
-  const normalizedBase = base ? (base.endsWith("/") ? base : `${base}/`) : "/";
+  const normalizedBase = base ? (base.endsWith('/') ? base : `${base}/`) : '/';
 
   return `${normalizedBase}${imageName}`;
 };
 
-export const advanceStory = (request: StoryRequest, game: StoryGameContent | null): AdvanceStoryResult => {
+export const advanceStory = (
+  request: StoryRequest,
+  game: StoryGameContent | null
+): AdvanceStoryResult => {
   if (!game) {
-    return { kind: "game_not_found" };
+    return { kind: 'game_not_found' };
   }
 
   const gameId = game.game_id; // Use game from argument
 
   const coverImage = buildImageUrl(game, game.metadata?.cover_image);
 
-  const turn = typeof request.turn === "number" && request.turn > 0 ? request.turn : 0;
+  const turn = typeof request.turn === 'number' && request.turn > 0 ? request.turn : 0;
   const nextTurn = request.selectedChoiceId ? turn + 1 : Math.max(turn, 1);
 
   const resolveNextTarget = () => {
     const { currentSceneId, selectedChoiceId } = request;
     if (!selectedChoiceId) {
-      return currentSceneId || "start";
+      return currentSceneId || 'start';
     }
 
     const scene = findScene(game, currentSceneId);
-    if (!scene) return "start";
+    if (!scene) return 'start';
 
-    const choice = scene.choices
-      .map((item, index) => ({
-        item,
-        id: buildChoiceId(scene.scene_id, index, item),
-      }))
-      .find(({ item, id }) => item.next === selectedChoiceId || id === selectedChoiceId)?.item ?? scene.choices[0];
+    const choice =
+      scene.choices
+        .map((item, index) => ({
+          item,
+          id: buildChoiceId(scene.scene_id, index, item),
+        }))
+        .find(({ item, id }) => item.next === selectedChoiceId || id === selectedChoiceId)?.item ??
+      scene.choices[0];
     if (!choice) return selectedChoiceId;
 
     const eligible = meetsRequirements(choice.requirements, request.character);
@@ -133,11 +146,11 @@ export const advanceStory = (request: StoryRequest, game: StoryGameContent | nul
     const achievementId = `${gameId}-${ending.ending_id}`;
 
     return {
-      kind: "success",
+      kind: 'success',
       body: {
         turn: nextTurn,
         sceneId: ending.ending_id,
-        narration: [title, summary, result].join("\n\n"),
+        narration: [title, summary, result].join('\n\n'),
         choices: [],
         shouldEnd: true,
         achievementId,
@@ -149,17 +162,12 @@ export const advanceStory = (request: StoryRequest, game: StoryGameContent | nul
     };
   }
 
-  const safeScene = targetScene ?? findScene(game, "start");
+  const safeScene = targetScene ?? findScene(game, 'start');
   if (!safeScene) {
-    return { kind: "scene_not_found" };
+    return { kind: 'scene_not_found' };
   }
 
-  const narration = [
-    safeScene.title,
-    safeScene.description,
-  ]
-    .filter(Boolean)
-    .join("\n\n");
+  const narration = [safeScene.title, safeScene.description].filter(Boolean).join('\n\n');
 
   const choices = safeScene.choices.map((choice, index) => ({
     id: buildChoiceId(safeScene.scene_id, index, choice),
@@ -167,7 +175,7 @@ export const advanceStory = (request: StoryRequest, game: StoryGameContent | nul
   }));
 
   return {
-    kind: "success",
+    kind: 'success',
     body: {
       turn: nextTurn,
       sceneId: safeScene.scene_id,

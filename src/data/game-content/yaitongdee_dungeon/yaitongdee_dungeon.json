@@ -490,9 +490,7 @@
           "text": "ใช้ความรู้วิทย์เนิร์ด ๆ คิดหาวิธีเดินบนสไลม์ไม่ลื่น",
           "next": "scene_16",
           "requirements": {
-            "classes": [
-              "mage"
-            ],
+            "classes": ["mage"],
             "min_attributes": {
               "int": 3
             }
@@ -558,9 +556,7 @@
           "text": "ใช้สกิลสายฮา เล่าเรื่องตลกจนกระปุกหัวเราะเหรียญหล่น",
           "next": "ending_4",
           "requirements": {
-            "classes": [
-              "joker"
-            ],
+            "classes": ["joker"],
             "min_attributes": {
               "cha": 3
             }

@@ -1,19 +1,25 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { RefreshCw, Loader2, Heart, Sparkles, Compass, Map as MapIcon, Shield } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { randomAchievementForGenre, findAchievementById } from "@/data/achievements";
-import { findGameBySlug } from "@/data/games";
-import { findGameSetupById } from "@/data/game-content";
-import { getCharacterStorageKey, getEndSummaryStorageKey, type AdventureStats, type AdventureSummary, type CharacterSelection } from "@/lib/game-config";
-import { trackInteraction } from "@/lib/analytics";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { RefreshCw, Loader2, Heart, Sparkles, Compass, Map as MapIcon, Shield } from 'lucide-react';
+import Navbar from '@/components/Navbar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { randomAchievementForGenre, findAchievementById } from '@/data/achievements';
+import { findGameBySlug } from '@/data/games';
+import { findGameSetupById } from '@/data/game-content';
+import {
+  getCharacterStorageKey,
+  getEndSummaryStorageKey,
+  type AdventureStats,
+  type AdventureSummary,
+  type CharacterSelection,
+} from '@/lib/game-config';
+import { trackInteraction } from '@/lib/analytics';
 
 type StoryResponse = {
   turn: number;
@@ -41,37 +47,37 @@ const DEFAULT_STATS: AdventureStats = {
   maxMana: 80,
   gold: 150,
 };
-const gamePlaceholderSrc = "/assets/game-scene-placeholder.jpg";
+const gamePlaceholderSrc = '/assets/game-scene-placeholder.jpg';
 
 const GamePlayPage = () => {
   const params = useParams<{ slug: string }>();
-  const slug = (params?.slug ?? "").toString();
+  const slug = (params?.slug ?? '').toString();
   const router = useRouter();
   const game = useMemo(() => findGameBySlug(slug), [slug]);
   const gameSetup = useMemo(() => findGameSetupById(slug), [slug]);
   const copy = {
-    loading: "กำลังเตรียมการผจญภัยของคุณ...",
-    turn: "เทิร์นที่",
-    restart: "เริ่มใหม่",
-    startOver: "เริ่มใหม่",
-    story: "เรื่องราว",
-    whatNext: "คุณจะทำอะไรต่อ?",
-    characterStatus: "สถานะตัวละคร",
-    resources: "ทรัพยากรการผจญภัย",
-    attributesPanel: "ค่าสถานะตัวละคร",
-    storyFocus: "ธีมและเดิมพันของเรื่อง",
-    buildTitle: "โปรไฟล์ตัวละคร",
-    genreLabel: "แนวเรื่อง",
-    raceLabel: "เผ่า",
-    classLabel: "สายอาชีพ",
-    backgroundLabel: "ภูมิหลัง",
-    setupWarning: "โปรดตั้งค่าตัวละครก่อนเริ่มเล่น",
-    goToSetup: "ไปตั้งค่าการผจญภัย",
-    fallbackNotice: "ระบบขอใช้เส้นเรื่องสำรองเนื่องจากเกิดข้อผิดพลาดชั่วคราว",
-    youChose: "คุณเลือก",
-    currentSceneAlt: "ฉากปัจจุบัน",
-    adventureMeta: "ข้อมูลผจญภัย",
-    coverAlt: "ภาพบรรยากาศของ",
+    loading: 'กำลังเตรียมการผจญภัยของคุณ...',
+    turn: 'เทิร์นที่',
+    restart: 'เริ่มใหม่',
+    startOver: 'เริ่มใหม่',
+    story: 'เรื่องราว',
+    whatNext: 'คุณจะทำอะไรต่อ?',
+    characterStatus: 'สถานะตัวละคร',
+    resources: 'ทรัพยากรการผจญภัย',
+    attributesPanel: 'ค่าสถานะตัวละคร',
+    storyFocus: 'ธีมและเดิมพันของเรื่อง',
+    buildTitle: 'โปรไฟล์ตัวละคร',
+    genreLabel: 'แนวเรื่อง',
+    raceLabel: 'เผ่า',
+    classLabel: 'สายอาชีพ',
+    backgroundLabel: 'ภูมิหลัง',
+    setupWarning: 'โปรดตั้งค่าตัวละครก่อนเริ่มเล่น',
+    goToSetup: 'ไปตั้งค่าการผจญภัย',
+    fallbackNotice: 'ระบบขอใช้เส้นเรื่องสำรองเนื่องจากเกิดข้อผิดพลาดชั่วคราว',
+    youChose: 'คุณเลือก',
+    currentSceneAlt: 'ฉากปัจจุบัน',
+    adventureMeta: 'ข้อมูลผจญภัย',
+    coverAlt: 'ภาพบรรยากาศของ',
   };
   const text = copy;
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +85,7 @@ const GamePlayPage = () => {
   const [turn, setTurn] = useState(1);
   const [character, setCharacter] = useState<CharacterSelection | null>(null);
   const [stats] = useState<AdventureStats>(DEFAULT_STATS);
-  const [narration, setNarration] = useState<string>("");
+  const [narration, setNarration] = useState<string>('');
   const [choices, setChoices] = useState<Array<ChoiceItem>>([]);
   const [currentSceneId, setCurrentSceneId] = useState<string | null>(null);
   const [sceneImage, setSceneImage] = useState<string | null>(null);
@@ -99,27 +105,30 @@ const GamePlayPage = () => {
   }, [character, gameSetup]);
   const selectedRace = useMemo(
     () => gameSetup?.races.find((race) => race.id === character?.race),
-    [character?.race, gameSetup],
+    [character?.race, gameSetup]
   );
   const selectedClass = useMemo(
     () => gameSetup?.classes.find((cls) => cls.id === character?.class),
-    [character?.class, gameSetup],
+    [character?.class, gameSetup]
   );
   const selectedBackground = useMemo(
     () => gameSetup?.backgrounds.find((bg) => bg.id === character?.background),
-    [character?.background, gameSetup],
+    [character?.background, gameSetup]
   );
 
   const loadScene = useCallback(
-    async (selectedChoice?: { id: string; text: string }, options?: { sceneId?: string | null; turnOverride?: number }) => {
+    async (
+      selectedChoice?: { id: string; text: string },
+      options?: { sceneId?: string | null; turnOverride?: number }
+    ) => {
       if (!character || !game) return;
 
       setIsLoading(true);
       try {
-        const response = await fetch("/api/story", {
-          method: "POST",
+        const response = await fetch('/api/story', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             gameId: slug,
@@ -135,7 +144,7 @@ const GamePlayPage = () => {
         });
 
         if (!response.ok) {
-          throw new Error("Unable to process story");
+          throw new Error('Unable to process story');
         }
 
         const data = (await response.json()) as StoryResponse;
@@ -145,7 +154,7 @@ const GamePlayPage = () => {
         const normalizedChoices: ChoiceItem[] = (data.choices ?? []).map((choice) => {
           const count = seenIds.get(choice.id) ?? 0;
           seenIds.set(choice.id, count + 1);
-          const suffix = count > 0 ? `-${count}` : "";
+          const suffix = count > 0 ? `-${count}` : '';
 
           return {
             id: `${choice.id}${suffix}`,
@@ -164,15 +173,15 @@ const GamePlayPage = () => {
             null;
 
           if (achievement) {
-            const savedAchievements = localStorage.getItem("questWeaverAchievements");
+            const savedAchievements = localStorage.getItem('questWeaverAchievements');
             const earnedIds = savedAchievements ? JSON.parse(savedAchievements) : [];
             const isNewUnlock = !earnedIds.includes(achievement.id);
             if (isNewUnlock) {
               earnedIds.push(achievement.id);
-              localStorage.setItem("questWeaverAchievements", JSON.stringify(earnedIds));
+              localStorage.setItem('questWeaverAchievements', JSON.stringify(earnedIds));
               trackInteraction({
-                action: "achievement-unlocked",
-                category: "progress",
+                action: 'achievement-unlocked',
+                category: 'progress',
                 label: achievement.id,
                 params: { achievement_id: achievement.id, game_slug: slug, turn: data.turn },
               });
@@ -194,8 +203,8 @@ const GamePlayPage = () => {
 
           sessionStorage.setItem(getEndSummaryStorageKey(slug), JSON.stringify(summary));
           trackInteraction({
-            action: "scene-end",
-            category: "gameplay",
+            action: 'scene-end',
+            category: 'gameplay',
             label: summary.endingSceneId ?? undefined,
             params: {
               game_slug: slug,
@@ -209,12 +218,15 @@ const GamePlayPage = () => {
         }
       } catch (error) {
         console.error(error);
-        setNarration((previous) => `${previous}\n\n${text.youChose}: ${selectedChoice?.text ?? "-"}\n(${text.fallbackNotice})`);
+        setNarration(
+          (previous) =>
+            `${previous}\n\n${text.youChose}: ${selectedChoice?.text ?? '-'}\n(${text.fallbackNotice})`
+        );
       } finally {
         setIsLoading(false);
       }
     },
-    [character, currentSceneId, game, router, slug, stats, text.fallbackNotice, text.youChose, turn],
+    [character, currentSceneId, game, router, slug, stats, text.fallbackNotice, text.youChose, turn]
   );
 
   useEffect(() => {
@@ -229,7 +241,7 @@ const GamePlayPage = () => {
 
   useEffect(() => {
     if (!game) {
-      router.replace("/game");
+      router.replace('/game');
       return;
     }
 
@@ -258,7 +270,7 @@ const GamePlayPage = () => {
         attributes: parsed.attributes ?? {},
       });
     } catch (error) {
-      console.error("Unable to load character", error);
+      console.error('Unable to load character', error);
       router.replace(`/game/${slug}/init`);
     } finally {
       setIsInitializing(false);
@@ -267,8 +279,8 @@ const GamePlayPage = () => {
 
   const handleChoice = (choice: ChoiceItem) => {
     trackInteraction({
-      action: "scene-choice",
-      category: "gameplay",
+      action: 'scene-choice',
+      category: 'gameplay',
       label: slug,
       params: {
         game_slug: slug,
@@ -282,17 +294,17 @@ const GamePlayPage = () => {
 
   const handleStartOver = () => {
     trackInteraction({
-      action: "restart-run",
-      category: "progress",
+      action: 'restart-run',
+      category: 'progress',
       label: slug,
-      params: { game_slug: slug, method: "reset-character" },
+      params: { game_slug: slug, method: 'reset-character' },
     });
     const characterKey = getCharacterStorageKey(slug);
     const summaryKey = getEndSummaryStorageKey(slug);
     sessionStorage.removeItem(characterKey);
     sessionStorage.removeItem(summaryKey);
     setTurn(1);
-    setNarration("");
+    setNarration('');
     setChoices([]);
     setCurrentSceneId(null);
     setSceneImage(null);
@@ -302,12 +314,12 @@ const GamePlayPage = () => {
   };
 
   const renderLoadingState = () => (
-    <div className="min-h-screen bg-background pt-20 pb-8 px-4">
+    <div className="min-h-screen bg-background px-4 pb-8 pt-20">
       <div className="container mx-auto max-w-3xl">
         <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
-          <CardContent className="p-12 flex flex-col items-center gap-4">
-            <Loader2 className="h-10 w-10 text-accent animate-spin" />
-            <p className="text-muted-foreground text-lg text-center">{text.loading}</p>
+          <CardContent className="flex flex-col items-center gap-4 p-12">
+            <Loader2 className="h-10 w-10 animate-spin text-accent" />
+            <p className="text-center text-lg text-muted-foreground">{text.loading}</p>
           </CardContent>
         </Card>
       </div>
@@ -321,7 +333,7 @@ const GamePlayPage = () => {
     const classLabel = character.className ? character.className : character.class;
     const backgroundLabel = character.backgroundName
       ? character.backgroundName
-      : character.background || "";
+      : character.background || '';
     const highlights = game.highlights.map((highlight) => highlight);
     const coverSrc = game.coverImage || gamePlaceholderSrc;
     const sceneImageSrc = sceneImage || gamePlaceholderSrc;
@@ -330,14 +342,14 @@ const GamePlayPage = () => {
     }, 1);
     const profileDetails = [
       {
-        key: "genre",
+        key: 'genre',
         label: text.genreLabel,
         name: game.genreLabel,
         description: game.description,
       },
       selectedClass
         ? {
-            key: "class",
+            key: 'class',
             label: text.classLabel,
             name: classLabel,
             description: selectedClass.description,
@@ -345,7 +357,7 @@ const GamePlayPage = () => {
         : null,
       selectedBackground
         ? {
-            key: "background",
+            key: 'background',
             label: text.backgroundLabel,
             name: backgroundLabel,
             description: selectedBackground.description,
@@ -360,9 +372,9 @@ const GamePlayPage = () => {
 
     return (
       <div className="min-h-screen bg-background">
-        <div className="pt-20 pb-10 px-4">
+        <div className="px-4 pb-10 pt-20">
           <div className="container mx-auto max-w-6xl space-y-8">
-            <Card className="ornate-corners border-2 border-border bg-card/30 shadow-epic overflow-hidden">
+            <Card className="ornate-corners overflow-hidden border-2 border-border bg-card/30 shadow-epic">
               <CardContent className="p-0">
                 <div className="relative">
                   <div className="absolute inset-0">
@@ -375,35 +387,37 @@ const GamePlayPage = () => {
                       sizes="(min-width: 1024px) 1100px, 100vw"
                     />
                     <div className="absolute inset-0 bg-gradient-hero" />
-                    <div className="absolute inset-0 bg-gradient-overlay" />
+                    <div className="bg-gradient-overlay absolute inset-0" />
                   </div>
-                  <div className="relative p-6 md:p-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                    <div className="space-y-4 max-w-3xl">
+                  <div className="relative flex flex-col gap-6 p-6 md:p-10 lg:flex-row lg:items-center lg:justify-between">
+                    <div className="max-w-3xl space-y-4">
                       <div className="flex flex-wrap gap-2">
-                        <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
+                        <Badge className="border border-accent/30 bg-accent/20 text-xs text-accent">
                           {raceLabel}
                         </Badge>
-                        <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
+                        <Badge className="border border-accent/30 bg-accent/20 text-xs text-accent">
                           {classLabel}
                         </Badge>
-                        <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
+                        <Badge className="border border-accent/30 bg-accent/20 text-xs text-accent">
                           {backgroundLabel}
                         </Badge>
-                        <Badge className="bg-accent/20 text-accent border border-accent/30 text-xs">
+                        <Badge className="border border-accent/30 bg-accent/20 text-xs text-accent">
                           {game.genreLabel}
                         </Badge>
                       </div>
                       <div className="space-y-2">
-                        <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+                        <h1 className="text-3xl font-bold text-foreground md:text-4xl">
                           {game.title}
                         </h1>
-                        <p className="text-secondary font-semibold">{game.tagline}</p>
+                        <p className="font-semibold text-secondary">{game.tagline}</p>
                       </div>
                     </div>
                     <div className="w-full lg:w-auto lg:min-w-[280px]">
-                      <div className="rounded-2xl border border-border/60 bg-background/70 backdrop-blur-sm p-5 shadow-card space-y-4">
+                      <div className="space-y-4 rounded-2xl border border-border/60 bg-background/70 p-5 shadow-card backdrop-blur-sm">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm uppercase tracking-wide text-muted-foreground">{text.adventureMeta}</p>
+                          <p className="text-sm uppercase tracking-wide text-muted-foreground">
+                            {text.adventureMeta}
+                          </p>
                           <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Sparkles className="h-4 w-4 text-accent" />
                             <span>
@@ -414,9 +428,7 @@ const GamePlayPage = () => {
                         <div className="space-y-3">
                           <div className="flex items-center gap-3">
                             <MapIcon className="h-5 w-5 text-accent" />
-                            <p className="text-sm text-foreground">
-                              {game.genreLabel}
-                            </p>
+                            <p className="text-sm text-foreground">{game.genreLabel}</p>
                           </div>
                         </div>
                         <Button
@@ -427,7 +439,7 @@ const GamePlayPage = () => {
                           data-ga-category="progress"
                           data-ga-label={slug}
                         >
-                          <RefreshCw className="h-4 w-4 mr-2" />
+                          <RefreshCw className="mr-2 h-4 w-4" />
                           {text.startOver}
                         </Button>
                       </div>
@@ -437,14 +449,14 @@ const GamePlayPage = () => {
               </CardContent>
             </Card>
 
-            <div className="grid lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
+            <div className="grid gap-6 lg:grid-cols-3">
+              <div className="space-y-6 lg:col-span-2">
                 <Card className="ornate-corners overflow-hidden border-2 border-border bg-gradient-card shadow-card">
                   <CardContent className="p-0">
                     <div className="relative aspect-video">
                       {isLoading ? (
                         <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                          <Loader2 className="h-12 w-12 text-accent animate-spin" />
+                          <Loader2 className="h-12 w-12 animate-spin text-accent" />
                         </div>
                       ) : (
                         <Image
@@ -456,8 +468,8 @@ const GamePlayPage = () => {
                           sizes="(min-width: 1024px) 66vw, 100vw"
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-overlay" />
-                      <div className="absolute bottom-4 left-4 bg-background/80 border border-border/60 rounded-full px-3 py-1 flex items-center gap-2 text-xs uppercase tracking-wide text-muted-foreground">
+                      <div className="bg-gradient-overlay absolute inset-0" />
+                      <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1 text-xs uppercase tracking-wide text-muted-foreground">
                         <Heart className="h-3 w-3 text-destructive" />
                         {text.turn} {turn}
                       </div>
@@ -466,22 +478,24 @@ const GamePlayPage = () => {
                 </Card>
 
                 <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
-                  <CardContent className="p-6 space-y-4">
+                  <CardContent className="space-y-4 p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Sparkles className="h-5 w-5 text-accent" />
                         <h2 className="text-xl font-semibold text-foreground">{text.story}</h2>
                       </div>
-                      <Badge className="bg-accent/20 text-accent border border-accent/30">
+                      <Badge className="border border-accent/30 bg-accent/20 text-accent">
                         {game.genreLabel}
                       </Badge>
                     </div>
-                    <p className="text-foreground leading-relaxed whitespace-pre-line">{narration}</p>
+                    <p className="whitespace-pre-line leading-relaxed text-foreground">
+                      {narration}
+                    </p>
                   </CardContent>
                 </Card>
 
                 <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
-                  <CardContent className="p-6 space-y-4">
+                  <CardContent className="space-y-4 p-6">
                     <h2 className="text-xl font-semibold text-foreground">{text.whatNext}</h2>
                     <div className="flex flex-col gap-3">
                       {choices.map((choice, index) => (
@@ -489,10 +503,10 @@ const GamePlayPage = () => {
                           key={choice.id}
                           onClick={() => handleChoice(choice)}
                           disabled={isLoading}
-                          className="w-full h-auto py-4 text-left justify-start bg-card hover:bg-muted border-2 border-accent/50 text-foreground hover:border-accent hover:shadow-glow-cyan transition-all whitespace-normal"
+                          className="h-auto w-full justify-start whitespace-normal border-2 border-accent/50 bg-card py-4 text-left text-foreground transition-all hover:border-accent hover:bg-muted hover:shadow-glow-cyan"
                           variant="outline"
                         >
-                          <span className="text-accent font-bold mr-3">{index + 1}.</span>
+                          <span className="mr-3 font-bold text-accent">{index + 1}.</span>
                           {choice.text}
                         </Button>
                       ))}
@@ -503,12 +517,12 @@ const GamePlayPage = () => {
 
               <div className="space-y-6">
                 <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
-                  <CardContent className="p-6 space-y-3">
-                    <div className="flex items-center gap-2 mb-2">
+                  <CardContent className="space-y-3 p-6">
+                    <div className="mb-2 flex items-center gap-2">
                       <Compass className="h-5 w-5 text-secondary" />
                       <h2 className="text-lg font-semibold text-foreground">{text.storyFocus}</h2>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-sm leading-relaxed text-muted-foreground">
                       {game.description}
                     </p>
                     {highlights.length > 0 && (
@@ -517,9 +531,9 @@ const GamePlayPage = () => {
                           <Badge
                             key={highlight}
                             variant="secondary"
-                            className="bg-accent/15 text-accent border border-accent/30"
+                            className="border border-accent/30 bg-accent/15 text-accent"
                           >
-                            <Sparkles className="h-3 w-3 mr-1 text-accent" />
+                            <Sparkles className="mr-1 h-3 w-3 text-accent" />
                             {highlight}
                           </Badge>
                         ))}
@@ -530,17 +544,21 @@ const GamePlayPage = () => {
 
                 {(attributeSummaries.length > 0 || profileDetails.length > 0) && (
                   <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
-                    <CardContent className="p-6 space-y-5">
+                    <CardContent className="space-y-5 p-6">
                       <div className="flex items-center gap-2">
                         <Shield className="h-5 w-5 text-secondary" />
-                        <h2 className="text-lg font-semibold text-foreground">{text.characterStatus}</h2>
+                        <h2 className="text-lg font-semibold text-foreground">
+                          {text.characterStatus}
+                        </h2>
                       </div>
 
                       {attributeSummaries.length > 0 && (
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
                             <Sparkles className="h-5 w-5 text-accent" />
-                            <p className="text-sm font-semibold text-foreground">{text.attributesPanel}</p>
+                            <p className="text-sm font-semibold text-foreground">
+                              {text.attributesPanel}
+                            </p>
                           </div>
                           <div className="grid gap-1">
                             {attributeSummaries.map((attribute) => (
@@ -548,17 +566,21 @@ const GamePlayPage = () => {
                                 key={attribute.id}
                                 className="flex items-center justify-between rounded-lg bg-background/60 p-2"
                               >
-                                <div className="flex flex-col w-full gap-1.5">
+                                <div className="flex w-full flex-col gap-1.5">
                                   <div className="flex items-center justify-between">
                                     <span className="text-sm font-medium text-foreground">
                                       {attribute.name}
                                     </span>
-                                    <span className="text-sm font-semibold text-accent">{attribute.value}</span>
+                                    <span className="text-sm font-semibold text-accent">
+                                      {attribute.value}
+                                    </span>
                                   </div>
-                                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                  <div className="h-2 overflow-hidden rounded-full bg-muted">
                                     <div
                                       className="h-full bg-gradient-primary"
-                                      style={{ width: `${Math.min(100, (attribute.value / maxAttributeValue) * 100)}%` }}
+                                      style={{
+                                        width: `${Math.min(100, (attribute.value / maxAttributeValue) * 100)}%`,
+                                      }}
                                     />
                                   </div>
                                 </div>
@@ -570,16 +592,24 @@ const GamePlayPage = () => {
 
                       {profileDetails.length > 0 && (
                         <div className="space-y-2 rounded-lg border border-border/60 bg-background/60 p-3">
-                          <p className="text-xs uppercase tracking-wide text-muted-foreground">{text.buildTitle}</p>
+                          <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                            {text.buildTitle}
+                          </p>
                           <div className="space-y-2">
                             {profileDetails.map((detail) => (
-                              <p key={detail.key} className="text-sm text-foreground leading-relaxed">
-                                <span className="text-muted-foreground uppercase tracking-wide text-[11px] mr-2">
+                              <p
+                                key={detail.key}
+                                className="text-sm leading-relaxed text-foreground"
+                              >
+                                <span className="mr-2 text-[11px] uppercase tracking-wide text-muted-foreground">
                                   {detail.label}
                                 </span>
                                 <span className="font-semibold text-foreground">{detail.name}</span>
                                 {detail.description ? (
-                                  <span className="text-muted-foreground"> — {detail.description}</span>
+                                  <span className="text-muted-foreground">
+                                    {' '}
+                                    — {detail.description}
+                                  </span>
                                 ) : null}
                               </p>
                             ))}
@@ -610,15 +640,16 @@ const GamePlayPage = () => {
     return (
       <>
         <Navbar />
-        <div className="min-h-screen bg-background pt-20 pb-8 px-4">
+        <div className="min-h-screen bg-background px-4 pb-8 pt-20">
           <div className="container mx-auto max-w-3xl">
             <Card className="ornate-corners border-2 border-border bg-gradient-card shadow-card">
-              <CardContent className="p-12 text-center space-y-4">
-                <Sparkles className="h-10 w-10 text-accent mx-auto" />
-                <p className="text-lg text-muted-foreground">
-                  {text.setupWarning}
-                </p>
-                <Button onClick={() => router.push(`/game/${slug}/init`)} className="bg-gradient-primary hover:shadow-glow-orange">
+              <CardContent className="space-y-4 p-12 text-center">
+                <Sparkles className="mx-auto h-10 w-10 text-accent" />
+                <p className="text-lg text-muted-foreground">{text.setupWarning}</p>
+                <Button
+                  onClick={() => router.push(`/game/${slug}/init`)}
+                  className="bg-gradient-primary hover:shadow-glow-orange"
+                >
                   {text.goToSetup}
                 </Button>
               </CardContent>

@@ -24,9 +24,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     const story = result.story;
 
     if (!story.isPublished && !story.isActive) {
-       // In a real app, we might allow the author to see it even if unpublished
-       // For now, just return 404
-       return NextResponse.json({ error: 'Story not available' }, { status: 404 });
+      // In a real app, we might allow the author to see it even if unpublished
+      // For now, just return 404
+      return NextResponse.json({ error: 'Story not available' }, { status: 404 });
     }
 
     return NextResponse.json(story);
@@ -49,7 +49,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
     }
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
-    
+
     if (!decoded || typeof decoded === 'string' || !('userId' in decoded)) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
@@ -76,18 +76,18 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
     // 4. Get existing story to determine version
     const existingStory = await storyRepo.findStoryBySlug(slug);
     if (!existingStory) {
-        return NextResponse.json({ error: 'Story not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Story not found' }, { status: 404 });
     }
 
     const newVersion = storyJson?.version || existingStory.version;
     const uploadBase = `stories/${slug}/${newVersion}`;
-    
+
     let storyJsonUrl = existingStory.storyJsonUrl;
 
     // 5. Upload Files
     if (storyFile) {
-       const storyJsonPath = `${uploadBase}/story.json`;
-       storyJsonUrl = await storage.uploadFile(storyFile, storyJsonPath);
+      const storyJsonPath = `${uploadBase}/story.json`;
+      storyJsonUrl = await storage.uploadFile(storyFile, storyJsonPath);
     }
 
     let coverImageUrl = existingStory.coverImageUrl;
@@ -134,7 +134,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
     }
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-
   } catch (error) {
     console.error('Story update error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

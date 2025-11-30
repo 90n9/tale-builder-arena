@@ -14,10 +14,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
   try {
     const { slug } = await params;
 
-    const result = await listComments(
-      { storySlug: slug },
-      { commentRepo, storyRepo }
-    );
+    const result = await listComments({ storySlug: slug }, { commentRepo, storyRepo });
 
     if (result.kind === 'success') {
       return NextResponse.json(result.comments);
@@ -28,7 +25,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     }
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-
   } catch (error) {
     console.error('Error fetching comments:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -48,7 +44,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
     }
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
-    
+
     if (!decoded || typeof decoded === 'string' || !('userId' in decoded)) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
@@ -80,7 +76,6 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
     }
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-
   } catch (error) {
     console.error('Error creating comment:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

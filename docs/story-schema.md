@@ -40,12 +40,12 @@ Story metadata and information.
 
 ```typescript
 {
-  title: string;           // Required
-  subtitle: string;        // Required
-  genre: string;           // Required
-  description: string;     // Required
-  cover_image: string;     // Required
-  author: string;          // Required
+  title: string; // Required
+  subtitle: string; // Required
+  genre: string; // Required
+  description: string; // Required
+  cover_image: string; // Required
+  author: string; // Required
 }
 ```
 
@@ -75,15 +75,15 @@ Story configuration and settings.
   starting_attributes: {
     points_to_distribute: number;
     base_values: Record<string, number>;
-  };
+  }
   asset_paths: {
     images: string;
     videos: string;
-  };
+  }
   ui: {
     theme_color: string;
     text_speed: string;
-  };
+  }
 }
 ```
 
@@ -355,6 +355,7 @@ try {
 ### Testing
 
 Test your story file:
+
 ```bash
 npm run validate:game-content
 ```

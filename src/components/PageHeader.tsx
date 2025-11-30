@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react';
 
 type PageHeaderProps = {
   title: string;
@@ -12,22 +12,22 @@ type PageHeaderProps = {
  */
 export function PageHeader({ title, description, eyebrow, icon }: PageHeaderProps) {
   return (
-    <div className="text-center space-y-4">
-      {eyebrow ? (
-        <p className="text-xs tracking-[0.35em] text-accent">{eyebrow}</p>
-      ) : null}
+    <div className="space-y-4 text-center">
+      {eyebrow ? <p className="text-xs tracking-[0.35em] text-accent">{eyebrow}</p> : null}
 
       <div className="flex flex-col items-center gap-3">
         {icon ? (
-          <div className="p-3 rounded-full bg-accent/15 border border-accent/30 text-accent">
+          <div className="rounded-full border border-accent/30 bg-accent/15 p-3 text-accent">
             {icon}
           </div>
         ) : null}
-        <h1 className="text-5xl md:text-6xl font-bold text-foreground tracking-wide">{title}</h1>
+        <h1 className="text-5xl font-bold tracking-wide text-foreground md:text-6xl">{title}</h1>
       </div>
 
       {description ? (
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">{description}</p>
+        <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted-foreground">
+          {description}
+        </p>
       ) : null}
 
       <div className="section-divider mt-6" />

@@ -32,10 +32,12 @@ const endingSchema = z.object({
   result: z.string(),
   image: z.string().optional(),
   image_prompt: z.string().optional(),
-  conditions: z.object({
-    min_attributes: attributeMap,
-    flags_required: z.array(z.string()),
-  }).optional(),
+  conditions: z
+    .object({
+      min_attributes: attributeMap,
+      flags_required: z.array(z.string()),
+    })
+    .optional(),
 });
 
 export const storySchema = z.object({
@@ -63,28 +65,44 @@ export const storySchema = z.object({
       text_speed: z.string(),
     }),
   }),
-  races: z.array(z.object({
-      id: z.string(),
-      name: z.string(),
-      description: z.string(),
-      attribute_bonus: attributeMap.optional(),
-  })).optional(),
-  classes: z.array(z.object({
-      id: z.string(),
-      name: z.string(),
-      description: z.string(),
-      starting_bonus: attributeMap.optional(),
-  })).optional(),
-  backgrounds: z.array(z.object({
-      id: z.string(),
-      name: z.string(),
-      description: z.string(),
-      bonus_attributes: attributeMap.optional(),
-  })).optional(),
-  attributes: z.array(z.object({
-      id: z.string(),
-      name: z.string(),
-  })).optional(),
+  races: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        description: z.string(),
+        attribute_bonus: attributeMap.optional(),
+      })
+    )
+    .optional(),
+  classes: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        description: z.string(),
+        starting_bonus: attributeMap.optional(),
+      })
+    )
+    .optional(),
+  backgrounds: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        description: z.string(),
+        bonus_attributes: attributeMap.optional(),
+      })
+    )
+    .optional(),
+  attributes: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+      })
+    )
+    .optional(),
   scenes: z.record(sceneSchema),
   endings: z.record(endingSchema),
 });

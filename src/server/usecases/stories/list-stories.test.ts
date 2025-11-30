@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { listStories } from './list-stories';
-import { StoryRepository, StoryWithRelations } from '@/server/ports/story-repository';
-import { Story } from '@prisma/client';
+import { StoryRepository } from '@/server/ports/story-repository';
+import { createMockStoryWithRelations } from '../__tests__/fixtures/story';
 
 describe('listStories', () => {
   const mockStoryRepo: StoryRepository = {
@@ -19,23 +19,13 @@ describe('listStories', () => {
   });
 
   it('should return a list of stories', async () => {
-    const mockStories: StoryWithRelations[] = [{
-        id: 1,
+    const mockStories = [
+      createMockStoryWithRelations({
         slug: 'test-story',
-        authorId: 1,
-        version: '1.0.0',
-        isPublished: true,
-        isActive: true,
-        genre: 'fantasy',
-        title: {th: 'Test Story'},
-        subtitle: null,
-        description: null,
-        coverImageUrl: null,
         storyJsonUrl: 'http://example.com/story.json',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        author: { id: 1, username: 'author1' }
-    }];
+        author: { id: 1, username: 'author1', displayName: null },
+      }),
+    ];
     (mockStoryRepo.findStories as vi.Mock).mockResolvedValue(mockStories);
     (mockStoryRepo.countStories as vi.Mock).mockResolvedValue(1);
 
